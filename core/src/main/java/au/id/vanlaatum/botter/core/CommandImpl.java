@@ -76,7 +76,7 @@ public class CommandImpl implements Command {
     this.transport.error ( this.message, message );
   }
 
-  public void removeCommandPart ( int i ) {
+  void removeCommandPart ( int i ) {
     commandParts.remove ( i );
   }
 }

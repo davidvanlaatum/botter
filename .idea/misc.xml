@@ -3,6 +3,10 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/slack" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
