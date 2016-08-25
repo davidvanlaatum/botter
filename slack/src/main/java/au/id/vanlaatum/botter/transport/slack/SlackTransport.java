@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
+import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Marked;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Ping;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Pong;
@@ -96,6 +97,8 @@ public class SlackTransport implements Transport, ManagedService {
     clientManager = ClientManager.createClient ();
     clientManager.getScheduledExecutorService ()
         .scheduleAtFixedRate ( new RetransmitHandler (), 0, 10, TimeUnit.SECONDS );
+    clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new PingHandler (), 0, 1, TimeUnit.SECONDS );
+    clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new MarkHandler (), 0, 30, TimeUnit.SECONDS );
   }
 
   protected void registerService () {
@@ -374,6 +377,7 @@ public class SlackTransport implements Transport, ManagedService {
         lastPacket = new Date ();
         log.log ( LogService.LOG_INFO, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {
+          channels.get ( ( (Message) packet ).getChannel () ).setMark ( ( (Message) packet ).getTs () );
           botFactory.processMessage ( buildSlackMessageDTO ( (Message) packet ) );
         } else if ( packet instanceof UserChange ) {
           users.updateUser ( ( (UserChange) packet ).getUser () );
@@ -383,6 +387,8 @@ public class SlackTransport implements Transport, ManagedService {
           rtt = System.currentTimeMillis () - ( (Pong) packet ).getTime ().getTime ();
         } else if ( packet instanceof ReconnectURL ) {
           reconnectURL = ( (ReconnectURL) packet ).getUrl ();
+        } else if ( packet instanceof Marked ) {
+          channels.get ( ( (Marked) packet ).getChannel () ).updateMark ( ( (Marked) packet ).getTs () );
         }
       } catch ( Exception e ) {
         log.log ( LogService.LOG_WARNING, "Exception while processing packet", e );
@@ -419,16 +425,24 @@ public class SlackTransport implements Transport, ManagedService {
   private class RetransmitHandler implements Runnable {
     @Override
     public synchronized void run () {
-      RetryTimer timer;
-      while ( ( timer = retryTimers.poll () ) != null ) {
-        final BaseEvent message = pendingMessages.get ( timer.getId () );
-        if ( message != null ) {
-          log.log ( LogService.LOG_DEBUG, format ( "Retransmitting {0}", message.getId () ) );
-          retransmits++;
-          sendMessage ( message );
+      if ( open ) {
+        RetryTimer timer;
+        while ( ( timer = retryTimers.poll () ) != null ) {
+          final BaseEvent message = pendingMessages.get ( timer.getId () );
+          if ( message != null ) {
+            log.log ( LogService.LOG_DEBUG, format ( "Retransmitting {0}", message.getId () ) );
+            retransmits++;
+            sendMessage ( message );
+          }
         }
       }
+    }
+  }
 
+  private class PingHandler implements Runnable {
+
+    @Override
+    public void run () {
       if ( open ) {
         final long now = System.currentTimeMillis ();
         if ( lastPing.getTime () < now - pingInterval ) {
@@ -439,6 +453,27 @@ public class SlackTransport implements Transport, ManagedService {
         if ( lastPacket.getTime () < now - pingInterval * 3 ) {
           disconnect ();
           connect ();
+        }
+      }
+    }
+  }
+
+  private class MarkHandler implements Runnable {
+
+    @Override
+    public void run () {
+      if ( open ) {
+        for ( AbstractSlackMessageChannel channel : channels.pendingMark () ) {
+          try {
+            if ( channel instanceof SlackMessageChannel ) {
+              api.doChannelMark ( channel.getID (), channel.getMark () );
+            } else if ( channel instanceof SlackMessageChannelIM ) {
+              api.doIMMark ( channel.getID (), channel.getMark () );
+            }
+            channel.setCallMark ( false );
+          } catch ( IOException e ) {
+            log.log ( LogService.LOG_WARNING, "Failed to mark channel " + channel.getID (), e );
+          }
         }
       }
     }

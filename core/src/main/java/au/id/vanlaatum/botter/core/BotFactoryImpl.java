@@ -6,6 +6,7 @@ import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.api.Message;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
+import au.id.vanlaatum.botter.api.Word;
 import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -150,6 +151,24 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
         log.log ( LogService.LOG_INFO, "No keywords" );
       }
     }
+  }
+
+  @Override
+  public boolean matchesPhrase ( List<Word> phrase, List<String> words ) {
+    boolean rt = true;
+    final ArrayList<String> list = new ArrayList<> ( words );
+    for ( Word word : phrase ) {
+      int len = word.matches ( list );
+      if ( len < 0 ) {
+        rt = false;
+        break;
+      }
+      while ( len > 0 ) {
+        list.remove ( 0 );
+        len--;
+      }
+    }
+    return rt && list.isEmpty ();
   }
 
   private boolean processKeyWords ( CommandImpl command ) {

@@ -1,6 +1,8 @@
 package au.id.vanlaatum.botter.transport.slack;
 
+import au.id.vanlaatum.botter.transport.slack.Modal.BasePacket;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTMStart;
+import au.id.vanlaatum.botter.transport.slack.Modal.SlackTimeStamp;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
@@ -14,7 +16,10 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URLConnection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import static java.text.MessageFormat.format;
 
@@ -38,21 +43,54 @@ public class API {
     return rt;
   }
 
-  protected RTMStart doRTMStart () throws IOException {
-    final URLConnection connection = slackURL.resolve ( "rtm.start" ).toURL ().openConnection ( getProxy () );
+  private InputStream doPost ( String endpoint, Map<String, String> params ) throws IOException {
+    log.log ( LogService.LOG_INFO, format ( "Sending post to {0} with {1}", endpoint, params ) );
+    final URLConnection connection = slackURL.resolve ( endpoint ).toURL ().openConnection ( getProxy () );
     ( (HttpURLConnection) connection ).setRequestMethod ( "POST" );
     connection.setDoOutput ( true );
     try ( final DataOutputStream out = new DataOutputStream ( connection.getOutputStream () ) ) {
       out.writeBytes ( "token=" + token );
+      for ( Map.Entry<String, String> entry : params.entrySet () ) {
+        out.writeBytes ( "&" + entry.getKey () + "=" + entry.getValue () );
+      }
       out.flush ();
     }
+
+    return connection.getInputStream ();
+  }
+
+  protected RTMStart doRTMStart () throws IOException {
     RTMStart startData;
-    try ( InputStream inputStream = connection.getInputStream () ) {
+    try ( InputStream inputStream = doPost ( "rtm.start", Collections.<String, String>emptyMap () ) ) {
       final String json = IOUtils.toString ( inputStream );
       log.log ( LogService.LOG_INFO, format ( "Json is {0}", json ) );
       startData = mapper.readValue ( json, RTMStart.class );
     }
     return startData;
+  }
+
+  protected BasePacket doChannelMark ( String channel, SlackTimeStamp ts ) throws IOException {
+    return doMark ( "channels.mark", channel, ts );
+  }
+
+  protected BasePacket doIMMark ( String channel, SlackTimeStamp ts ) throws IOException {
+    return doMark ( "im.mark", channel, ts );
+  }
+
+  private BasePacket doMark ( String endpoint, String channel, SlackTimeStamp ts ) throws IOException {
+    BasePacket rt;
+    Map<String, String> params = new TreeMap<> ();
+    params.put ( "channel", channel );
+    params.put ( "ts", ts.toString () );
+    try ( InputStream inputStream = doPost ( endpoint, params ) ) {
+      final String json = IOUtils.toString ( inputStream );
+      log.log ( LogService.LOG_INFO, format ( "Json is {0}", json ) );
+      rt = mapper.readValue ( json, BasePacket.class );
+      if ( !rt.getOk () ) {
+        log.log ( LogService.LOG_WARNING, "Error marking " + channel + ": " + rt.getError () );
+      }
+    }
+    return rt;
   }
 
   private Proxy getProxy () {

@@ -62,6 +62,10 @@ public class SlackTimeStamp {
     return Objects.hash ( seconds, miliseconds );
   }
 
+  public boolean before ( SlackTimeStamp ts ) {
+    return seconds < ts.seconds || ( seconds == ts.seconds && miliseconds < ts.miliseconds );
+  }
+
   public static class TSConverter extends StdConverter<String, SlackTimeStamp> {
     @Override
     public SlackTimeStamp convert ( String s ) {

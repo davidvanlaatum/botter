@@ -80,7 +80,7 @@ public class BaseEventTest {
         "  \"event_ts\": \"1471161108.193769\",\n" +
         "  \"ts\": \"1471161108.000017\"\n" +
         "}\n" );
-    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
+/*    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
 
     tree = mapper.readTree (
         "{\n" +
@@ -125,6 +125,36 @@ public class BaseEventTest {
             "  \"cache_ts\": 1471162298,\n" +
             "  \"event_ts\": \"1471162298.195542\"\n" +
             "}\n" );
+    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );*/
+
+    tree = mapper.readTree (
+        "{\n" +
+            "  \"type\": \"channel_marked\",\n" +
+            "  \"channel\": \"C213WG23G\",\n" +
+            "  \"ts\": \"1472091296.000009\",\n" +
+            "  \"unread_count\": 0,\n" +
+            "  \"unread_count_display\": 0,\n" +
+            "  \"num_mentions\": 0,\n" +
+            "  \"num_mentions_display\": 0,\n" +
+            "  \"mention_count\": 0,\n" +
+            "  \"mention_count_display\": 0,\n" +
+            "  \"event_ts\": \"1472091298.411025\"\n" +
+            "}" );
+
+    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
+
+    tree = mapper.readTree (
+        "{\n" +
+            "  \"type\": \"im_marked\",\n" +
+            "  \"channel\": \"D213CG14G\",\n" +
+            "  \"ts\": \"1472091732.000014\",\n" +
+            "  \"dm_count\": 0,\n" +
+            "  \"unread_count_display\": 0,\n" +
+            "  \"num_mentions_display\": 0,\n" +
+            "  \"mention_count_display\": 0,\n" +
+            "  \"event_ts\": \"1472091737.413702\"\n" +
+            "}" );
+
     packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
   }
 }

@@ -3,8 +3,10 @@ package au.id.vanlaatum.botter.transport.slack;
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackChannel;
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackIM;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -35,5 +37,15 @@ public class Channels {
 
   public Collection<AbstractSlackMessageChannel> all () {
     return Collections.unmodifiableCollection ( channels.values () );
+  }
+
+  public Collection<AbstractSlackMessageChannel> pendingMark () {
+    List<AbstractSlackMessageChannel> rt = new ArrayList<> ();
+    for ( AbstractSlackMessageChannel channel : channels.values () ) {
+      if ( channel.isCallMark () ) {
+        rt.add ( channel );
+      }
+    }
+    return rt;
   }
 }

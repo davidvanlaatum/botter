@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -17,6 +18,8 @@ public class BaseEvent extends BasePacket {
     typeMap.put ( "team_join", TeamJoin.class );
     typeMap.put ( "user_change", UserChange.class );
     typeMap.put ( "pong", Pong.class );
+    typeMap.put ( "channel_marked", ChannelMarked.class );
+    typeMap.put ( "im_marked", IMMarked.class );
   }
 
   private String type;
@@ -47,7 +50,7 @@ public class BaseEvent extends BasePacket {
 
   @Override
   public String toString () {
-    return new ReflectionToStringBuilder ( this ).setExcludeFieldNames ( "raw", "tree" )
+    return new ReflectionToStringBuilder ( this, ToStringStyle.SHORT_PREFIX_STYLE ).setExcludeFieldNames ( "raw", "tree" )
         .toString ();
   }
 }
