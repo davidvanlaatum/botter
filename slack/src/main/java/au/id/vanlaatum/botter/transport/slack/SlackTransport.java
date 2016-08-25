@@ -97,7 +97,7 @@ public class SlackTransport implements Transport, ManagedService {
     clientManager = ClientManager.createClient ();
     clientManager.getScheduledExecutorService ()
         .scheduleAtFixedRate ( new RetransmitHandler (), 0, 10, TimeUnit.SECONDS );
-    clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new PingHandler (), 0, 1, TimeUnit.SECONDS );
+    clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new PingHandler (), 0, 100, TimeUnit.MILLISECONDS );
     clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new MarkHandler (), 0, 30, TimeUnit.SECONDS );
   }
 
@@ -445,7 +445,7 @@ public class SlackTransport implements Transport, ManagedService {
     public void run () {
       if ( open ) {
         final long now = System.currentTimeMillis ();
-        if ( lastPing.getTime () < now - pingInterval ) {
+        if ( lastPing.getTime () <= now - pingInterval ) {
           sendMessage ( new Ping () );
           lastPing = new Date ( now );
         }
