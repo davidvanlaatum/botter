@@ -162,8 +162,7 @@ public class SlackTransport implements Transport, ManagedService {
         url = reconnectURL;
         reconnectURL = null;
       }
-      log.log ( LogService.LOG_INFO, format ( "Connecting to SlackTeam {0} URL is {1}", team.getName (),
-          url ) );
+      log.log ( LogService.LOG_INFO, format ( "Connecting to SlackTeam {0} URL is {1}", team.getName (), url ) );
       open = true;
       final ClientEndpointConfig endpointConfig = ClientEndpointConfig.Builder.create ()
           .decoders ( Collections.<Class<? extends Decoder>>singletonList ( SlackWSDecoder.class ) )
@@ -241,7 +240,10 @@ public class SlackTransport implements Transport, ManagedService {
 
   @Override
   public boolean isMyName ( String text ) {
-    return ( "@" + self.getName () ).equalsIgnoreCase ( text );
+    if ( text.startsWith ( "@" ) ) {
+      text = text.substring ( 1 );
+    }
+    return self.getName ().equalsIgnoreCase ( text );
   }
 
   private synchronized Integer nextId () {
