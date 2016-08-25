@@ -197,7 +197,7 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
           }
           if ( !found && ( !tryKeyWords || !processKeyWords ( command ) ) ) {
             log.log ( LogService.LOG_WARNING, "No such command " + command.getCommandText () );
-            command.error ( "No such command: " + command.getCommandText () );
+            command.error ( "No such command: " + command.getCommandText () + "\nuse help for list" );
           }
         }
       } );
