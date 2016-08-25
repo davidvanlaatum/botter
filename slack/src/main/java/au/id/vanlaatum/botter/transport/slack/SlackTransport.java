@@ -126,7 +126,9 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   protected void updateService () {
-    registration.setProperties ( buildServiceProperties () );
+    if ( registration != null ) {
+      registration.setProperties ( buildServiceProperties () );
+    }
   }
 
   public String getName () {
@@ -138,11 +140,11 @@ public class SlackTransport implements Transport, ManagedService {
       URI url;
       if ( proxyURI != null ) {
         clientManager.getProperties ().put ( ClientProperties.PROXY_URI, proxyURI.toString () );
+      } else {
+        clientManager.getProperties ().remove ( ClientProperties.PROXY_URI );
       }
       if ( reconnectURL == null ) {
-        if ( proxyURI != null ) {
-          api.setProxy ( proxyURI );
-        }
+        api.setProxy ( proxyURI );
         RTMStart startData = api.doRTMStart ();
         team = startData.getTeam ();
         self = startData.getSelf ();
@@ -227,7 +229,7 @@ public class SlackTransport implements Transport, ManagedService {
     Message msg = new Message ();
     msg.setText ( text );
     if ( message.getChannel () instanceof AbstractSlackMessageChannel ) {
-      msg.setChannel ( ( (AbstractSlackMessageChannel) message.getChannel () ).getID () );
+      msg.setChannel ( message.getChannel ().getID () );
     }
     sendMessage ( msg );
   }
@@ -281,7 +283,8 @@ public class SlackTransport implements Transport, ManagedService {
     }
   }
 
-  SlackMessageDTO buildSlackMessageDTO ( Message packet ) throws UserNotFoundException, ChannelNotFoundException {
+  private SlackMessageDTO buildSlackMessageDTO ( Message packet )
+      throws UserNotFoundException, ChannelNotFoundException {
     final SlackMessageDTO dto = new SlackMessageDTO ( this );
     dto.setText ( messagePreProcessor.convertText ( packet.getText (), dto ) );
     dto.setUser ( new SlackUserDTO ( users.getUser ( packet.getUser () ) ) );
@@ -293,33 +296,13 @@ public class SlackTransport implements Transport, ManagedService {
     return users;
   }
 
-  synchronized void ackPacket ( Integer id ) {
+  private synchronized void ackPacket ( Integer id ) {
     if ( id != null ) {
       pendingMessages.remove ( id );
     }
   }
 
-  Self getSelf () {
-    return self;
-  }
-
-  BotFactory getBotFactory () {
-    return botFactory;
-  }
-
-  void setRTT ( long RTT ) {
-    this.rtt = RTT;
-  }
-
-  void setLastPacket ( Date lastPacket ) {
-    this.lastPacket = lastPacket;
-  }
-
-  public void setReconnectURL ( URI reconnectURL ) {
-    this.reconnectURL = reconnectURL;
-  }
-
-  public void shutdown () {
+  void shutdown () {
     if ( clientManager != null ) {
       clientManager.shutdown ();
     }
@@ -379,16 +362,14 @@ public class SlackTransport implements Transport, ManagedService {
     }
   }
 
-  class SlackMessageHandler implements MessageHandler.Whole<BasePacket> {
-
-
+  private class SlackMessageHandler implements MessageHandler.Whole<BasePacket> {
     @Override
     public void onMessage ( final BasePacket packet ) {
       try {
         incPacketCount ( inPackets,
             packet instanceof BaseEvent ? ( (BaseEvent) packet ).getType () : packet.getClass ().getSimpleName () );
         ackPacket ( packet.getReplyTo () );
-        setLastPacket ( new Date () );
+        lastPacket = new Date ();
         log.log ( LogService.LOG_INFO, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {
           botFactory.processMessage ( buildSlackMessageDTO ( (Message) packet ) );
@@ -408,7 +389,7 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
 
-  public class StatusProvider implements StatusInfoProvider {
+  private class StatusProvider implements StatusInfoProvider {
 
     @Override
     public String getName () {
@@ -446,10 +427,17 @@ public class SlackTransport implements Transport, ManagedService {
         }
       }
 
-      final long now = System.currentTimeMillis ();
-      if ( lastPing.getTime () < now - pingInterval ) {
-        sendMessage ( new Ping () );
-        lastPing = new Date ( now );
+      if ( open ) {
+        final long now = System.currentTimeMillis ();
+        if ( lastPing.getTime () < now - pingInterval ) {
+          sendMessage ( new Ping () );
+          lastPing = new Date ( now );
+        }
+
+        if ( lastPacket.getTime () < now - pingInterval * 3 ) {
+          disconnect ();
+          connect ();
+        }
       }
     }
   }
