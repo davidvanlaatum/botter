@@ -8,6 +8,7 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/fisheye" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/slack" />
   </component>
   <component name="MavenProjectsManager">

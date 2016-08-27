@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 public class MessagePreProcessor {
   public static final Pattern PATTERN = Pattern.compile ( "<(.*?)>" );
+  public static final Pattern URL = Pattern.compile ( "(\\w+)://(\\S*)(:\\d+)*(/\\S+)" );
   private final SlackTransport transport;
 
   public MessagePreProcessor ( SlackTransport transport ) {
@@ -25,6 +26,8 @@ public class MessagePreProcessor {
             matcher.appendReplacement ( out, "@" + user.getName () );
           } catch ( UserNotFoundException ignore ) {
           }
+        } else if ( URL.matcher ( exp ).matches () ) {
+          matcher.appendReplacement ( out, exp.replaceFirst ( "|", " " ) );
         }
       }
       matcher.appendTail ( out );

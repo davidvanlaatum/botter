@@ -176,8 +176,12 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
     List<Boolean> used = new ArrayList<> ( command.getCommandParts ().size () );
     Collections.fill ( used, false );
     for ( KeyWordProcessor processor : keyWordProcessors ) {
-      if ( processor.checkForKeywords ( command, used ) ) {
-        found = true;
+      try {
+        if ( processor.checkForKeywords ( command, used ) ) {
+          found = true;
+        }
+      } catch ( Throwable ex ) {
+        log.log ( LogService.LOG_WARNING, "Exception processing keyword processor " + processor, ex );
       }
     }
     return found;
@@ -216,7 +220,8 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
     @Override
     public String getStatus () {
       return format ( "{0} Commands\n", commands.size () ) +
-          format ( "{0} Transports\n", transports.size () );
+          format ( "{0} Transports\n", transports.size () ) +
+          format ( "{0} Keywords\n", keyWordProcessors.size () );
     }
   }
 }

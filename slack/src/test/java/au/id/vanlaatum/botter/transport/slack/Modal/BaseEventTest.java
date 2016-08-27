@@ -156,5 +156,59 @@ public class BaseEventTest {
             "}" );
 
     packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
+
+    tree = mapper.readTree ( "{\n" +
+        "  \"text\": \"Pssst! I didn’t unfurl <https://github.com/FasterXML/jackson-core> because it was already shared in this channel quite recently (within the last hour) and I didn’t want to clutter things up.\",\n" +
+        "  \"is_ephemeral\": true,\n" +
+        "  \"username\": \"slackbot\",\n" +
+        "  \"type\": \"message\",\n" +
+        "  \"subtype\": \"bot_message\",\n" +
+        "  \"channel\": \"D213CG14G\",\n" +
+        "  \"ts\": \"1472290473.000000\",\n" +
+        "  \"msg\": {\n" +
+        "    \"do_not_unfurl_links\": true\n" +
+        "  },\n" +
+        "  \"event_ts\": \"1472290473.585625\"\n" +
+        "}" );
+
+    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
+
+    tree = mapper.readTree ( "{\n" +
+        "  \"type\": \"message\",\n" +
+        "  \"message\": {\n" +
+        "    \"type\": \"message\",\n" +
+        "    \"user\": \"U1SSV0WBE\",\n" +
+        "    \"text\": \"<https://github.com/FasterXML/jackson-core>\",\n" +
+        "    \"attachments\": [\n" +
+        "      {\n" +
+        "        \"service_name\": \"GitHub\",\n" +
+        "        \"title\": \"FasterXML/jackson-core\",\n" +
+        "        \"title_link\": \"https://github.com/FasterXML/jackson-core\",\n" +
+        "        \"text\": \"jackson-core - Core part of Jackson that defines Streaming API as well as basic shared abstractions\",\n" +
+        "        \"fallback\": \"GitHub: FasterXML/jackson-core\",\n" +
+        "        \"thumb_url\": \"https://avatars3.githubusercontent.com/u/382692?v=3&s=400\",\n" +
+        "        \"from_url\": \"https://github.com/FasterXML/jackson-core\",\n" +
+        "        \"thumb_width\": 400,\n" +
+        "        \"thumb_height\": 400,\n" +
+        "        \"service_icon\": \"https://github.com/apple-touch-icon.png\",\n" +
+        "        \"id\": 1\n" +
+        "      }\n" +
+        "    ],\n" +
+        "    \"ts\": \"1472290472.000035\"\n" +
+        "  },\n" +
+        "  \"subtype\": \"message_changed\",\n" +
+        "  \"hidden\": true,\n" +
+        "  \"channel\": \"D213CG14G\",\n" +
+        "  \"previous_message\": {\n" +
+        "    \"type\": \"message\",\n" +
+        "    \"user\": \"U1SSV0WBE\",\n" +
+        "    \"text\": \"<https://github.com/FasterXML/jackson-core>\",\n" +
+        "    \"ts\": \"1472290472.000035\"\n" +
+        "  },\n" +
+        "  \"event_ts\": \"1472290473.585623\",\n" +
+        "  \"ts\": \"1472290473.000036\"\n" +
+        "}" );
+
+    packet = mapper.convertValue ( tree, BaseEvent.getClassForPacket ( tree ) );
   }
 }
