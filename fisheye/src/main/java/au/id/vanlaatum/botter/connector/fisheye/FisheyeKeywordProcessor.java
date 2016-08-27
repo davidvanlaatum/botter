@@ -15,7 +15,6 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.rmi.server.RemoteCall;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,7 +95,7 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
       for ( ChangeSet.File file : set.getFiles () ) {
         buffer.append ( "  " ).append ( file.getPath () ).append ( "\n" );
       }
-      message.reply ( buffer.toString ().trim () );
+      message.annotate ( buffer.toString ().trim () );
       rt = true;
     } catch ( IOException | RemoteCallFailedException e ) {
       log.log ( LogService.LOG_WARNING, "Exception fetching changeset", e );

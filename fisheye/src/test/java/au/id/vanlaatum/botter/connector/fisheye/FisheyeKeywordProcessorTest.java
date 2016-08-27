@@ -54,7 +54,7 @@ public class FisheyeKeywordProcessorTest implements LogService {
     assertTrue ( processor.checkForKeywords ( command, Collections.<Boolean>emptyList () ) );
     verify ( connector ).getChangeSet ( "svn.adl.vm", "119696" );
     verify ( command )
-        .reply ( Mockito.matches ( "svn.adl.vm@119696 by jenkins at " + new Date ( 0 ).toString () +
+        .annotate ( Mockito.matches ( "svn.adl.vm@119696 by jenkins at " + new Date ( 0 ).toString () +
             "\nbootstrap\n" +
             "  vx/trunk/include/classes/core/bootstrap_cache.php\n" +
             "  bla.php" ) );

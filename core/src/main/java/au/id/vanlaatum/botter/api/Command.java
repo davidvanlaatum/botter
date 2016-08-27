@@ -16,4 +16,6 @@ public interface Command {
   void reply ( String message );
 
   void error ( String message );
+
+  void annotate ( String message );
 }

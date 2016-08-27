@@ -283,6 +283,11 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   @Override
+  public void annotate ( au.id.vanlaatum.botter.api.Message message, String text ) {
+    reply ( message, text );
+  }
+
+  @Override
   public boolean isMyName ( String text ) {
     if ( text.startsWith ( "@" ) ) {
       text = text.substring ( 1 );

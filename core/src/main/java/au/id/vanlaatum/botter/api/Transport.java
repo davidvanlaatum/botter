@@ -11,5 +11,7 @@ public interface Transport {
 
   void error ( Message message, String text );
 
+  void annotate ( Message message, String text );
+
   boolean isMyName ( String text );
 }

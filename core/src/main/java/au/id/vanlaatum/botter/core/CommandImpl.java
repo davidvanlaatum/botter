@@ -76,6 +76,11 @@ public class CommandImpl implements Command {
     this.transport.error ( this.message, message );
   }
 
+  @Override
+  public void annotate ( String message ) {
+    this.transport.annotate ( this.message, message );
+  }
+
   void removeCommandPart ( int i ) {
     commandParts.remove ( i );
   }
