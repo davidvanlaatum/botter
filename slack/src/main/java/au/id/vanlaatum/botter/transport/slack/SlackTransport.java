@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
+import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Hello;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Marked;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Ping;
@@ -62,14 +63,14 @@ public class SlackTransport implements Transport, ManagedService {
   static final String PING_INTERVAL = "ping.interval";
   static final long PING_INTERVAL_DEFAULT = 10000;
   static final String PROXY_URI = "proxy.url";
-  private final BundleContext context;
-  private final LogService log;
-  private final BotFactory botFactory;
   private final Users users = new Users ();
   private final Channels channels = new Channels ();
-  private final API api;
   private final Map<String, Integer> inPackets = new TreeMap<> ();
   private final Map<String, Integer> outPackets = new TreeMap<> ();
+  private BundleContext context;
+  private LogService log;
+  private BotFactory botFactory;
+  private API api;
   private String pid;
   private ClientManager clientManager;
   private Session session;
@@ -86,7 +87,7 @@ public class SlackTransport implements Transport, ManagedService {
   private Date lastPacket = new Date ();
   private Date lastPing = new Date ();
   private Date lastConnectAttempt = new Date ();
-  private Date connectedSince = new Date ();
+  private Date connectedSince;
   private long rtt;
   private SlackMessageHandler messageHandler;
   private long pingInterval = PING_INTERVAL_DEFAULT;
@@ -94,17 +95,41 @@ public class SlackTransport implements Transport, ManagedService {
   private URI proxyURI;
   private int retransmits;
 
-  public SlackTransport ( LogService log, BundleContext context, BotFactory botFactory, URI slackURL ) {
-    this.log = log;
-    this.botFactory = botFactory;
-    this.context = context;
-    api = new API ( slackURL, log );
+  public SlackTransport () {
     messageHandler = new SlackMessageHandler ();
-    clientManager = ClientManager.createClient ();
+  }
+
+  public SlackTransport setClientManager ( ClientManager clientManager ) {
+    if ( this.clientManager != null ) {
+      clientManager.shutdown ();
+    }
+    this.clientManager = clientManager;
     clientManager.getScheduledExecutorService ()
         .scheduleAtFixedRate ( new RetransmitHandler (), 0, 10, TimeUnit.SECONDS );
-    clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new PingHandler (), 0, 100, TimeUnit.MILLISECONDS );
+    clientManager.getScheduledExecutorService ()
+        .scheduleAtFixedRate ( new PingHandler (), 0, 100, TimeUnit.MILLISECONDS );
     clientManager.getScheduledExecutorService ().scheduleAtFixedRate ( new MarkHandler (), 0, 30, TimeUnit.SECONDS );
+    return this;
+  }
+
+  public SlackTransport setApi ( API api ) {
+    this.api = api;
+    return this;
+  }
+
+  public SlackTransport setLog ( LogService log ) {
+    this.log = log;
+    return this;
+  }
+
+  public SlackTransport setContext ( BundleContext context ) {
+    this.context = context;
+    return this;
+  }
+
+  public SlackTransport setBotFactory ( BotFactory botFactory ) {
+    this.botFactory = botFactory;
+    return this;
   }
 
   protected void registerService () {
@@ -120,7 +145,7 @@ public class SlackTransport implements Transport, ManagedService {
     Dictionary<String, Object> prop = new Hashtable<> ();
     prop.put ( "service.pid", pid );
     if ( team != null ) {
-      prop.put ( "service.description", format ( "Slack Connection to {0}", team.getName () ) );
+      prop.put ( Constants.SERVICE_DESCRIPTION, format ( "Slack Connection to {0}", team.getName () ) );
     }
     return prop;
   }
@@ -148,13 +173,12 @@ public class SlackTransport implements Transport, ManagedService {
     try {
       if ( enabled ) {
         lastConnectAttempt = new Date ();
-        URI url;
         if ( proxyURI != null ) {
           clientManager.getProperties ().put ( ClientProperties.PROXY_URI, proxyURI.toString () );
         } else {
           clientManager.getProperties ().remove ( ClientProperties.PROXY_URI );
         }
-        url = getConnectURI ();
+        URI url = getConnectURI ();
         log.log ( LogService.LOG_INFO, format ( "Connecting to SlackTeam {0} URL is {1}", team.getName (), url ) );
         open = true;
         final ClientEndpointConfig endpointConfig = ClientEndpointConfig.Builder.create ()
@@ -163,7 +187,7 @@ public class SlackTransport implements Transport, ManagedService {
             .build ();
         endpointConfig.getUserProperties ().put ( "transport", this );
         endpointConfig.getUserProperties ().put ( "log", log );
-        session = clientManager.connectToServer ( new SlackWSEndpoint (), endpointConfig, url );
+        session = clientManager.connectToServer ( messageHandler, endpointConfig, url );
         registerService ();
       }
     } catch ( IOException | DeploymentException e ) {
@@ -198,6 +222,7 @@ public class SlackTransport implements Transport, ManagedService {
 
   public void disconnect () {
     open = false;
+    connectedSince = null;
     if ( session != null ) {
       try {
         session.close ( new CloseReason ( CloseReason.CloseCodes.GOING_AWAY, "Disconnect" ) );
@@ -208,18 +233,18 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   private void reconnect () {
+    disconnect ();
     if ( enabled ) {
       clientManager.getScheduledExecutorService ().schedule ( new Runnable () {
         @Override
         public void run () {
-          disconnect ();
           connect ();
         }
       }, 10, TimeUnit.SECONDS );
     }
   }
 
-  protected void incPacketCount ( Map<String, Integer> packets, String type ) {
+  private void incPacketCount ( Map<String, Integer> packets, String type ) {
     synchronized ( packets ) {
       if ( !packets.containsKey ( type ) ) {
         packets.put ( type, 0 );
@@ -228,7 +253,7 @@ public class SlackTransport implements Transport, ManagedService {
     }
   }
 
-  protected void sendMessage ( BaseEvent msg ) {
+  private void sendMessage ( BaseEvent msg ) {
     incPacketCount ( outPackets, msg.getType () );
     msg.setId ( nextId () );
     retryTimers.add ( new RetryTimer ( new Date ( System.currentTimeMillis () + 10000 ), msg.getId () ) );
@@ -362,8 +387,7 @@ public class SlackTransport implements Transport, ManagedService {
     }
   }
 
-  private class SlackWSEndpoint extends Endpoint {
-
+  private class SlackMessageHandler extends Endpoint implements MessageHandler.Whole<BasePacket> {
     @Override
     public void onOpen ( Session session, EndpointConfig config ) {
       log.log ( LogService.LOG_INFO, "Session opened for " + team.getName () );
@@ -385,9 +409,7 @@ public class SlackTransport implements Transport, ManagedService {
         log.log ( LogService.LOG_ERROR, format ( "Websocket error on {0}", team.getName () ), thr );
       }
     }
-  }
 
-  private class SlackMessageHandler implements MessageHandler.Whole<BasePacket> {
     @Override
     public void onMessage ( final BasePacket packet ) {
       try {
@@ -399,6 +421,8 @@ public class SlackTransport implements Transport, ManagedService {
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {
           channels.get ( ( (Message) packet ).getChannel () ).setMark ( ( (Message) packet ).getTs () );
           botFactory.processMessage ( buildSlackMessageDTO ( (Message) packet ) );
+        } else if ( packet instanceof Hello ) {
+          connectedSince = new Date ();
         } else if ( packet instanceof UserChange ) {
           users.updateUser ( ( (UserChange) packet ).getUser () );
         } else if ( packet instanceof TeamJoin ) {
@@ -435,9 +459,16 @@ public class SlackTransport implements Transport, ManagedService {
       for ( Map.Entry<String, Integer> entry : outPackets.entrySet () ) {
         buffer.append ( "\t" ).append ( entry.getKey () ).append ( "=" ).append ( entry.getValue () ).append ( "\n" );
       }
-      return format ( "{0} {1}: {2} pending messages\n\trtt = {3}\n\tlast packet = {4}\n\tretransmits = {5}\n\t" +
-              "channels = {6}\n{7}",
+      return format ( "{0} {1}: {2} pending messages\n" +
+              "\trtt = {3}\n" +
+              "\tlast packet = {4}\n" +
+              "\tretransmits = {5}\n" +
+              "\tchannels = {6}\n" +
+              "\tconnected since = {7}\n" +
+              "\tlast connect attempt = {8}\n" +
+              "{9}",
           getName (), team.getName (), pendingMessages.size (), rtt, lastPacket, retransmits, channels.size (),
+          connectedSince, lastConnectAttempt,
           buffer.toString ().trim () );
     }
   }

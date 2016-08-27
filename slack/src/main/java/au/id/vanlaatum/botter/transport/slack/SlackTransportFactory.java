@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.api.BotFactory;
+import org.glassfish.tyrus.client.ClientManager;
 import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.cm.ConfigurationException;
@@ -71,7 +72,12 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
       if ( transports.containsKey ( pid ) ) {
         transports.get ( pid ).updated ( dictionary );
       } else {
-        SlackTransport transport = new SlackTransport ( log, context, botFactory, slackURL );
+        SlackTransport transport = new SlackTransport ()
+            .setLog ( log )
+            .setContext ( context )
+            .setBotFactory ( botFactory )
+            .setApi ( new API ( slackURL, log ) )
+            .setClientManager ( ClientManager.createClient () );
         transport.updated ( dictionary );
         transports.put ( pid, transport );
       }
