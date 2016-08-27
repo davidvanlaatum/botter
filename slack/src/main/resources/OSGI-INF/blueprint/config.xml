@@ -8,6 +8,7 @@
   <!--</service-properties>-->
   <!--</service>-->
   <service id="SlackTransportFactoryService" ref="SlackTransportFactory">
+    <description>Slack Transport Factory</description>
     <interfaces>
       <value>org.osgi.service.cm.ManagedServiceFactory</value>
       <value>org.osgi.service.metatype.MetaTypeProvider</value>

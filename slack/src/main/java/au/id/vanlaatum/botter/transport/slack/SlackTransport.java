@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.client.ClientProperties;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -56,6 +57,8 @@ import java.util.concurrent.TimeUnit;
 import static java.text.MessageFormat.format;
 
 public class SlackTransport implements Transport, ManagedService {
+  public static final String ENABLED = "enabled";
+  public static final String TOKEN = "token";
   static final String PING_INTERVAL = "ping.interval";
   static final long PING_INTERVAL_DEFAULT = 10000;
   static final String PROXY_URI = "proxy.url";
@@ -71,6 +74,7 @@ public class SlackTransport implements Transport, ManagedService {
   private ClientManager clientManager;
   private Session session;
   private boolean open;
+  private boolean enabled;
   private ServiceRegistration<Transport> registration;
   private ServiceRegistration<StatusInfoProvider> providerRegistration;
   private SlackTeam team;
@@ -81,6 +85,8 @@ public class SlackTransport implements Transport, ManagedService {
   private DelayQueue<RetryTimer> retryTimers = new DelayQueue<> ();
   private Date lastPacket = new Date ();
   private Date lastPing = new Date ();
+  private Date lastConnectAttempt = new Date ();
+  private Date connectedSince = new Date ();
   private long rtt;
   private SlackMessageHandler messageHandler;
   private long pingInterval = PING_INTERVAL_DEFAULT;
@@ -140,45 +146,54 @@ public class SlackTransport implements Transport, ManagedService {
 
   public void connect () {
     try {
-      URI url;
-      if ( proxyURI != null ) {
-        clientManager.getProperties ().put ( ClientProperties.PROXY_URI, proxyURI.toString () );
-      } else {
-        clientManager.getProperties ().remove ( ClientProperties.PROXY_URI );
+      if ( enabled ) {
+        lastConnectAttempt = new Date ();
+        URI url;
+        if ( proxyURI != null ) {
+          clientManager.getProperties ().put ( ClientProperties.PROXY_URI, proxyURI.toString () );
+        } else {
+          clientManager.getProperties ().remove ( ClientProperties.PROXY_URI );
+        }
+        url = getConnectURI ();
+        log.log ( LogService.LOG_INFO, format ( "Connecting to SlackTeam {0} URL is {1}", team.getName (), url ) );
+        open = true;
+        final ClientEndpointConfig endpointConfig = ClientEndpointConfig.Builder.create ()
+            .decoders ( Collections.<Class<? extends Decoder>>singletonList ( SlackWSDecoder.class ) )
+            .encoders ( Collections.<Class<? extends Encoder>>singletonList ( SlackWSEncoder.class ) )
+            .build ();
+        endpointConfig.getUserProperties ().put ( "transport", this );
+        endpointConfig.getUserProperties ().put ( "log", log );
+        session = clientManager.connectToServer ( new SlackWSEndpoint (), endpointConfig, url );
+        registerService ();
       }
-      if ( reconnectURL == null ) {
-        api.setProxy ( proxyURI );
-        RTMStart startData = api.doRTMStart ();
-        team = startData.getTeam ();
-        self = startData.getSelf ();
-        for ( SlackUser slackUser : startData.getUsers () ) {
-          users.addUser ( slackUser );
-        }
-        for ( SlackChannel channel : startData.getChannels () ) {
-          channels.addChannel ( channel );
-        }
-        for ( SlackIM im : startData.getIms () ) {
-          channels.addChannel ( im );
-        }
-        url = startData.getUrl ();
-      } else {
-        url = reconnectURL;
-        reconnectURL = null;
-      }
-      log.log ( LogService.LOG_INFO, format ( "Connecting to SlackTeam {0} URL is {1}", team.getName (), url ) );
-      open = true;
-      final ClientEndpointConfig endpointConfig = ClientEndpointConfig.Builder.create ()
-          .decoders ( Collections.<Class<? extends Decoder>>singletonList ( SlackWSDecoder.class ) )
-          .encoders ( Collections.<Class<? extends Encoder>>singletonList ( SlackWSEncoder.class ) )
-          .build ();
-      endpointConfig.getUserProperties ().put ( "transport", this );
-      endpointConfig.getUserProperties ().put ( "log", log );
-      session = clientManager.connectToServer ( new SlackWSEndpoint (), endpointConfig, url );
-      registerService ();
     } catch ( IOException | DeploymentException e ) {
       log.log ( LogService.LOG_ERROR, null, e );
       reconnect ();
     }
+  }
+
+  private URI getConnectURI () throws IOException {
+    URI url;
+    if ( reconnectURL == null ) {
+      api.setProxy ( proxyURI );
+      RTMStart startData = api.doRTMStart ();
+      team = startData.getTeam ();
+      self = startData.getSelf ();
+      for ( SlackUser slackUser : startData.getUsers () ) {
+        users.addUser ( slackUser );
+      }
+      for ( SlackChannel channel : startData.getChannels () ) {
+        channels.addChannel ( channel );
+      }
+      for ( SlackIM im : startData.getIms () ) {
+        channels.addChannel ( im );
+      }
+      url = startData.getUrl ();
+    } else {
+      url = reconnectURL;
+      reconnectURL = null;
+    }
+    return url;
   }
 
   public void disconnect () {
@@ -193,10 +208,11 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   private void reconnect () {
-    if ( open ) {
+    if ( enabled ) {
       clientManager.getScheduledExecutorService ().schedule ( new Runnable () {
         @Override
         public void run () {
+          disconnect ();
           connect ();
         }
       }, 10, TimeUnit.SECONDS );
@@ -275,8 +291,12 @@ public class SlackTransport implements Transport, ManagedService {
       proxyURI = null;
     }
 
-    pid = (String) dictionary.get ( "service.pid" );
-    if ( api.setToken ( (String) dictionary.get ( "token" ) ) || !open ) {
+    if ( dictionary.get ( ENABLED ) != null ) {
+      enabled = (Boolean) dictionary.get ( ENABLED );
+    }
+
+    pid = (String) dictionary.get ( Constants.SERVICE_PID );
+    if ( api.setToken ( (String) dictionary.get ( TOKEN ) ) || !open ) {
       clientManager.getExecutorService ().submit ( new Runnable () {
         @Override
         public void run () {
@@ -425,7 +445,7 @@ public class SlackTransport implements Transport, ManagedService {
   private class RetransmitHandler implements Runnable {
     @Override
     public synchronized void run () {
-      if ( open ) {
+      if ( enabled ) {
         RetryTimer timer;
         while ( ( timer = retryTimers.poll () ) != null ) {
           final BaseEvent message = pendingMessages.get ( timer.getId () );
@@ -435,6 +455,10 @@ public class SlackTransport implements Transport, ManagedService {
             sendMessage ( message );
           }
         }
+        if ( session != null && !session.isOpen () &&
+            lastConnectAttempt.getTime () < System.currentTimeMillis () - 60000 ) {
+          reconnect ();
+        }
       }
     }
   }
@@ -443,7 +467,7 @@ public class SlackTransport implements Transport, ManagedService {
 
     @Override
     public void run () {
-      if ( open ) {
+      if ( enabled ) {
         final long now = System.currentTimeMillis ();
         if ( lastPing.getTime () <= now - pingInterval ) {
           sendMessage ( new Ping () );
@@ -462,7 +486,7 @@ public class SlackTransport implements Transport, ManagedService {
 
     @Override
     public void run () {
-      if ( open ) {
+      if ( enabled ) {
         for ( AbstractSlackMessageChannel channel : channels.pendingMark () ) {
           try {
             if ( channel instanceof SlackMessageChannel ) {

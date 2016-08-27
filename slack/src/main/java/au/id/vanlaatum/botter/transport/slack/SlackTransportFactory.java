@@ -111,7 +111,9 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
       public AttributeDefinition[] getAttributeDefinitions ( int filter ) {
         List<AttributeDefinition> options = new ArrayList<> ();
         if ( filter == ALL || filter == REQUIRED ) {
-          options.add ( new Attribute ().setId ( "token" ).setName ( "Token" ).setDescription ( "API Token" ) );
+          options.add ( new Attribute ().setId ( SlackTransport.TOKEN ).setName ( "Token" ).setDescription ( "API Token" ) );
+          options.add ( new Attribute ().setId ( SlackTransport.ENABLED ).setName ( "Enabled" )
+              .setType ( AttributeDefinition.BOOLEAN ).setDefaultValue ( "true" ) );
         }
         if ( filter == ALL || filter == OPTIONAL ) {
           options.add ( new Attribute ().setId ( SlackTransport.PING_INTERVAL ).setName ( "Ping Interval" )
