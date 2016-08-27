@@ -11,14 +11,29 @@ public class SlackMessageDTO implements Message {
   private String text;
   private SlackUserDTO user;
   private AbstractSlackMessageChannel channel;
+  private au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message originalMessage;
 
   SlackMessageDTO ( SlackTransport transport ) {
     this.transport = transport;
   }
 
+  public au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message getOriginalMessage () {
+    return originalMessage;
+  }
+
+  public SlackMessageDTO setOriginalMessage (
+      au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message originalMessage ) {
+    this.originalMessage = originalMessage;
+    return this;
+  }
+
   @Override
   public String getText () {
     return text;
+  }
+
+  public void setText ( String text ) {
+    this.text = text;
   }
 
   @Override
@@ -31,17 +46,13 @@ public class SlackMessageDTO implements Message {
     return user;
   }
 
+  public void setUser ( SlackUserDTO user ) {
+    this.user = user;
+  }
+
   @Override
   public Channel getChannel () {
     return channel;
-  }
-
-  public void setText ( String text ) {
-    this.text = text;
-  }
-
-  public void setUser ( SlackUserDTO user ) {
-    this.user = user;
   }
 
   void setChannel ( AbstractSlackMessageChannel channel ) {

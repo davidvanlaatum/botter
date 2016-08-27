@@ -284,7 +284,22 @@ public class SlackTransport implements Transport, ManagedService {
 
   @Override
   public void annotate ( au.id.vanlaatum.botter.api.Message message, String text ) {
-    reply ( message, text );
+    boolean sent = false;
+    if ( message instanceof SlackMessageDTO ) {
+      try {
+        final au.id.vanlaatum.botter.transport.slack.Modal.BasePacket basePacket =
+            api.doChatUpdate ( ( (SlackMessageDTO) message ).getOriginalMessage (),
+                Collections.singletonList ( new Attachment ( text ) ) );
+        if ( basePacket.getOk () ) {
+          sent = true;
+        }
+      } catch ( IOException e ) {
+        log.log ( LogService.LOG_WARNING, "Error annotating message", e );
+      }
+    }
+    if ( !sent ) {
+      reply ( message, text );
+    }
   }
 
   @Override
@@ -344,6 +359,7 @@ public class SlackTransport implements Transport, ManagedService {
     dto.setText ( messagePreProcessor.convertText ( packet.getText (), dto ) );
     dto.setUser ( new SlackUserDTO ( users.getUser ( packet.getUser () ) ) );
     dto.setChannel ( channels.get ( packet.getChannel () ) );
+    dto.setOriginalMessage ( packet );
     return dto;
   }
 
