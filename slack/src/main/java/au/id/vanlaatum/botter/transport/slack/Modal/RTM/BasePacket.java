@@ -1,5 +1,6 @@
 package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
 
+import au.id.vanlaatum.botter.transport.slack.Modal.SlackTimeStamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +12,7 @@ public class BasePacket {
   private String raw;
   private Integer id;
   private JsonNode tree;
+  private SlackTimeStamp ts;
 
   @JsonIgnore
   public String getRaw () {
@@ -45,5 +47,13 @@ public class BasePacket {
 
   public void setReplyTo ( Integer replyTo ) {
     this.replyTo = replyTo;
+  }
+
+  public SlackTimeStamp getTs () {
+    return ts;
+  }
+
+  public void setTs ( SlackTimeStamp ts ) {
+    this.ts = ts;
   }
 }

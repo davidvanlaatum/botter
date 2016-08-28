@@ -22,8 +22,10 @@ public abstract class AbstractSlackMessageChannel implements Channel {
   }
 
   public synchronized AbstractSlackMessageChannel setMark ( SlackTimeStamp mark ) {
-    this.mark = mark;
-    callMark = true;
+    if ( this.mark == null || this.mark.before ( mark )) {
+      this.mark = mark;
+      callMark = true;
+    }
     return this;
   }
 

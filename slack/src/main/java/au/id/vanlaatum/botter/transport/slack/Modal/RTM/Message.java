@@ -18,7 +18,6 @@ public class Message extends BaseEvent {
   private String text;
   private String user;
   private String channel;
-  private SlackTimeStamp ts;
   private String team;
 
   public Message () {
@@ -79,11 +78,4 @@ public class Message extends BaseEvent {
     this.channel = channel;
   }
 
-  public SlackTimeStamp getTs () {
-    return ts;
-  }
-
-  public void setTs ( SlackTimeStamp ts ) {
-    this.ts = ts;
-  }
 }

@@ -369,9 +369,16 @@ public class SlackTransport implements Transport, ManagedService {
     return users;
   }
 
-  private synchronized void ackPacket ( Integer id ) {
-    if ( id != null ) {
-      pendingMessages.remove ( id );
+  private synchronized void ackPacket ( BasePacket packet ) {
+    if ( packet.getReplyTo () != null ) {
+      final BaseEvent event = pendingMessages.remove ( packet.getReplyTo () );
+      if ( event instanceof Message ) {
+        try {
+          channels.get ( ( (Message) event ).getChannel () ).setMark ( packet.getTs () );
+        } catch ( ChannelNotFoundException e ) {
+          log.log ( LogService.LOG_WARNING, "Channel not found", e );
+        }
+      }
     }
   }
 
@@ -438,7 +445,7 @@ public class SlackTransport implements Transport, ManagedService {
       try {
         incPacketCount ( inPackets,
             packet instanceof BaseEvent ? ( (BaseEvent) packet ).getType () : packet.getClass ().getSimpleName () );
-        ackPacket ( packet.getReplyTo () );
+        ackPacket ( packet );
         lastPacket = new Date ();
         log.log ( LogService.LOG_INFO, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {

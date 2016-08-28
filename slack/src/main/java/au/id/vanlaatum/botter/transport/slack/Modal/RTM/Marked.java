@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Marked extends BaseEvent {
   private String channel;
-  private SlackTimeStamp ts;
   private SlackTimeStamp eventTS;
   private Integer unreadCount;
   private Integer unreadCountDisplay;
@@ -20,15 +19,6 @@ public class Marked extends BaseEvent {
 
   public Marked setChannel ( String channel ) {
     this.channel = channel;
-    return this;
-  }
-
-  public SlackTimeStamp getTs () {
-    return ts;
-  }
-
-  public Marked setTs ( SlackTimeStamp ts ) {
-    this.ts = ts;
     return this;
   }
 
