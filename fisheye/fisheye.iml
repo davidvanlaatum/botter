@@ -5,7 +5,7 @@
       <configuration manifestGenerationMode="OsmorcControlled" manifestLocation="" jarfileLocation="fisheye-1.0-SNAPSHOT.jar" outputPathType="CompilerOutputPath" bndFileLocation="" bundlorFileLocation="" bundleActivator="" bundleSymbolicName="au.id.vanlaatum.botter.fisheye" bundleVersion="1.0.0.SNAPSHOT" ignoreFilePattern="" useProjectDefaultManifestFileLocation="true" alwaysRebuildBundleJAR="false" doNotSynchronizeWithMaven="false">
         <additionalProperties>
           <property key="Export-Package" value="au.id.vanlaatum.botter.connector.fisheye.api" />
-          <property key="Private-Package" value="au.id.vanlaatum.botter.connector.fisheye.*" />
+          <property key="Private-Package" value="au.id.vanlaatum.botter.connector.fisheye" />
           <property key="Bundle-Category" value="Botter" />
           <property key="Bundle-Name" value="Botter Fisheye Connector" />
           <property key="Include-Resource" value="OSGI-INF/blueprint/config.xml=$MODULE_DIR$/src/main/resources/OSGI-INF/blueprint/config.xml" />

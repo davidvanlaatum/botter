@@ -105,7 +105,7 @@ public class FisheyeFactory implements ManagedServiceFactory, MetaTypeProvider {
     return new String[]{ "en" };
   }
 
-  private class Attribute implements AttributeDefinition {
+  private static class Attribute implements AttributeDefinition {
 
     private String name;
     private String id;

@@ -143,7 +143,7 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
     return new String[]{ "en" };
   }
 
-  private class Attribute implements AttributeDefinition {
+  private static class Attribute implements AttributeDefinition {
 
     private String name;
     private String id;

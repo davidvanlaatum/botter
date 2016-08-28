@@ -119,6 +119,7 @@ public class SlackTransport implements Transport, ManagedService {
 
   public SlackTransport setLog ( LogService log ) {
     this.log = log;
+    messagePreProcessor.setLog ( log );
     return this;
   }
 
@@ -304,10 +305,11 @@ public class SlackTransport implements Transport, ManagedService {
 
   @Override
   public boolean isMyName ( String text ) {
-    if ( text.startsWith ( "@" ) ) {
-      text = text.substring ( 1 );
+    String name = text;
+    if ( name.startsWith ( "@" ) ) {
+      name = name.substring ( 1 );
     }
-    return self.getName ().equalsIgnoreCase ( text );
+    return self.getName ().equalsIgnoreCase ( name );
   }
 
   private synchronized Integer nextId () {
@@ -379,7 +381,7 @@ public class SlackTransport implements Transport, ManagedService {
     }
   }
 
-  private class RetryTimer implements Delayed {
+  private static class RetryTimer implements Delayed {
 
     private Date expires;
     private Integer id;

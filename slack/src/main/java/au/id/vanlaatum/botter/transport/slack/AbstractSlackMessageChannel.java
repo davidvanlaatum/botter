@@ -17,7 +17,7 @@ public abstract class AbstractSlackMessageChannel implements Channel {
     return name;
   }
 
-  public SlackTimeStamp getMark () {
+  public synchronized SlackTimeStamp getMark () {
     return mark;
   }
 

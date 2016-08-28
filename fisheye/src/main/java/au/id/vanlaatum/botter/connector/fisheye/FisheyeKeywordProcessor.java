@@ -56,7 +56,7 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
             }
           }
         } catch ( URISyntaxException ignore ) {
-
+          log.log ( LogService.LOG_DEBUG, "Failed to parse URI " + message.getCommandParts ().get ( i ), ignore );
         }
       }
     }

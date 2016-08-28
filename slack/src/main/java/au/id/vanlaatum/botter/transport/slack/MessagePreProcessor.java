@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import org.osgi.service.log.LogService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,9 +10,15 @@ public class MessagePreProcessor {
   public static final Pattern PATTERN = Pattern.compile ( "<(.*?)>" );
   public static final Pattern URL = Pattern.compile ( "(\\w+)://(\\S*)(:\\d+)*(/\\S+)" );
   private final SlackTransport transport;
+  private LogService log;
 
   public MessagePreProcessor ( SlackTransport transport ) {
     this.transport = transport;
+  }
+
+  public MessagePreProcessor setLog ( LogService log ) {
+    this.log = log;
+    return this;
   }
 
   protected String convertText ( String text, SlackMessageDTO dto ) {
@@ -25,9 +32,10 @@ public class MessagePreProcessor {
             final SlackUser user = transport.getUsers ().getUser ( exp.substring ( 1 ) );
             matcher.appendReplacement ( out, "@" + user.getName () );
           } catch ( UserNotFoundException ignore ) {
+            log.log ( LogService.LOG_DEBUG, "User " + exp.substring ( 1 ) + " not found", ignore );
           }
         } else if ( URL.matcher ( exp ).matches () ) {
-          matcher.appendReplacement ( out, exp.replaceFirst ( "|", " " ) );
+          matcher.appendReplacement ( out, exp.replaceFirst ( "\\|", " " ) );
         }
       }
       matcher.appendTail ( out );
