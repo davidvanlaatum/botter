@@ -100,7 +100,7 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
     return new ObjectClassDefinition () {
       @Override
       public String getName () {
-        return "Slack Transport";
+        return "Botter Slack Transport";
       }
 
       @Override
@@ -110,7 +110,7 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
 
       @Override
       public String getDescription () {
-        return "Slack Transport";
+        return "Botter Slack Transport";
       }
 
       @Override
