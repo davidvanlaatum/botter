@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.connector.fisheye;
+package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.api.BotFactory;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;

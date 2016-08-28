@@ -1,7 +1,8 @@
-package au.id.vanlaatum.botter.connector.fisheye;
+package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import au.id.vanlaatum.botter.connector.fisheye.api.FisheyeConnector;
+import au.id.vanlaatum.botter.connector.fisheye.api.RemoteCallFailedException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;

@@ -1,8 +1,9 @@
-package au.id.vanlaatum.botter.connector.fisheye;
+package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import au.id.vanlaatum.botter.connector.fisheye.api.FisheyeConnector;
+import au.id.vanlaatum.botter.connector.fisheye.impl.FisheyeKeywordProcessor;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.osgi.framework.ServiceReference;

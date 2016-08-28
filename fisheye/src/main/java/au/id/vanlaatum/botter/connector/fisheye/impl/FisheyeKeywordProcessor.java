@@ -1,9 +1,10 @@
-package au.id.vanlaatum.botter.connector.fisheye;
+package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import au.id.vanlaatum.botter.connector.fisheye.api.FisheyeConnector;
+import au.id.vanlaatum.botter.connector.fisheye.api.RemoteCallFailedException;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.ops4j.pax.cdi.api.OsgiService;

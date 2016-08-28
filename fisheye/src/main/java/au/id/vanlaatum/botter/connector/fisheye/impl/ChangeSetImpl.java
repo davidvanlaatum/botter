@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.connector.fisheye;
+package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

@@ -1,7 +1,5 @@
 package au.id.vanlaatum.botter.connector.fisheye.api;
 
-import au.id.vanlaatum.botter.connector.fisheye.RemoteCallFailedException;
-
 import java.io.IOException;
 import java.net.URI;
 
