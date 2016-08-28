@@ -3,6 +3,7 @@ package au.id.vanlaatum.botter.transport.slack;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
+import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Attachment;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Hello;

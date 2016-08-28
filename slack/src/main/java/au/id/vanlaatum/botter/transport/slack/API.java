@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.transport.slack.Modal.BasePacket;
+import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Attachment;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTMStart;
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackTimeStamp;
