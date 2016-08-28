@@ -16,7 +16,7 @@ public class SlackTeam {
   private String plan;
   private Boolean overIntegrationsLimit;
 
-  @JsonProperty("email_domain")
+  @JsonProperty ( "email_domain" )
   public String getEmailDomain () {
     return emailDomain;
   }
@@ -33,7 +33,7 @@ public class SlackTeam {
     this.domain = domain;
   }
 
-  @JsonProperty("msg_edit_window_mins")
+  @JsonProperty ( "msg_edit_window_mins" )
   public Integer getMsgEditWindowMins () {
     return msgEditWindowMins;
   }
@@ -58,7 +58,7 @@ public class SlackTeam {
     this.icon = icon;
   }
 
-  @JsonProperty("over_storage_limit")
+  @JsonProperty ( "over_storage_limit" )
   public Boolean getOverStorageLimit () {
     return overStorageLimit;
   }
@@ -75,7 +75,7 @@ public class SlackTeam {
     this.plan = plan;
   }
 
-  @JsonProperty("over_integrations_limit")
+  @JsonProperty ( "over_integrations_limit" )
   public Boolean getOverIntegrationsLimit () {
     return overIntegrationsLimit;
   }

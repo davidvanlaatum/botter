@@ -22,7 +22,7 @@ public class SlackUser {
   private Boolean bot;
   private String presence;
 
-  @JsonProperty("is_admin")
+  @JsonProperty ( "is_admin" )
   public Boolean isAdmin () {
     return admin;
   }
@@ -31,7 +31,7 @@ public class SlackUser {
     this.admin = admin;
   }
 
-  @JsonProperty("is_owner")
+  @JsonProperty ( "is_owner" )
   public Boolean isOwner () {
     return owner;
   }
@@ -40,7 +40,7 @@ public class SlackUser {
     this.owner = owner;
   }
 
-  @JsonProperty("is_primary_owner")
+  @JsonProperty ( "is_primary_owner" )
   public Boolean getPrimaryOwner () {
     return primaryOwner;
   }
@@ -49,7 +49,7 @@ public class SlackUser {
     this.primaryOwner = primaryOwner;
   }
 
-  @JsonProperty("is_restricted")
+  @JsonProperty ( "is_restricted" )
   public Boolean isRestricted () {
     return restricted;
   }
@@ -58,7 +58,7 @@ public class SlackUser {
     this.restricted = restricted;
   }
 
-  @JsonProperty("is_ultra_restricted")
+  @JsonProperty ( "is_ultra_restricted" )
   public Boolean isUltraRestricted () {
     return ultraRestricted;
   }
@@ -67,7 +67,7 @@ public class SlackUser {
     this.ultraRestricted = ultraRestricted;
   }
 
-  @JsonProperty("is_bot")
+  @JsonProperty ( "is_bot" )
   public Boolean isBot () {
     return bot;
   }
@@ -133,7 +133,7 @@ public class SlackUser {
     this.color = color;
   }
 
-  @JsonProperty("real_name")
+  @JsonProperty ( "real_name" )
   public String getRealName () {
     return realName;
   }
@@ -150,7 +150,7 @@ public class SlackUser {
     this.tz = tz;
   }
 
-  @JsonProperty("tz_label")
+  @JsonProperty ( "tz_label" )
   public String getTzLabel () {
     return tzLabel;
   }
@@ -159,7 +159,7 @@ public class SlackUser {
     this.tzLabel = tzLabel;
   }
 
-  @JsonProperty("tz_offset")
+  @JsonProperty ( "tz_offset" )
   public Integer getTzOffset () {
     return tzOffset;
   }

@@ -37,7 +37,7 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
   @Inject
-  @Named("logService")
+  @Named ( "logService" )
   private LogService log;
   @Inject
   @OsgiService

@@ -25,7 +25,7 @@ public class Message extends BaseEvent {
   private String team;
   private Boolean Ephemeral;
   private String username;
-  private Map<String,Object> msg;
+  private Map<String, Object> msg;
   private SlackTimeStamp eventTs;
   private List<Attachment> attachments;
   private Boolean hidden;
@@ -88,7 +88,7 @@ public class Message extends BaseEvent {
     this.channel = channel;
   }
 
-  @JsonProperty("is_ephemeral")
+  @JsonProperty ( "is_ephemeral" )
   public Boolean isEphemeral () {
     return Ephemeral;
   }
@@ -116,7 +116,7 @@ public class Message extends BaseEvent {
     return this;
   }
 
-  @JsonProperty("event_ts")
+  @JsonProperty ( "event_ts" )
   public SlackTimeStamp getEventTs () {
     return eventTs;
   }

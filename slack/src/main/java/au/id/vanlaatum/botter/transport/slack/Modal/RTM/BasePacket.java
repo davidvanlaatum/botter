@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
-@JsonInclude( JsonInclude.Include.NON_NULL )
+@JsonInclude ( JsonInclude.Include.NON_NULL )
 public class BasePacket {
   protected Integer replyTo;
   private String raw;

@@ -1,7 +1,6 @@
 package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
-import au.id.vanlaatum.botter.connector.fisheye.impl.FisheyeConnectorImpl;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;

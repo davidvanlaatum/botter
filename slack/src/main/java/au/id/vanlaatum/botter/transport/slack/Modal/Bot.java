@@ -7,7 +7,7 @@ public class Bot {
   private String id;
   private Boolean deleted;
   private String name;
-  private Map<String,URI> icons;
+  private Map<String, URI> icons;
 
   public Boolean getDeleted () {
     return deleted;

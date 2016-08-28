@@ -26,7 +26,7 @@ public class ChangeSetImpl implements ChangeSet {
     return fileRevisionKey;
   }
 
-  @JsonDeserialize(contentAs = FileImpl.class)
+  @JsonDeserialize ( contentAs = FileImpl.class )
   public ChangeSetImpl setFileRevisionKey ( List<File> fileRevisionKey ) {
     this.fileRevisionKey = fileRevisionKey;
     return this;

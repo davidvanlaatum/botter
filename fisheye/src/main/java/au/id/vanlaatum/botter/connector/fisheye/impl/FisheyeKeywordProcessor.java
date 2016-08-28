@@ -7,7 +7,6 @@ import au.id.vanlaatum.botter.connector.fisheye.api.FisheyeConnector;
 import au.id.vanlaatum.botter.connector.fisheye.api.RemoteCallFailedException;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.ops4j.pax.cdi.api.OsgiService;
 import org.ops4j.pax.cdi.api.OsgiServiceProvider;
 import org.osgi.service.log.LogService;
 
@@ -30,7 +29,7 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
   @Named ( "Connectors" )
   private List<FisheyeConnector> connectors;
   @Inject
-  @Named("logService")
+  @Named ( "logService" )
   private LogService log;
 
   public FisheyeKeywordProcessor setConnectors ( List<FisheyeConnector> connectors ) {

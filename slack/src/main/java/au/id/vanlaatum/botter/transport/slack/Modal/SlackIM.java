@@ -41,7 +41,7 @@ public class SlackIM {
     this.created = created;
   }
 
-  @JsonProperty("is_im")
+  @JsonProperty ( "is_im" )
   public Boolean getIM () {
     return isIM;
   }
@@ -50,7 +50,7 @@ public class SlackIM {
     isIM = IM;
   }
 
-  @JsonProperty("is_org_shared")
+  @JsonProperty ( "is_org_shared" )
   public Boolean getOrgShared () {
     return isOrgShared;
   }
@@ -59,7 +59,7 @@ public class SlackIM {
     isOrgShared = orgShared;
   }
 
-  @JsonProperty("has_pins")
+  @JsonProperty ( "has_pins" )
   public Boolean getHasPins () {
     return hasPins;
   }
@@ -68,7 +68,7 @@ public class SlackIM {
     this.hasPins = hasPins;
   }
 
-  @JsonProperty("last_read")
+  @JsonProperty ( "last_read" )
   public SlackTimeStamp getLastRead () {
     return lastRead;
   }
@@ -85,7 +85,7 @@ public class SlackIM {
     this.latest = latest;
   }
 
-  @JsonProperty("unread_count")
+  @JsonProperty ( "unread_count" )
   public Integer getUnreadCount () {
     return unreadCount;
   }
@@ -94,7 +94,7 @@ public class SlackIM {
     this.unreadCount = unreadCount;
   }
 
-  @JsonProperty("unread_count_display")
+  @JsonProperty ( "unread_count_display" )
   public Integer getUnreadCountDisplay () {
     return unreadCountDisplay;
   }
@@ -103,7 +103,7 @@ public class SlackIM {
     this.unreadCountDisplay = unreadCountDisplay;
   }
 
-  @JsonProperty("is_open")
+  @JsonProperty ( "is_open" )
   public Boolean getOpen () {
     return isOpen;
   }

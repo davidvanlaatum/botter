@@ -25,7 +25,7 @@ public class Description {
     this.creator = creator;
   }
 
-  @JsonProperty("last_set")
+  @JsonProperty ( "last_set" )
   public Date getLastSet () {
     return lastSet;
   }

@@ -6,7 +6,7 @@ public class IMMarked extends Marked {
 
   private Integer dmCount;
 
-  @JsonProperty("dm_count")
+  @JsonProperty ( "dm_count" )
   public Integer getDMCount () {
     return dmCount;
   }

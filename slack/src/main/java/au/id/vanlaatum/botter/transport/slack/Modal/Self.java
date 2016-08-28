@@ -8,7 +8,7 @@ import java.util.Map;
 public class Self {
   private String id;
   private String name;
-  private Map<String,Object> prefs;
+  private Map<String, Object> prefs;
   private Date created;
   private String manualPresence;
 
@@ -44,7 +44,7 @@ public class Self {
     this.created = created;
   }
 
-  @JsonProperty("manual_presence")
+  @JsonProperty ( "manual_presence" )
   public String getManualPresence () {
     return manualPresence;
   }

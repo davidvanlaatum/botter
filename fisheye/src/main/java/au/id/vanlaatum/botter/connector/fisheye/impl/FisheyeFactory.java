@@ -30,13 +30,13 @@ public class FisheyeFactory implements ManagedServiceFactory, MetaTypeProvider {
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
   @Inject
-  @Named("logService")
+  @Named ( "logService" )
   private LogService log;
   @Inject
   @OsgiService
   private BotFactory botFactory;
   @Inject
-  @Named("httpClient")
+  @Named ( "httpClient" )
   private HttpClientBuilderFactory httpClientBuilderFactory;
 
   @Override

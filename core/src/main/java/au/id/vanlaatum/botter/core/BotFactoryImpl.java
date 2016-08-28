@@ -7,7 +7,6 @@ import au.id.vanlaatum.botter.api.Message;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.api.Word;
-import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
@@ -40,7 +39,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
   @Inject
-  @Named("logService")
+  @Named ( "logService" )
   private LogService log;
   @Inject
   @Named ( "Transports" )
