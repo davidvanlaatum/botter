@@ -51,8 +51,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.enterprise:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish:javax.xml.stream:10.0-b28" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.jaxb-api-2.2:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.stax-api-1.0:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.jaxb-api-2.2:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.stax-api-1.0:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-activation_1.1_spec:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.activation-api-1.1:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
