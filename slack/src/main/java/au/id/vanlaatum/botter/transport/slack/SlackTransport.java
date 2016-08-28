@@ -447,7 +447,7 @@ public class SlackTransport implements Transport, ManagedService {
             packet instanceof BaseEvent ? ( (BaseEvent) packet ).getType () : packet.getClass ().getSimpleName () );
         ackPacket ( packet );
         lastPacket = new Date ();
-        log.log ( LogService.LOG_INFO, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
+        log.log ( LogService.LOG_DEBUG, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {
           channels.get ( ( (Message) packet ).getChannel () ).setMark ( ( (Message) packet ).getTs () );
           botFactory.processMessage ( buildSlackMessageDTO ( (Message) packet ) );

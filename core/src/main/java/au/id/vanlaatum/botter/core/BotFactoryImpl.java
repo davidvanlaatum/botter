@@ -57,6 +57,7 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
   private ExecutorService executor;
   private ThreadGroup threadGroup;
   private ServiceRegistration<StatusInfoProvider> statusProvider;
+  private int threadId = 1;
 
   public BotFactoryImpl () {
   }
@@ -81,7 +82,6 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
   public void init () {
     threadGroup = new ThreadGroup ( "Botter Command Processing" );
     executor = Executors.newCachedThreadPool ( new ThreadFactory () {
-      private int threadId = 1;
 
       @Override
       public Thread newThread ( Runnable r ) {
@@ -104,7 +104,6 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
   }
 
   public ObjectClassDefinition getObjectClassDefinition ( String s, String s1 ) {
-    log.log ( LogService.LOG_INFO, format ( "getObjectClassDefinition({0},{1})", s, s1 ) );
     return new ObjectClassDefinition () {
       public String getName () {
         return "Bot Factory";
@@ -133,24 +132,30 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
   }
 
   @Override
-  public void processMessage ( Message message ) {
+  public void processMessage ( final Message message ) {
     log.log ( LogService.LOG_INFO, format ( "Received message {0} on {1} from {2}", message.getText (),
         message.getChannel ().getName (), message.getUser ().getName () ) );
-    CommandImpl command = new CommandImpl ();
+    final CommandImpl command = new CommandImpl ();
     command.setMessage ( message );
     command.setTransport ( message.getTransport () );
     command.setUser ( message.getUser () );
     command.setCommandText ( message.getText () );
-    if ( message.getChannel ().isDirect () ) {
-      processCommand ( command, true );
-    } else if ( message.getTransport ().isMyName ( command.getCommandParts ().get ( 0 ) ) ) {
-      command.removeCommandPart ( 0 );
-      processCommand ( command, false );
-    } else {
-      if ( !processKeyWords ( command ) ) {
-        log.log ( LogService.LOG_INFO, "No keywords" );
+
+    executor.submit ( new Runnable () {
+      @Override
+      public void run () {
+        if ( message.getChannel ().isDirect () ) {
+          processCommand ( command, true );
+        } else if ( message.getTransport ().isMyName ( command.getCommandParts ().get ( 0 ) ) ) {
+          command.removeCommandPart ( 0 );
+          processCommand ( command, false );
+        } else {
+          if ( !processKeyWords ( command ) ) {
+            log.log ( LogService.LOG_INFO, "No keywords" );
+          }
+        }
       }
-    }
+    } );
   }
 
   @Override
@@ -189,22 +194,17 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
 
   protected void processCommand ( final CommandImpl command, final boolean tryKeyWords ) {
     if ( command.getMessage ().getUser ().isUser () ) {
-      executor.submit ( new Runnable () {
-        @Override
-        public void run () {
-          boolean found = false;
-          for ( CommandProcessor processor : commands ) {
-            if ( processor.process ( command ) ) {
-              found = true;
-              break;
-            }
-          }
-          if ( !found && ( !tryKeyWords || !processKeyWords ( command ) ) ) {
-            log.log ( LogService.LOG_WARNING, "No such command " + command.getCommandText () );
-            command.error ( "No such command: " + command.getCommandText () + "\nuse help for list" );
-          }
+      boolean found = false;
+      for ( CommandProcessor processor : commands ) {
+        if ( processor.process ( command ) ) {
+          found = true;
+          break;
         }
-      } );
+      }
+      if ( !found && ( !tryKeyWords || !processKeyWords ( command ) ) ) {
+        log.log ( LogService.LOG_WARNING, "No such command " + command.getCommandText () );
+        command.error ( "No such command: " + command.getCommandText () + "\nuse help for list" );
+      }
     } else {
       log.log ( LogService.LOG_WARNING,
           "Ignoring command from user " + command.getMessage ().getUser ().getName () + " not a permitted user" );
@@ -219,9 +219,8 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
 
     @Override
     public String getStatus () {
-      return format ( "{0} Commands\n", commands.size () ) +
-          format ( "{0} Transports\n", transports.size () ) +
-          format ( "{0} Keywords\n", keyWordProcessors.size () );
+      return format ( "{0} Commands\n{1} Transports\n{2} Keywords\n", commands.size (), transports.size (),
+          keyWordProcessors.size () );
     }
   }
 }

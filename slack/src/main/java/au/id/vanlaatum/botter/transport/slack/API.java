@@ -46,7 +46,7 @@ public class API {
   }
 
   private InputStream doPost ( String endpoint, Map<String, String> params ) throws IOException {
-    log.log ( LogService.LOG_INFO, format ( "Sending post to {0} with {1}", endpoint, params ) );
+    log.log ( LogService.LOG_DEBUG, format ( "Sending post to {0} with {1}", endpoint, params ) );
     final URLConnection connection = slackURL.resolve ( endpoint ).toURL ().openConnection ( getProxy () );
     ( (HttpURLConnection) connection ).setRequestMethod ( "POST" );
     connection.setDoOutput ( true );
@@ -65,7 +65,7 @@ public class API {
     RTMStart startData;
     try ( InputStream inputStream = doPost ( "rtm.start", Collections.<String, String>emptyMap () ) ) {
       final String json = IOUtils.toString ( inputStream );
-      log.log ( LogService.LOG_INFO, format ( "Json is {0}", json ) );
+      log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       startData = mapper.readValue ( json, RTMStart.class );
     }
     return startData;
@@ -86,7 +86,7 @@ public class API {
     params.put ( "ts", ts.toString () );
     try ( InputStream inputStream = doPost ( endpoint, params ) ) {
       final String json = IOUtils.toString ( inputStream );
-      log.log ( LogService.LOG_INFO, format ( "Json is {0}", json ) );
+      log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       rt = mapper.readValue ( json, BasePacket.class );
       if ( !rt.getOk () ) {
         log.log ( LogService.LOG_WARNING, "Error marking " + channel + ": " + rt.getError () );
@@ -108,7 +108,7 @@ public class API {
     }
     try ( InputStream inputStream = doPost ( "chat.update", params ) ) {
       final String json = IOUtils.toString ( inputStream );
-      log.log ( LogService.LOG_INFO, format ( "Json is {0}", json ) );
+      log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       rt = mapper.readValue ( json, BasePacket.class );
       if ( !rt.getOk () ) {
         log.log ( LogService.LOG_WARNING, "Error updating " + rt.getError () );
@@ -119,10 +119,10 @@ public class API {
 
   private Proxy getProxy () {
     if ( proxy != null ) {
-      log.log ( LogService.LOG_INFO, "Using Proxy " + proxy );
+      log.log ( LogService.LOG_DEBUG, "Using Proxy " + proxy );
       return new Proxy ( Proxy.Type.HTTP, new InetSocketAddress ( proxy.getHost (), proxy.getPort () ) );
     } else {
-      log.log ( LogService.LOG_INFO, "No proxy" );
+      log.log ( LogService.LOG_DEBUG, "No proxy" );
       return Proxy.NO_PROXY;
     }
   }

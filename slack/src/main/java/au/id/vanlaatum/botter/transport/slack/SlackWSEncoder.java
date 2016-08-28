@@ -23,7 +23,7 @@ public class SlackWSEncoder implements Encoder.Text<BaseEvent> {
   public String encode ( BaseEvent baseEvent ) throws EncodeException {
     try {
       String json = mapper.writeValueAsString ( baseEvent );
-      log.log ( LogService.LOG_INFO, format ( "Sending {0}: {1}", baseEvent, json ) );
+      log.log ( LogService.LOG_DEBUG, format ( "Sending {0}: {1}", baseEvent, json ) );
       return json;
     } catch ( JsonProcessingException e ) {
       throw new EncodeException ( baseEvent, null, e );
