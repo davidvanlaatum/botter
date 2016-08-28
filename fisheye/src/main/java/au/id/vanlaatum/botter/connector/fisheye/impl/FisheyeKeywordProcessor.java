@@ -30,7 +30,7 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
   @Named ( "Connectors" )
   private List<FisheyeConnector> connectors;
   @Inject
-  @OsgiService
+  @Named("logService")
   private LogService log;
 
   public FisheyeKeywordProcessor setConnectors ( List<FisheyeConnector> connectors ) {

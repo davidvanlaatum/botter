@@ -30,6 +30,7 @@
     <bytecodeTargetLevel>
       <module name="botter" target="1.5" />
       <module name="core" target="1.7" />
+      <module name="features" target="1.5" />
       <module name="fisheye" target="1.7" />
       <module name="slack" target="1.7" />
     </bytecodeTargetLevel>

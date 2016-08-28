@@ -10,8 +10,6 @@ import au.id.vanlaatum.botter.api.Word;
 import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.cm.ConfigurationException;
-import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 import org.osgi.service.metatype.AttributeDefinition;
 import org.osgi.service.metatype.MetaTypeProvider;
@@ -26,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -37,13 +34,13 @@ import static java.text.MessageFormat.format;
 
 @Named ( "BotFactory" )
 @Singleton
-public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvider {
+public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @Inject
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
   @Inject
-  @OsgiService
+  @Named("logService")
   private LogService log;
   @Inject
   @Named ( "Transports" )
@@ -72,10 +69,6 @@ public class BotFactoryImpl implements BotFactory, ManagedService, MetaTypeProvi
 
   public void setKeyWordProcessors ( List<KeyWordProcessor> keyWordProcessors ) {
     this.keyWordProcessors = keyWordProcessors;
-  }
-
-  public void updated ( Dictionary<String, ?> dictionary ) throws ConfigurationException {
-    log.log ( LogService.LOG_INFO, format ( "Received config {0}", dictionary ) );
   }
 
   @PostConstruct

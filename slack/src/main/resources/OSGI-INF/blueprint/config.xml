@@ -19,4 +19,5 @@
       <entry key="service.pid" value="au.id.vanlaatum.botter.transport.slack"/>
     </service-properties>
   </service>
+  <reference id="logService" interface="org.osgi.service.log.LogService" availability="optional"/>
 </blueprint>

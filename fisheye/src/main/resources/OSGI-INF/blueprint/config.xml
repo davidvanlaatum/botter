@@ -17,4 +17,6 @@
   </service>
   <reference-list interface="au.id.vanlaatum.botter.connector.fisheye.api.FisheyeConnector" id="Connectors"
                   member-type="service-object" availability="optional"/>
+  <reference id="logService" interface="org.osgi.service.log.LogService" availability="optional"/>
+  <reference id="httpClient" interface="org.apache.http.osgi.services.HttpClientBuilderFactory" availability="optional"/>
 </blueprint>

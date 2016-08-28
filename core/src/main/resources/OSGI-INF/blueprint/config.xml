@@ -5,11 +5,9 @@
   <service ref="BotFactory">
     <interfaces>
       <value>au.id.vanlaatum.botter.api.BotFactory</value>
-      <value>org.osgi.service.cm.ManagedService</value>
       <value>org.osgi.service.metatype.MetaTypeProvider</value>
     </interfaces>
     <service-properties>
-      <entry key="metatype.pid" value="au.id.vanlaatum.botter.factory"/>
       <entry key="service.pid" value="au.id.vanlaatum.botter.factory"/>
     </service-properties>
   </service>
@@ -21,4 +19,5 @@
                   member-type="service-object" availability="optional"/>
   <reference-list interface="au.id.vanlaatum.botter.api.KeyWordProcessor" id="Keywords"
                   member-type="service-object" availability="optional"/>
+  <reference id="logService" interface="org.osgi.service.log.LogService" availability="optional"/>
 </blueprint>

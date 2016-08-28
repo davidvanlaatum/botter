@@ -12,6 +12,7 @@
     <module>core</module>
     <module>slack</module>
     <module>fisheye</module>
+    <module>features</module>
   </modules>
 
   <properties>
@@ -40,8 +41,6 @@
         <version>5.0.0</version>
         <scope>provided</scope>
       </dependency>
-
-
       <dependency>
         <groupId>org.apache.felix</groupId>
         <artifactId>org.apache.felix.configadmin</artifactId>
@@ -57,7 +56,6 @@
         <artifactId>org.apache.felix.eventadmin</artifactId>
         <version>1.4.6</version>
       </dependency>
-
       <dependency>
         <groupId>org.apache.aries.blueprint</groupId>
         <artifactId>org.apache.aries.blueprint.core</artifactId>
@@ -124,6 +122,16 @@
         <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
+        <groupId>au.id.vanlaatum.botter</groupId>
+        <artifactId>fisheye</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>au.id.vanlaatum.botter</groupId>
+        <artifactId>slack-transport</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>2.7.2</version>
@@ -186,6 +194,16 @@
         <version>1.3</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>org.apache.servicemix.specs</groupId>
+        <artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
+        <version>2.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.servicemix.specs</groupId>
+        <artifactId>org.apache.servicemix.specs.activation-api-1.1</artifactId>
+        <version>2.7.0</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -209,12 +227,13 @@
             <instructions>
               <Bundle-Category>Botter</Bundle-Category>
             </instructions>
+            <niceManifest>true</niceManifest>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.aries.blueprint</groupId>
           <artifactId>blueprint-maven-plugin</artifactId>
-          <version>1.3.0</version>
+          <version>1.4.0</version>
           <configuration>
             <namespaces/>
           </configuration>
@@ -226,6 +245,20 @@
               <phase>process-classes</phase>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
