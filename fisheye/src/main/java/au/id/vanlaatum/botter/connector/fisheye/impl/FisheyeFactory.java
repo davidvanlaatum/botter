@@ -68,7 +68,7 @@ public class FisheyeFactory implements ManagedServiceFactory, MetaTypeProvider {
     return new ObjectClassDefinition () {
       @Override
       public String getName () {
-        return "Fisheye Connector";
+        return "Botter Fisheye Connector";
       }
 
       @Override
@@ -78,7 +78,7 @@ public class FisheyeFactory implements ManagedServiceFactory, MetaTypeProvider {
 
       @Override
       public String getDescription () {
-        return "Fisheye Connector";
+        return "Botter Fisheye Connector";
       }
 
       @Override
