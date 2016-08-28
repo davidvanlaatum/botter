@@ -37,7 +37,7 @@
     <orderEntry type="library" name="Maven: org.apache.aries:org.apache.aries.util:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.aries.quiesce:org.apache.aries.quiesce.api:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.aries.proxy:org.apache.aries.proxy.api:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:2.0-EDR1" level="project" />
     <orderEntry type="library" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />

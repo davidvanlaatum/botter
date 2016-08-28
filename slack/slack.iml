@@ -25,7 +25,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="module" module-name="core" scope="PROVIDED" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.coordinator:1.0.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.configadmin:1.8.8" level="project" />
@@ -35,7 +35,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries:org.apache.aries.util:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.quiesce:org.apache.aries.quiesce.api:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.proxy:org.apache.aries.proxy.api:1.0.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:2.0-EDR1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
@@ -43,15 +43,15 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.compendium:5.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.core:5.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.enterprise:5.0.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.tyrus.bundles:websocket-ri-bundle:1.12" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.tyrus.bundles:websocket-ri-bundle:1.13" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ejb:javax.ejb-api:3.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.transaction:javax.transaction-api:1.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.24" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.24" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.24" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.27" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.27" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.27" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
