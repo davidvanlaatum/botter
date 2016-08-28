@@ -3,3 +3,13 @@ addons:
   coverity_scan:
     project:
       name: davidvanlaatum/botter
+      description: "Build submitted via Travis CI"
+    notification_email: david@vanlaatum.id.au
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_scan
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "WaPjQuUD00YRnXdgu/OqhwvcaTt52V7B7EbkqI1YyrxpcyzpJQhUDgvzdYpxlnxxU5vV8AV/K2+rk7Sdf0sJLdhK4Yi/uRFO5j1jJqEZ+NelG6BI7/SnooHX7AE8WT4PoIG1AUcRbrc//daM2PUqu2kwTt8WRPzIRBD1AnHKZQwqjRqzvZmXXtyPXRqcNxI3Mzh+GpNyPEGvdrLAoHKGWYEA+nkTLJcBOujI3bnaLGWRphyRJEe2SRY2IWnNvPKdAUeIJSnLltQuCHH5KJpYz4yRlMQRgJYIHPXFT6uJrcJPLjaxK/XbXCD3LlqR2vGoJng65CXjfQ0hBSpAWOVG4paA7UYZpzEOGSbqA/v11eNlaJ+UoA657x/EZ1ODD3WrKfaTc1kjeJ2MkpITJntg8DnyfGoYnsY5WKCNgzgvHyPiwR5CyKiKR38zhh2W74IaKxLsCMD+dkOSQhLkVYdKvrrf1YFgUjKGd0fJ0oQgtD8iSwzRjOnIzzbh8jLWga08t9+O5TAV0QlMtKuunQWrSk2HJkNBmDavJWIiqAack1pGGoJIRNFuPqkQpQE8pAMAATgrldJAMJOCe1rrAMCul5uGJ7EuMwXFZBC2tqPKkq/66W9ExDaRmfvYPhbxBzI9cWBRb6F6n9AAOJW6tzgid9o7sVQBbjkZpUpWJZuda54="
