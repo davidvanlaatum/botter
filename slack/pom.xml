@@ -12,9 +12,6 @@
 
   <artifactId>slack-transport</artifactId>
   <name>Botter Slack Transport</name>
-  <licenses>
-    <license>Apache-2.0</license>
-  </licenses>
 
   <dependencies>
     <dependency>
