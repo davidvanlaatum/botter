@@ -1,7 +1,7 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="Botter">
   <feature name="botter" version="${project.version}" description="Botter Core API">
     <feature version="0.12.0">pax-cdi</feature>
-    <!--<feature>log</feature>-->
+    <feature>eventadmin</feature>
     <feature prerequisite="false" dependency="false">aries-blueprint</feature>
     <bundle>mvn:au.id.vanlaatum.botter/botter-core/${au.id.vanlaatum.botter/botter-core/version}</bundle>
     <bundle>mvn:org.apache.commons/commons-lang3/${org.apache.commons/commons-lang3/version}</bundle>

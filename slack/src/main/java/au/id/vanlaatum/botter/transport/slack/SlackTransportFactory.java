@@ -61,13 +61,11 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
 
   @Override
   public String getName () {
-    log.log ( LogService.LOG_INFO, "getName" );
     return "Slack Transport";
   }
 
   @Override
   public void updated ( String pid, Dictionary<String, ?> dictionary ) throws ConfigurationException {
-    log.log ( LogService.LOG_INFO, format ( "updated({0},{1})", pid, dictionary ) );
     synchronized ( transports ) {
       if ( transports.containsKey ( pid ) ) {
         transports.get ( pid ).updated ( dictionary );
@@ -86,7 +84,6 @@ public class SlackTransportFactory implements ManagedServiceFactory, MetaTypePro
 
   @Override
   public void deleted ( String s ) {
-    log.log ( LogService.LOG_INFO, format ( "deleted({0})", s ) );
     synchronized ( transports ) {
       if ( transports.containsKey ( s ) ) {
         final SlackTransport transport = transports.get ( s );
