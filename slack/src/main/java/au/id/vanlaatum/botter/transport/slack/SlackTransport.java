@@ -192,7 +192,7 @@ public class SlackTransport implements Transport, ManagedService {
         session = clientManager.connectToServer ( messageHandler, endpointConfig, url );
         registerService ();
       }
-    } catch ( IOException | DeploymentException e ) {
+    } catch ( Exception e ) {
       log.log ( LogService.LOG_ERROR, null, e );
       reconnect ();
     }
@@ -225,10 +225,11 @@ public class SlackTransport implements Transport, ManagedService {
   public void disconnect () {
     open = false;
     connectedSince = null;
+    unregisterService ();
     if ( session != null ) {
       try {
         session.close ( new CloseReason ( CloseReason.CloseCodes.GOING_AWAY, "Disconnect" ) );
-      } catch ( IOException e ) {
+      } catch ( Exception e ) {
         log.log ( LogService.LOG_ERROR, "disconnect", e );
       }
     }
@@ -360,7 +361,7 @@ public class SlackTransport implements Transport, ManagedService {
       throws UserNotFoundException, ChannelNotFoundException {
     final SlackMessageDTO dto = new SlackMessageDTO ( this );
     dto.setText ( messagePreProcessor.convertText ( packet.getText (), dto ) );
-    dto.setUser ( new SlackUserDTO ( users.getUser ( packet.getUser () ) ) );
+    dto.setUser ( new SlackUserDTO ( users.getUser ( packet.getUser () ), this ) );
     dto.setChannel ( channels.get ( packet.getChannel () ) );
     dto.setOriginalMessage ( packet );
     return dto;
@@ -387,6 +388,10 @@ public class SlackTransport implements Transport, ManagedService {
     if ( clientManager != null ) {
       clientManager.shutdown ();
     }
+  }
+
+  public String getPID () {
+    return pid;
   }
 
   private static class RetryTimer implements Delayed {

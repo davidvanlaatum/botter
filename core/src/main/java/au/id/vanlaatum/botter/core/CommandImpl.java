@@ -10,9 +10,12 @@ import org.apache.commons.lang3.text.StrTokenizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class CommandImpl implements Command {
   private final List<String> commandParts = new ArrayList<> ();
+  private final SortedMap<String, Object> attachments = new TreeMap<> ();
   private Message message;
   private String commandText;
   private User user;
@@ -83,5 +86,16 @@ public class CommandImpl implements Command {
 
   void removeCommandPart ( int i ) {
     commandParts.remove ( i );
+  }
+
+  @Override
+  public void attach ( String name, Object value ) {
+    attachments.put ( name, value );
+  }
+
+  @SuppressWarnings ( "unchecked" )
+  @Override
+  public <T> T getAttachment ( String name ) {
+    return (T) attachments.get ( name );
   }
 }

@@ -6,17 +6,23 @@
     <bundle>mvn:au.id.vanlaatum.botter/botter-core/${au.id.vanlaatum.botter/botter-core/version}</bundle>
     <bundle>mvn:org.apache.commons/commons-lang3/${org.apache.commons/commons-lang3/version}</bundle>
   </feature>
-  <feature name="botter-slack" version="1.0-SNAPSHOT" description="Botter Slack Transport">
+  <feature name="botter-slack" version="${project.version}" description="Botter Slack Transport">
     <feature>botter</feature>
     <feature>tyrus</feature>
     <bundle>mvn:au.id.vanlaatum.botter/slack-transport/${au.id.vanlaatum.botter/slack-transport/version}</bundle>
     <bundle dependency="true">mvn:commons-io/commons-io/${commons-io/commons-io/version}</bundle>
   </feature>
-  <feature name="botter-fisheye" version="1.0-SNAPSHOT" description="Botter Fisheye Connector">
+  <feature name="botter-fisheye" version="${project.version}" description="Botter Fisheye Connector">
     <feature>botter</feature>
     <feature dependency="true">jackson</feature>
     <feature dependency="true">apache-httpclient</feature>
     <bundle>mvn:au.id.vanlaatum.botter/fisheye/${au.id.vanlaatum.botter/fisheye/version}</bundle>
+  </feature>
+  <feature name="botter-weather" version="${project.version}" description="Botter Weather Support">
+    <feature>botter</feature>
+    <feature>apache-httpclient</feature>
+    <feature>userprefs</feature>
+    <bundle>mvn:au.id.vanlaatum.botter/weather/${au.id.vanlaatum.botter/weather/version}</bundle>
   </feature>
   <feature name="jackson">
     <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${com.fasterxml.jackson.core/jackson-databind/version}</bundle>
@@ -46,5 +52,8 @@
       mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/${org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/version}
     </bundle>
     <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${org.apache.geronimo.specs/geronimo-jta_1.1_spec/version}</bundle>
+  </feature>
+  <feature name="userprefs">
+    <bundle>mvn:org.apache.felix/org.apache.felix.prefs/${org.apache.felix/org.apache.felix.prefs/version}</bundle>
   </feature>
 </features>

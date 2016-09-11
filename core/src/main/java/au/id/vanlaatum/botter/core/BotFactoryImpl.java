@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.core;
 
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.CommandProcessor;
+import au.id.vanlaatum.botter.api.GenericCache;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.api.Message;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
@@ -23,11 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import static java.text.MessageFormat.format;
 
@@ -50,7 +54,10 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   @Inject
   @Named ( "Keywords" )
   private List<KeyWordProcessor> keyWordProcessors;
-  private ExecutorService executor;
+  @Inject
+  @Named("Caches")
+  private List<GenericCache<?,?>> cacheList;
+  private ScheduledExecutorService executor;
   private ThreadGroup threadGroup;
   private ServiceRegistration<StatusInfoProvider> statusProvider;
   private int threadId = 1;
@@ -70,10 +77,15 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
     this.keyWordProcessors = keyWordProcessors;
   }
 
+  public BotFactoryImpl setCacheList ( List<GenericCache<?, ?>> cacheList ) {
+    this.cacheList = cacheList;
+    return this;
+  }
+
   @PostConstruct
   public void init () {
     threadGroup = new ThreadGroup ( "Botter Command Processing" );
-    executor = Executors.newCachedThreadPool ( new ThreadFactory () {
+    executor = Executors.newScheduledThreadPool ( 1, new ThreadFactory () {
 
       @Override
       public Thread newThread ( Runnable r ) {
@@ -82,8 +94,21 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
         return thread;
       }
     } );
+    executor.scheduleAtFixedRate ( new Runnable () {
+      @Override
+      public void run () {
+        cleanCaches ();
+      }
+    }, 0, 10, TimeUnit.SECONDS );
     statusProvider =
         context.registerService ( StatusInfoProvider.class, new StatusProvider (), new Hashtable<String, Object> () );
+  }
+
+  @Override
+  public void cleanCaches () {
+    for ( GenericCache<?, ?> cache : cacheList ) {
+      cache.cleanup ();
+    }
   }
 
   @PreDestroy
@@ -152,10 +177,15 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @Override
   public boolean matchesPhrase ( List<Word> phrase, List<String> words ) {
+    return matchesPhrase ( phrase, words, new HashMap<String, Object> () );
+  }
+
+  @Override
+  public boolean matchesPhrase ( List<Word> phrase, List<String> words, Map<String, Object> data ) {
     boolean rt = true;
     final ArrayList<String> list = new ArrayList<> ( words );
     for ( Word word : phrase ) {
-      int len = word.matches ( list );
+      int len = word.matches ( list, data );
       if ( len < 0 ) {
         rt = false;
         break;
@@ -211,8 +241,16 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
     @Override
     public String getStatus () {
-      return format ( "{0} Commands\n{1} Transports\n{2} Keywords\n", commands.size (), transports.size (),
-          keyWordProcessors.size () );
+      return format ( "{0} Commands\n{1} Transports\n{2} Keywords\n{3} Caches containing {4} items\n", commands.size (), transports.size (),
+          keyWordProcessors.size (), cacheList.size (), sumCaches() );
+    }
+
+    private int sumCaches () {
+      int rt = 0;
+      for ( GenericCache<?, ?> cache : cacheList ) {
+        rt += cache.size ();
+      }
+      return rt;
     }
   }
 }

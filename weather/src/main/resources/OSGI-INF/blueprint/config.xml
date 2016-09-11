@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+  <reference-list interface="au.id.vanlaatum.botter.connector.weather.api.WeatherConnector" id="Connectors"
+                  member-type="service-object" availability="optional"/>
+  <reference id="logService" interface="org.osgi.service.log.LogService" availability="optional"/>
+  <reference id="httpClient" interface="org.apache.http.osgi.services.HttpClientBuilderFactory" availability="optional"/>
+  <service ref="OpenWeatherConnector">
+    <interfaces>
+      <value>au.id.vanlaatum.botter.connector.weather.api.WeatherConnector</value>
+      <value>org.osgi.service.metatype.MetaTypeProvider</value>
+      <value>org.osgi.service.cm.ManagedService</value>
+    </interfaces>
+    <service-properties>
+      <entry key="metatype.pid" value="au.id.vanlaatum.botter.connector.weather.openweather"/>
+      <entry key="service.pid" value="au.id.vanlaatum.botter.connector.weather.openweather"/>
+    </service-properties>
+  </service>
+  <service ref="WeatherKeyword">
+    <interfaces>
+      <value>au.id.vanlaatum.botter.api.KeyWordProcessor</value>
+      <value>org.osgi.service.cm.ManagedService</value>
+    </interfaces>
+    <service-properties>
+      <entry key="metatype.pid" value="au.id.vanlaatum.botter.connector.weather"/>
+      <entry key="service.pid" value="au.id.vanlaatum.botter.connector.weather"/>
+    </service-properties>
+  </service>
+</blueprint>

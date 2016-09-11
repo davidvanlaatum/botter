@@ -3,6 +3,7 @@ package au.id.vanlaatum.botter.core;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
+import au.id.vanlaatum.botter.api.StringWord;
 import au.id.vanlaatum.botter.api.Word;
 import org.ops4j.pax.cdi.api.OsgiServiceProvider;
 
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @OsgiServiceProvider ( classes = KeyWordProcessor.class )
@@ -65,7 +67,7 @@ public class HelloKeywordProcessor implements KeyWordProcessor {
     final Word addressesMe = new Word () {
 
       @Override
-      public int matches ( List<String> text ) {
+      public int matches ( List<String> text, Map<String, Object> data ) {
         if ( text.isEmpty () ) {
           return 0;
         } else if ( isAddressingMe ( message, text.get ( 0 ) ) ) {

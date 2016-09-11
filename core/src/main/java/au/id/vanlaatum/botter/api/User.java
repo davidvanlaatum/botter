@@ -9,4 +9,6 @@ public interface User {
   boolean isUser ();
 
   String getName ();
+
+  String getUniqID ();
 }

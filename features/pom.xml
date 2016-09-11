@@ -27,6 +27,10 @@
       <artifactId>slack-transport</artifactId>
     </dependency>
     <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>weather</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.tyrus.bundles</groupId>
       <artifactId>websocket-ri-bundle</artifactId>
     </dependency>
@@ -74,6 +78,11 @@
       <version>0.12.0</version>
       <type>xml</type>
       <classifier>features</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.prefs</artifactId>
+      <version>1.0.6</version>
     </dependency>
   </dependencies>
 

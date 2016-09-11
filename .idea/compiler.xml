@@ -25,6 +25,7 @@
         <module name="core" />
         <module name="fisheye" />
         <module name="slack" />
+        <module name="weather" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -33,6 +34,7 @@
       <module name="features" target="1.5" />
       <module name="fisheye" target="1.7" />
       <module name="slack" target="1.7" />
+      <module name="weather" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -5,9 +5,11 @@ import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
 
 public class SlackUserDTO implements User {
   private final SlackUser user;
+  private final String uniqID;
 
-  public SlackUserDTO ( SlackUser user ) {
+  public SlackUserDTO ( SlackUser user, SlackTransport transport ) {
     this.user = user;
+    uniqID = transport.getPID () + "." + user.getId ();
   }
 
   @Override
@@ -28,5 +30,10 @@ public class SlackUserDTO implements User {
   @Override
   public String getName () {
     return user.getName ();
+  }
+
+  @Override
+  public String getUniqID () {
+    return uniqID;
   }
 }

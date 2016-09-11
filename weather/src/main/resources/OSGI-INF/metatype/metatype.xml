@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="metatype">
+  <OCD id="au.id.vanlaatum.botter.connector.weather"
+       name="%weatherconfig.name"
+       description="%weatherconfig.description">
+    <AD id="location.default.type" type="String" name="%weatherconfig.default.type.name" default="CITY">
+      <Option label="%weatherconfig.default.type.city" value="CITY"/>
+    </AD>
+    <AD id="location.default.city" type="String" name="%weatherconfig.default.city.name"/>
+    <AD id="location.default.country" type="String" name="%weatherconfig.default.country.name"/>
+  </OCD>
+
+  <Designate pid="au.id.vanlaatum.botter.connector.weather">
+    <Object ocdref="au.id.vanlaatum.botter.connector.weather"/>
+  </Designate>
+</metatype:MetaData>

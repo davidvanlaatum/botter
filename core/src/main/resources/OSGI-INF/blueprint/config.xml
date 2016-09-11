@@ -19,5 +19,6 @@
                   member-type="service-object" availability="optional"/>
   <reference-list interface="au.id.vanlaatum.botter.api.KeyWordProcessor" id="Keywords"
                   member-type="service-object" availability="optional"/>
+  <reference-list interface="au.id.vanlaatum.botter.api.GenericCache" id="Caches" member-type="service-object" availability="optional"/>
   <reference id="logService" interface="org.osgi.service.log.LogService" availability="optional"/>
 </blueprint>

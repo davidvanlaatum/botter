@@ -18,4 +18,8 @@ public interface Command {
   void error ( String message );
 
   void annotate ( String message );
+
+  void attach ( String name, Object value );
+
+  <T> T getAttachment ( String name );
 }
