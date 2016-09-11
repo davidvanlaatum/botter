@@ -107,25 +107,35 @@ public class WeatherKeywordProcessorTest {
   }
 
   @Test
-  public void checkForKeywords () throws WeatherFetchFailedException {
+  public void checkForKeywordsTemperature () throws WeatherFetchFailedException {
+    PreferencesService preferences = mockUserPreferences ();
+    WeatherConnector connector = mockWeatherConnector ();
+    WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    processor.setConnectors ( Collections.singletonList ( connector ) );
+    processor.setPreferencesService ( preferences );
+    assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
+    verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
+    verify ( lastCommand ).reply ( "The temperature is currently 10C in Adelaide, Australia" );
+  }
+
+  private PreferencesService mockUserPreferences () {
     PreferencesService preferences = mock ( PreferencesService.class );
     Preferences userPrefs = mock ( Preferences.class );
     when ( preferences.getUserPreferences ( "123" ) ).thenReturn ( userPrefs );
     when ( userPrefs.get ( "city", null ) ).thenReturn ( "Adelaide" );
     when ( userPrefs.get ( "country", null ) ).thenReturn ( "Australia" );
+    return preferences;
+  }
+
+  private WeatherConnector mockWeatherConnector() throws WeatherFetchFailedException {
     WeatherConnector connector = mock ( WeatherConnector.class );
     WeatherDetails details = mock ( WeatherDetails.class );
-    WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
-    processor.setConnectors ( Collections.singletonList ( connector ) );
-    processor.setPreferencesService ( preferences );
     when ( connector.isEnabled () ).thenReturn ( true );
     when ( connector.getCurrentWeather ( any ( WeatherLocation.class ), any ( WeatherSettings.class ) ) ).thenReturn ( details );
     when ( details.getTemperature () ).thenReturn ( new BigDecimal ( 10 ) );
     when ( details.getCity () ).thenReturn ( "Adelaide" );
     when ( details.getCountry () ).thenReturn ( "Australia" );
-    assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
-    verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
-    verify ( lastCommand ).reply ( "The temperature is currently 10C in Adelaide, Australia" );
+    return connector;
   }
 
   private Command mockCommand ( boolean direct, String... words ) {
