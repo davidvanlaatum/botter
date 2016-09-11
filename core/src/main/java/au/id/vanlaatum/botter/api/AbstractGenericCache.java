@@ -19,7 +19,7 @@ public abstract class AbstractGenericCache<Key, Value> implements GenericCache<K
   @Override
   public synchronized Value lookup ( Key key ) {
     final BaseCacheObject object = data.get ( key );
-    if ( object != null ) {
+    if ( object != null && object.getDelay ( TimeUnit.MILLISECONDS ) > 0 ) {
       return object.get ();
     }
     return null;
@@ -28,7 +28,7 @@ public abstract class AbstractGenericCache<Key, Value> implements GenericCache<K
   @Override
   public Value lookup ( Key key, Callable<Value> method ) throws Exception {
     final BaseCacheObject object = data.get ( key );
-    if ( object != null ) {
+    if ( object != null && object.getDelay ( TimeUnit.MILLISECONDS ) > 0 ) {
       return object.get ();
     } else {
       Value rt = method.call ();

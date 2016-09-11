@@ -22,6 +22,8 @@
     <feature>botter</feature>
     <feature>apache-httpclient</feature>
     <feature>userprefs</feature>
+    <feature>antlr4</feature>
+    <feature>jackson</feature>
     <bundle>mvn:au.id.vanlaatum.botter/weather/${au.id.vanlaatum.botter/weather/version}</bundle>
   </feature>
   <feature name="jackson">
@@ -55,5 +57,8 @@
   </feature>
   <feature name="userprefs">
     <bundle>mvn:org.apache.felix/org.apache.felix.prefs/${org.apache.felix/org.apache.felix.prefs/version}</bundle>
+  </feature>
+  <feature name="antlr4">
+    <bundle>mvn:org.antlr/antlr4-runtime/${org.antlr/antlr4-runtime/version}</bundle>
   </feature>
 </features>
