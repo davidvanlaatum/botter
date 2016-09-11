@@ -204,8 +204,13 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
 
   @Override
   public void updated ( Dictionary<String, ?> dictionary ) throws ConfigurationException {
-    enabled = (Boolean) dictionary.get ( "enabled" );
-    apiKey = (String) dictionary.get ( "api.key" );
+    if ( dictionary != null ) {
+      enabled = (Boolean) dictionary.get ( "enabled" );
+      apiKey = (String) dictionary.get ( "api.key" );
+    } else {
+      enabled = false;
+      apiKey = null;
+    }
   }
 
   public void setLog ( LogService log ) {
