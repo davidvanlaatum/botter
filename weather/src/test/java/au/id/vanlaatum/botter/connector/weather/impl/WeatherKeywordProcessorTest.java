@@ -27,11 +27,10 @@ import java.util.Date;
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.TEMPERATURE;
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.WEATHER;
 import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.*;
-import static junit.framework.TestCase.assertNotNull;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
@@ -118,6 +117,21 @@ public class WeatherKeywordProcessorTest {
     verify ( lastCommand ).reply ( "The temperature is currently 10C in Adelaide, Australia" );
   }
 
+  @Test
+  public void checkForKeywordsWeather () throws Exception {
+    PreferencesService preferences = mockUserPreferences ();
+    WeatherConnector connector = mockWeatherConnector ();
+    WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    processor.setConnectors ( Collections.singletonList ( connector ) );
+    processor.setPreferencesService ( preferences );
+    processor.setDirectionMap ( new DirectionMapImpl () );
+    assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the weather" ), null ) );
+    verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
+    verify ( lastCommand ).reply ( "In Adelaide, Australia:\n" +
+        "Temperature is currently 10C min: 8C max: 12C\n" +
+        "Wind speed is 10KM/H NbE" );
+  }
+
   private PreferencesService mockUserPreferences () {
     PreferencesService preferences = mock ( PreferencesService.class );
     Preferences userPrefs = mock ( Preferences.class );
@@ -127,12 +141,18 @@ public class WeatherKeywordProcessorTest {
     return preferences;
   }
 
-  private WeatherConnector mockWeatherConnector() throws WeatherFetchFailedException {
+  private WeatherConnector mockWeatherConnector () throws WeatherFetchFailedException {
     WeatherConnector connector = mock ( WeatherConnector.class );
     WeatherDetails details = mock ( WeatherDetails.class );
     when ( connector.isEnabled () ).thenReturn ( true );
     when ( connector.getCurrentWeather ( any ( WeatherLocation.class ), any ( WeatherSettings.class ) ) ).thenReturn ( details );
     when ( details.getTemperature () ).thenReturn ( new BigDecimal ( 10 ) );
+    when ( details.getTemperatureMax () ).thenReturn ( new BigDecimal ( 12 ) );
+    when ( details.getTemperatureMin () ).thenReturn ( new BigDecimal ( 8 ) );
+    when ( details.getWindSpeed () ).thenReturn ( new BigDecimal ( 10 ) );
+    when ( details.getWindDirection () ).thenReturn ( 11 );
+    when ( details.getHumidity () ).thenReturn ( 12 );
+    when ( details.getPressure () ).thenReturn ( 13 );
     when ( details.getCity () ).thenReturn ( "Adelaide" );
     when ( details.getCountry () ).thenReturn ( "Australia" );
     return connector;

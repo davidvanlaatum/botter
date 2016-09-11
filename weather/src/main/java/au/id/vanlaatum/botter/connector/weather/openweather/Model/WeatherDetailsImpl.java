@@ -17,12 +17,42 @@ public class WeatherDetailsImpl implements WeatherDetails {
   }
 
   @Override
+  public BigDecimal getTemperatureMin () {
+    return currentWeather.getMain ().getTempMin ();
+  }
+
+  @Override
+  public BigDecimal getTemperatureMax () {
+    return currentWeather.getMain ().getTempMax ();
+  }
+
+  @Override
+  public BigDecimal getWindSpeed () {
+    return currentWeather.getWind ().getSpeed ();
+  }
+
+  @Override
+  public Integer getWindDirection () {
+    return currentWeather.getWind ().getDeg ();
+  }
+
+  @Override
   public String getCity () {
-    return currentWeather.getName();
+    return currentWeather.getName ();
   }
 
   @Override
   public String getCountry () {
     return currentWeather.getSys ().getCountry ();
+  }
+
+  @Override
+  public Integer getPressure () {
+    return currentWeather.getMain ().getPressure ();
+  }
+
+  @Override
+  public Integer getHumidity () {
+    return currentWeather.getMain ().getHumidity ();
   }
 }

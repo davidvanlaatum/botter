@@ -3,6 +3,7 @@ package au.id.vanlaatum.botter.connector.weather.impl;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
+import au.id.vanlaatum.botter.connector.weather.api.DirectionMap;
 import au.id.vanlaatum.botter.connector.weather.api.Units;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherConnector;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherDetails;
@@ -29,6 +30,7 @@ import org.osgi.service.prefs.PreferencesService;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Dictionary;
@@ -59,6 +61,9 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   @OsgiService
   private PreferencesService preferencesService;
   private WeatherLocation defaultLocation;
+  @Inject
+  @OsgiService
+  private DirectionMap directionMap;
 
   @Override
   public boolean checkForKeywords ( final Command message, List<Boolean> used ) {
@@ -134,6 +139,26 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       case TEMPERATURE:
         message.reply ( format ( "The temperature is currently {0}{1} in {2}, {3}", currentWeather.getTemperature (),
             settings.getUnits ().temperatureUnits (), currentWeather.getCity (), currentWeather.getCountry () ) );
+        break;
+      case WEATHER:
+        StringBuilder buffer = new StringBuilder ();
+        buffer.append ( format ( "In {0}, {1}:\n", currentWeather.getCity (), currentWeather.getCountry () ) );
+        buffer.append ( format ( "Temperature is currently {0}{1}", currentWeather.getTemperature (),
+            settings.getUnits ().temperatureUnits () ) );
+        if ( currentWeather.getTemperatureMax () != null ) {
+          buffer.append ( " min: " ).append ( currentWeather.getTemperatureMin () ).append ( settings.getUnits ().temperatureUnits () );
+          buffer.append ( " max: " ).append ( currentWeather.getTemperatureMax () ).append ( settings.getUnits ().temperatureUnits () );
+        }
+        buffer.append ( "\n" );
+        if ( currentWeather.getWindSpeed () != null ) {
+          buffer.append ( "Wind speed is " ).append ( currentWeather.getWindSpeed () ).append ( settings.getUnits ().speedUnits () );
+          if ( currentWeather.getWindDirection () != null ) {
+            buffer.append ( " " )
+                .append ( directionMap.getDescriptionForDegrees ( new BigDecimal ( currentWeather.getWindDirection () ) ) );
+          }
+          buffer.append ( "\n" );
+        }
+        message.reply ( buffer.toString ().trim () );
         break;
     }
   }
@@ -269,5 +294,9 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       default:
         log.log ( LogService.LOG_ERROR, "Unknown location type " + type );
     }
+  }
+
+  public void setDirectionMap ( DirectionMapImpl directionMap ) {
+    this.directionMap = directionMap;
   }
 }

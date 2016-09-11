@@ -6,7 +6,19 @@ public interface WeatherDetails {
 
   BigDecimal getTemperature ();
 
+  BigDecimal getTemperatureMin ();
+
+  BigDecimal getTemperatureMax ();
+
+  BigDecimal getWindSpeed ();
+
+  Integer getWindDirection ();
+
   String getCity ();
 
   String getCountry ();
+
+  Integer getPressure ();
+
+  Integer getHumidity ();
 }
