@@ -102,11 +102,11 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
     ) );
     addLocationParameters ( parameters, location );
     final URI uri = base.resolve ( "weather?" + URLEncodedUtils.format ( parameters, "UTF-8" ) );
-    log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
     try {
       return currentWeatherCache.lookup ( uri, new Callable<WeatherDetailsImpl> () {
         @Override
         public WeatherDetailsImpl call () throws Exception {
+          log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
           final HttpGet get = new HttpGet ( uri );
           final CloseableHttpResponse response = httpClient.execute ( get );
           if ( response.getStatusLine ().getStatusCode () == 200 ) {
