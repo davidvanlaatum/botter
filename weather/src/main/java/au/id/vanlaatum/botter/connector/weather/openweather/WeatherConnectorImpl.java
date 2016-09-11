@@ -13,6 +13,7 @@ import au.id.vanlaatum.botter.connector.weather.openweather.Model.CurrentWeather
 import au.id.vanlaatum.botter.connector.weather.openweather.Model.WeatherDetailsImpl;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -143,7 +144,7 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
 
   @Override
   public boolean isEnabled () {
-    return enabled && apiKey != null && !apiKey.isEmpty ();
+    return enabled && StringUtils.isNotBlank (apiKey);
   }
 
   public WeatherConnectorImpl setEnabled ( boolean enabled ) {
