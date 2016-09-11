@@ -47,7 +47,7 @@ public class WeatherConnectorImplTest {
     when ( statusLine.getStatusCode () ).thenReturn ( 200 );
     when ( response.getEntity () ).thenReturn ( entity );
     when ( entity.getContent () ).thenReturn ( new ByteArrayInputStream ( CurrentWeatherTest.JSON.getBytes () ) );
-    a.setApiKey ( "45cbe9327ad5919a698eaadcdabf9082" );
+    a.setApiKey ( "1234567890" );
     a.setLog ( mock ( LogService.class ) );
     a.setCurrentWeatherCache ( new CurrentWeatherCache () );
     a.init ();
