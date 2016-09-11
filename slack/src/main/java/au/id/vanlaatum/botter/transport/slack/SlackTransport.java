@@ -153,11 +153,13 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   protected void unregisterService () {
-    if ( registration != null ) {
+    if ( registration != null) {
       registration.unregister ();
+      registration = null;
     }
     if ( providerRegistration != null ) {
       providerRegistration.unregister ();
+      providerRegistration = null;
     }
   }
 
