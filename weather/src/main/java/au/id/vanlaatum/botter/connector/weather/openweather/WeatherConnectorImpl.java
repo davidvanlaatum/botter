@@ -206,4 +206,13 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
     enabled = (Boolean) dictionary.get ( "enabled" );
     apiKey = (String) dictionary.get ( "api.key" );
   }
+
+  public void setLog ( LogService log ) {
+    this.log = log;
+  }
+
+  public WeatherConnectorImpl setCurrentWeatherCache ( CurrentWeatherCache currentWeatherCache ) {
+    this.currentWeatherCache = currentWeatherCache;
+    return this;
+  }
 }

@@ -34,6 +34,8 @@ wetherquestion locals [
             $valueTime = $time.value;
             $valueDate = $time.valueDate;
             $valueDow = $time.valueDow;
+        } else {
+            $valueDow = -1;
         }
         $city = $valueLocation.ctx != null ? $valueLocation.city : null;
         $country = $valueLocation.ctx != null ? $valueLocation.country : null;
@@ -44,6 +46,8 @@ wetherquestion locals [
             $valueTime = $time.value;
             $valueDate = $time.valueDate;
             $valueDow = $time.valueDow;
+        } else {
+             $valueDow = -1;
         }
         $city = $valueLocation.ctx != null ? $valueLocation.city : null;
         $country = $valueLocation.ctx != null ? $valueLocation.country : null;
@@ -80,10 +84,10 @@ time returns [TimeConstant value, Date valueDate, int valueDow]
     Date valueDate = null;
     int valueDow = -1;
 }:
-    TODAY { $value = TimeConstant.TODAY; } |
-    FOR WS TODAY { $value = TimeConstant.TODAY; } |
-    TOMORROW { $value = TimeConstant.TOMORROW; } |
-    FOR WS TOMORROW { $value = TimeConstant.TOMORROW; } |
+    TODAY { $value = TimeConstant.TODAY; $valueDow = -1; } |
+    FOR WS TODAY { $value = TimeConstant.TODAY; $valueDow = -1; } |
+    TOMORROW { $value = TimeConstant.TOMORROW; $valueDow = -1; } |
+    FOR WS TOMORROW { $value = TimeConstant.TOMORROW; $valueDow = -1; } |
     FOR WS date { $value = TimeConstant.DATE; $valueDate = $date.value; $valueDow = -1; } |
     ON WS date { $value = TimeConstant.DATE; $valueDate = $date.value; $valueDow = -1; } |
     FOR WS dow { $value = TimeConstant.DOW; $valueDow = $dow.value; } |

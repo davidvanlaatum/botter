@@ -25,7 +25,8 @@ import java.util.Collections;
 import java.util.Date;
 
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.TEMPERATURE;
-import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.DATE;
+import static au.id.vanlaatum.botter.connector.weather.impl.Subject.WEATHER;
+import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -47,74 +48,22 @@ public class WeatherKeywordProcessorTest {
   @Test
   public void parseQuestion () throws Exception {
     WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
-    Question question = processor.parseQuestion ( "what is the temperature today?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TODAY, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( TEMPERATURE, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "whats the temperature tomorrow?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TOMORROW, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( TEMPERATURE, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the weather like today?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TODAY, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Subject.WEATHER, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the weather like tomorrow?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TOMORROW, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Subject.WEATHER, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is tomorrows weather like?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TOMORROW, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Subject.WEATHER, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is todays weather like?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.TODAY, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Subject.WEATHER, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the weather like?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertNull ( ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Subject.WEATHER, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the temperature?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertNull ( ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( TEMPERATURE, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the temperature for tuesday?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.DOW, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Calendar.TUESDAY, ( (WeatherQuestion) question ).getDow () );
-    assertEquals ( TEMPERATURE, ( (WeatherQuestion) question ).getSubject () );
-
-    question = processor.parseQuestion ( "what is the temperature for Tuesday?" );
-    assertNotNull ( question );
-    assertEquals ( question.getType (), QuestionType.WEATHER );
-    assertEquals ( TimeConstant.DOW, ( (WeatherQuestion) question ).getTimeType () );
-    assertEquals ( Calendar.TUESDAY, ( (WeatherQuestion) question ).getDow () );
-    assertEquals ( TEMPERATURE, ( (WeatherQuestion) question ).getSubject () );
-
+    assertWeatherQuestion ( processor, "what is the temperature today?", TODAY, null, -1, TEMPERATURE, null, null );
+    assertWeatherQuestion ( processor, "whats the temperature tomorrow?", TOMORROW, null, -1, TEMPERATURE, null, null );
+    assertWeatherQuestion ( processor, "what is the weather like today?", TODAY, null, -1, WEATHER, null, null );
+    assertWeatherQuestion ( processor, "what is the weather like tomorrow?", TOMORROW, null, -1, WEATHER, null, null );
+    assertWeatherQuestion ( processor, "what is tomorrows weather like?", TOMORROW, null, -1, WEATHER, null, null );
+    assertWeatherQuestion ( processor, "what is todays weather like?", TODAY, null, -1, WEATHER, null, null );
+    assertWeatherQuestion ( processor, "what is the weather like?", TODAY, null, -1, WEATHER, null, null );
+    assertWeatherQuestion ( processor, "what is the temperature?", TODAY, null, -1, TEMPERATURE, null, null );
+    assertWeatherQuestion ( processor, "what is the temperature for tuesday?", DOW, null, Calendar.TUESDAY, TEMPERATURE, null, null );
+    assertWeatherQuestion ( processor, "what is the temperature for Tuesday?", DOW, null, Calendar.TUESDAY, TEMPERATURE, null, null );
     assertWeatherQuestion ( processor, "what is the temperature on 01/01/2000?", DATE, date ( "01/01/2000" ), -1, TEMPERATURE, null, null );
     assertWeatherQuestion ( processor, "what is the temperature on 2000/1/1?", DATE, date ( "01/01/2000" ), -1, TEMPERATURE, null, null );
     assertWeatherQuestion ( processor, "what is the temperature on 2000/1/1 in Adelaide?", DATE, date ( "01/01/2000" ), -1, TEMPERATURE,
         "Adelaide", null );
-    assertWeatherQuestion ( processor, "what is the temperature in sydney", null, null, -1, TEMPERATURE, "sydney", null );
-    assertWeatherQuestion ( processor, "what is the temperature in sydney, Australia", null, null, -1, TEMPERATURE, "sydney",
+    assertWeatherQuestion ( processor, "what is the temperature in sydney", TODAY, null, -1, TEMPERATURE, "sydney", null );
+    assertWeatherQuestion ( processor, "what is the temperature in sydney, Australia", TODAY, null, -1, TEMPERATURE, "sydney",
         "Australia" );
     assertSetLocation ( processor, "Set my location to adelaide", "adelaide", null );
   }
@@ -163,18 +112,20 @@ public class WeatherKeywordProcessorTest {
     Preferences userPrefs = mock ( Preferences.class );
     when ( preferences.getUserPreferences ( "123" ) ).thenReturn ( userPrefs );
     when ( userPrefs.get ( "city", null ) ).thenReturn ( "Adelaide" );
-    when ( userPrefs.get ( "country", null ) ).thenReturn ( null );
+    when ( userPrefs.get ( "country", null ) ).thenReturn ( "Australia" );
     WeatherConnector connector = mock ( WeatherConnector.class );
     WeatherDetails details = mock ( WeatherDetails.class );
     WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
     processor.setConnectors ( Collections.singletonList ( connector ) );
     processor.setPreferencesService ( preferences );
+    when ( connector.isEnabled () ).thenReturn ( true );
     when ( connector.getCurrentWeather ( any ( WeatherLocation.class ), any ( WeatherSettings.class ) ) ).thenReturn ( details );
     when ( details.getTemperature () ).thenReturn ( new BigDecimal ( 10 ) );
-
-    assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature tomorrow" ), null ) );
-    verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( null, "Adelaide" ) ), any ( WeatherSettings.class ) );
-    verify ( lastCommand ).reply ( "The temperature is currently 10C" );
+    when ( details.getCity () ).thenReturn ( "Adelaide" );
+    when ( details.getCountry () ).thenReturn ( "Australia" );
+    assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
+    verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
+    verify ( lastCommand ).reply ( "The temperature is currently 10C in Adelaide, Australia" );
   }
 
   private Command mockCommand ( boolean direct, String... words ) {

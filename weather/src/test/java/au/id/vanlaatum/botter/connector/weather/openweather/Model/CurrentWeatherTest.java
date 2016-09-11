@@ -6,7 +6,7 @@ import org.junit.Test;
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
 
 public class CurrentWeatherTest {
-  private static final String JSON = "{\n" +
+  public static final String JSON = "{\n" +
       "  \"coord\": {\n" +
       "    \"lon\": 138.6,\n" +
       "    \"lat\": -34.93\n" +
@@ -46,7 +46,8 @@ public class CurrentWeatherTest {
       "  },\n" +
       "  \"id\": 2078025,\n" +
       "  \"name\": \"Adelaide\",\n" +
-      "  \"cod\": 200\n" +
+      "  \"cod\": 200,\n" +
+      "  \"message\": null\n" +
       "}\n";
 
   @Test
