@@ -23,16 +23,25 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.TEMPERATURE;
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.WEATHER;
-import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.*;
+import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.DATE;
+import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.DOW;
+import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.TODAY;
+import static au.id.vanlaatum.botter.connector.weather.impl.TimeConstant.TOMORROW;
 import static org.apache.commons.lang3.StringUtils.join;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -186,4 +195,20 @@ public class WeatherKeywordProcessorTest {
     return mockCommand ( true, words );
   }
 
+  @Test
+  public void updated () throws Exception {
+    WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    Dictionary<String, Object> config = new Hashtable<> ();
+    config.put ( WeatherKeywordProcessor.DEFAULT_LOCATION_TYPE, "CITY" );
+    processor.updated ( config );
+    assertThat ( processor.getDefaultLocation (), allOf (
+        hasProperty ( "city", equalTo ( "Adelaide" ) ),
+        hasProperty ( "country", equalTo ( "Australia" ) )
+    ) );
+    processor.updated ( null );
+    assertThat ( processor.getDefaultLocation (), allOf (
+        hasProperty ( "city", equalTo ( "Adelaide" ) ),
+        hasProperty ( "country", equalTo ( "Australia" ) )
+    ) );
+  }
 }

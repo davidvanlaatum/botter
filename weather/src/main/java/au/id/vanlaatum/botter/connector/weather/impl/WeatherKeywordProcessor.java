@@ -18,7 +18,6 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
-import org.apache.commons.lang3.StringUtils;
 import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -37,17 +36,19 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Objects;
 
+import static au.id.vanlaatum.botter.connector.weather.api.WeatherLocationType.CITY;
 import static java.text.MessageFormat.format;
-
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 @Named ( "WeatherKeyword" )
 @Singleton
 public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorListener, ManagedService {
-  private static final String USER_SETTING_COUNTRY = "country";
-  private static final String USER_SETTING_CITY = "city";
-  private static final String DEFAULT_LOCATION_TYPE = "location.default.type";
-  private static final String DEFAULT_LOCATION_COUNTRY = "location.default.country";
-  private static final String DEFAULT_LOCATION_CITY = "location.default.city";
+  static final String USER_SETTING_COUNTRY = "country";
+  static final String USER_SETTING_CITY = "city";
+  static final String DEFAULT_LOCATION_TYPE = "location.default.type";
+  static final String DEFAULT_LOCATION_COUNTRY = "location.default.country";
+  static final String DEFAULT_LOCATION_CITY = "location.default.city";
   @Inject
   @Named ( "Connectors" )
   private List<WeatherConnector> connectors;
@@ -62,7 +63,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   private PreferencesService preferencesService;
   private WeatherLocation defaultLocation;
   @Inject
-  @Named("directionMapImpl")
+  @Named ( "directionMapImpl" )
   private DirectionMap directionMap;
 
   @Override
@@ -173,8 +174,8 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   }
 
   WeatherLocation determineLocation ( WeatherQuestion question, final Command message ) {
-    WeatherLocation location = null;
-    if ( question.getCity () != null && !question.getCity ().isEmpty () ) {
+    WeatherLocation location;
+    if ( isNoneBlank ( question.getCity () ) ) {
       location = new CityLocation ( question.getCountry (), question.getCity () );
     } else {
       location = getUsersLocation ( message.getUser ().getUniqID () );
@@ -184,8 +185,8 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
 
   WeatherLocation getUsersLocation ( String uniqID ) {
     final Preferences userPreferences = preferencesService.getUserPreferences ( uniqID );
-    WeatherLocation location = null;
-    if ( userPreferences.get ( USER_SETTING_CITY, null ) != null ) {
+    WeatherLocation location;
+    if ( isNoneBlank ( userPreferences.get ( USER_SETTING_CITY, null ) ) ) {
       location = new CityLocation ( userPreferences.get ( USER_SETTING_COUNTRY, null ), userPreferences.get ( USER_SETTING_CITY, null ) );
     } else {
       location = defaultLocation;
@@ -216,19 +217,6 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       }
     }
     return rt;
-  }
-
-  private void log ( int level, String msg, Exception ex ) {
-    if ( log != null ) {
-      log.log ( level, msg, ex );
-    } else {
-      if ( msg != null ) {
-        System.out.println ( format ( "{0}: {1}", level, msg ) );
-      }
-      if ( ex != null ) {
-        ex.printStackTrace ( System.out );
-      }
-    }
   }
 
   public WeatherKeywordProcessor setConnectors ( List<WeatherConnector> connectors ) {
@@ -283,13 +271,12 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
 
   @Override
   public void updated ( Dictionary<String, ?> dictionary ) throws ConfigurationException {
-    WeatherLocationType type = WeatherLocationType.valueOf ( StringUtils.defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_TYPE ),
-        WeatherLocationType.CITY.toString () ) );
+    WeatherLocationType type =
+        WeatherLocationType.valueOf ( defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_TYPE ), CITY.toString () ) );
     switch ( type ) {
       case CITY:
-        defaultLocation =
-            new CityLocation ( StringUtils.defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_COUNTRY ), "Australia" ),
-                StringUtils.defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_CITY ), "Adelaide" ) );
+        defaultLocation = new CityLocation ( defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_COUNTRY ), "Australia" ),
+            defaultIfBlank ( getSetting ( dictionary, DEFAULT_LOCATION_CITY ), "Adelaide" ) );
         break;
       default:
         log.log ( LogService.LOG_ERROR, "Unknown location type " + type );
@@ -298,5 +285,9 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
 
   public void setDirectionMap ( DirectionMapImpl directionMap ) {
     this.directionMap = directionMap;
+  }
+
+  public WeatherLocation getDefaultLocation () {
+    return defaultLocation;
   }
 }
