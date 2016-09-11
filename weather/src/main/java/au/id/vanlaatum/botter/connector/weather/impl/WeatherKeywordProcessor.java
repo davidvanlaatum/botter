@@ -62,7 +62,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   private PreferencesService preferencesService;
   private WeatherLocation defaultLocation;
   @Inject
-  @OsgiService
+  @Named("directionMapImpl")
   private DirectionMap directionMap;
 
   @Override
@@ -143,7 +143,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       case WEATHER:
         StringBuilder buffer = new StringBuilder ();
         buffer.append ( format ( "In {0}, {1}:\n", currentWeather.getCity (), currentWeather.getCountry () ) );
-        buffer.append ( format ( "Temperature is currently {0}{1}", currentWeather.getTemperature (),
+        buffer.append ( format ( "\tTemperature is currently {0}{1}", currentWeather.getTemperature (),
             settings.getUnits ().temperatureUnits () ) );
         if ( currentWeather.getTemperatureMax () != null ) {
           buffer.append ( " min: " ).append ( currentWeather.getTemperatureMin () ).append ( settings.getUnits ().temperatureUnits () );
@@ -151,7 +151,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
         }
         buffer.append ( "\n" );
         if ( currentWeather.getWindSpeed () != null ) {
-          buffer.append ( "Wind speed is " ).append ( currentWeather.getWindSpeed () ).append ( settings.getUnits ().speedUnits () );
+          buffer.append ( "\tWind speed is " ).append ( currentWeather.getWindSpeed () ).append ( settings.getUnits ().speedUnits () );
           if ( currentWeather.getWindDirection () != null ) {
             buffer.append ( " " )
                 .append ( directionMap.getDescriptionForDegrees ( new BigDecimal ( currentWeather.getWindDirection () ) ) );

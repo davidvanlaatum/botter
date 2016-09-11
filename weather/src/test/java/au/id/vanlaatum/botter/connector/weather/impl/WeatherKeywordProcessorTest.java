@@ -114,7 +114,7 @@ public class WeatherKeywordProcessorTest {
     processor.setPreferencesService ( preferences );
     assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
     verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
-    verify ( lastCommand ).reply ( "The temperature is currently 10C in Adelaide, Australia" );
+    verify ( lastCommand ).reply ( "The temperature is currently 10°C in Adelaide, Australia" );
   }
 
   @Test
@@ -128,8 +128,8 @@ public class WeatherKeywordProcessorTest {
     assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the weather" ), null ) );
     verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
     verify ( lastCommand ).reply ( "In Adelaide, Australia:\n" +
-        "Temperature is currently 10C min: 8C max: 12C\n" +
-        "Wind speed is 10KM/H NbE" );
+        "\tTemperature is currently 10°C min: 8°C max: 12°C\n" +
+        "\tWind speed is 10KM/H NbE" );
   }
 
   private PreferencesService mockUserPreferences () {

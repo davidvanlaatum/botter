@@ -1,7 +1,7 @@
 package au.id.vanlaatum.botter.connector.weather.api;
 
 public enum Units {
-  METRIC ( "C", "KM/H" );
+  METRIC ( "°C", "KM/H" );
 
   private final String temperatureUnits;
   private final String speedUnits;
