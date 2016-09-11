@@ -6,8 +6,8 @@
     <AD id="location.default.type" type="String" name="%weatherconfig.default.type.name" default="CITY">
       <Option label="%weatherconfig.default.type.city" value="CITY"/>
     </AD>
-    <AD id="location.default.city" type="String" name="%weatherconfig.default.city.name"/>
-    <AD id="location.default.country" type="String" name="%weatherconfig.default.country.name"/>
+    <AD id="location.default.city" type="String" name="%weatherconfig.default.city.name" default="Adelaide"/>
+    <AD id="location.default.country" type="String" name="%weatherconfig.default.country.name" default="Australia"/>
   </OCD>
 
   <Designate pid="au.id.vanlaatum.botter.connector.weather">
