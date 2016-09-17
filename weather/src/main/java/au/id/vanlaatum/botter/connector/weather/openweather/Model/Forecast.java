@@ -1,5 +1,10 @@
 package au.id.vanlaatum.botter.connector.weather.openweather.Model;
 
+import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampDeserializer;
+import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -9,22 +14,22 @@ public class Forecast extends BaseResponse {
   private Integer cnt;
   private List<Details> list;
 
+  public List<Details> getList () {
+    return list;
+  }
+
   public Forecast setList ( List<Details> list ) {
     this.list = list;
     return this;
   }
 
-  public List<Details> getList () {
-    return list;
+  public Integer getCnt () {
+    return cnt;
   }
 
   public Forecast setCnt ( Integer cnt ) {
     this.cnt = cnt;
     return this;
-  }
-
-  public Integer getCnt () {
-    return cnt;
   }
 
   public City getCity () {
@@ -113,6 +118,8 @@ public class Forecast extends BaseResponse {
   }
 
   public static class Details {
+    @JsonDeserialize (using = UnixTimestampDeserializer.class)
+    @JsonSerialize(using = UnixTimestampSerializer.class)
     private Date dt;
     private Temp temp;
     private BigDecimal pressure;

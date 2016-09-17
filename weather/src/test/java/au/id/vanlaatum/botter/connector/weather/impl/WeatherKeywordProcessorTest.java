@@ -11,10 +11,14 @@ import au.id.vanlaatum.botter.connector.weather.api.WeatherFetchFailedException;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherLocation;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherSettings;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.osgi.service.log.LogService;
 import org.osgi.service.prefs.Preferences;
 import org.osgi.service.prefs.PreferencesService;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -24,7 +28,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Dictionary;
+import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.TimeZone;
 
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.TEMPERATURE;
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.WEATHER;
@@ -38,14 +44,17 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith ( PowerMockRunner.class )
 public class WeatherKeywordProcessorTest {
   private Command lastCommand;
   private Message lastMessage;
@@ -119,6 +128,7 @@ public class WeatherKeywordProcessorTest {
     PreferencesService preferences = mockUserPreferences ();
     WeatherConnector connector = mockWeatherConnector ();
     WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    processor.setLog ( mockLog () );
     processor.setConnectors ( Collections.singletonList ( connector ) );
     processor.setPreferencesService ( preferences );
     assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
@@ -131,6 +141,7 @@ public class WeatherKeywordProcessorTest {
     PreferencesService preferences = mockUserPreferences ();
     WeatherConnector connector = mockWeatherConnector ();
     WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    processor.setLog ( mockLog () );
     processor.setConnectors ( Collections.singletonList ( connector ) );
     processor.setPreferencesService ( preferences );
     processor.setDirectionMap ( new DirectionMapImpl () );
@@ -161,9 +172,11 @@ public class WeatherKeywordProcessorTest {
     when ( details.getWindSpeed () ).thenReturn ( new BigDecimal ( 10 ) );
     when ( details.getWindDirection () ).thenReturn ( 11 );
     when ( details.getHumidity () ).thenReturn ( 12 );
-    when ( details.getPressure () ).thenReturn ( 13 );
+    when ( details.getPressure () ).thenReturn ( new BigDecimal ( 13 ) );
     when ( details.getCity () ).thenReturn ( "Adelaide" );
     when ( details.getCountry () ).thenReturn ( "Australia" );
+    when ( details.getDate () ).thenReturn ( Calendar.getInstance () );
+    when ( details.isToday () ).thenReturn ( true );
     return connector;
   }
 
@@ -195,6 +208,19 @@ public class WeatherKeywordProcessorTest {
     return mockCommand ( true, words );
   }
 
+  private LogService mockLog () {
+    return mock ( LogService.class, new Answer () {
+      @Override
+      public Object answer ( InvocationOnMock invocation ) throws Throwable {
+        System.out.println ( Arrays.asList ( invocation.getArguments () ) );
+        if ( invocation.getArguments ().length > 2 && invocation.getArguments ()[2] instanceof Exception ) {
+          ( (Exception) invocation.getArguments ()[2] ).printStackTrace ();
+        }
+        return null;
+      }
+    } );
+  }
+
   @Test
   public void updated () throws Exception {
     WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
@@ -210,5 +236,24 @@ public class WeatherKeywordProcessorTest {
         hasProperty ( "city", equalTo ( "Adelaide" ) ),
         hasProperty ( "country", equalTo ( "Australia" ) )
     ) );
+  }
+
+  @Test
+  @PrepareForTest ( WeatherKeywordProcessor.class )
+  public void dateToString () throws Exception {
+    WeatherKeywordProcessor processor = new WeatherKeywordProcessor ();
+    final Calendar date = new GregorianCalendar ();
+    date.setTimeZone ( TimeZone.getTimeZone ( "GMT" ) );
+    date.clear ();
+    date.set ( 2016, 0, 1 );
+    mockStatic ( Calendar.class );
+    when ( Calendar.getInstance ( (TimeZone) any () ) ).thenReturn ( (Calendar) date.clone () );
+    assertEquals ( "today", processor.dateToString ( date ) );
+    date.roll ( Calendar.DAY_OF_MONTH, true );
+    assertEquals ( "tomorrow", processor.dateToString ( date ) );
+    date.roll ( Calendar.DAY_OF_MONTH, true );
+    assertEquals ( "on Sunday", processor.dateToString ( date ) );
+    date.set ( Calendar.DAY_OF_MONTH, 8 );
+    assertEquals ( "on 2016-01-08", processor.dateToString ( date ) );
   }
 }

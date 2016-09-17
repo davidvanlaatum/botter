@@ -3,11 +3,12 @@ package au.id.vanlaatum.botter.connector.weather.openweather.Model;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherDetails;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 
-public class WeatherDetailsImpl implements WeatherDetails {
+public class WeatherDetailsCurrentImpl implements WeatherDetails {
   private CurrentWeather currentWeather;
 
-  public WeatherDetailsImpl ( CurrentWeather currentWeather ) {
+  public WeatherDetailsCurrentImpl ( CurrentWeather currentWeather ) {
     this.currentWeather = currentWeather;
   }
 
@@ -47,12 +48,22 @@ public class WeatherDetailsImpl implements WeatherDetails {
   }
 
   @Override
-  public Integer getPressure () {
+  public BigDecimal getPressure () {
     return currentWeather.getMain ().getPressure ();
   }
 
   @Override
   public Integer getHumidity () {
     return currentWeather.getMain ().getHumidity ();
+  }
+
+  @Override
+  public Calendar getDate () {
+    return Calendar.getInstance ();
+  }
+
+  @Override
+  public boolean isToday () {
+    return true;
   }
 }

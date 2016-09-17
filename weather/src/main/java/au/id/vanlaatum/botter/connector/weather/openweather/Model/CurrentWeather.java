@@ -1,6 +1,10 @@
 package au.id.vanlaatum.botter.connector.weather.openweather.Model;
 
+import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampDeserializer;
+import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampSerializer;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +20,8 @@ public class CurrentWeather extends BaseResponse {
   private Long visibility;
   private Wind wind;
   private Clouds clouds;
+  @JsonDeserialize ( using = UnixTimestampDeserializer.class )
+  @JsonSerialize ( using = UnixTimestampSerializer.class )
   private Date dt;
   private Sys sys;
 
@@ -143,7 +149,7 @@ public class CurrentWeather extends BaseResponse {
 
   public static class Main {
     private BigDecimal temp;
-    private Integer pressure;
+    private BigDecimal pressure;
     private Integer humidity;
     private BigDecimal tempMin;
     private BigDecimal tempMax;
@@ -158,11 +164,11 @@ public class CurrentWeather extends BaseResponse {
       return this;
     }
 
-    public Integer getPressure () {
+    public BigDecimal getPressure () {
       return pressure;
     }
 
-    public Main setPressure ( Integer pressure ) {
+    public Main setPressure ( BigDecimal pressure ) {
       this.pressure = pressure;
       return this;
     }
@@ -238,7 +244,11 @@ public class CurrentWeather extends BaseResponse {
     private Integer id;
     private BigDecimal message;
     private String country;
+    @JsonDeserialize (using = UnixTimestampDeserializer.class)
+    @JsonSerialize(using = UnixTimestampSerializer.class)
     private Date sunrise;
+    @JsonDeserialize (using = UnixTimestampDeserializer.class)
+    @JsonSerialize(using = UnixTimestampSerializer.class)
     private Date sunset;
 
     public Integer getType () {

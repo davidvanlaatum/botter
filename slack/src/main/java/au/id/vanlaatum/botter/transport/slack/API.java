@@ -18,6 +18,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class API {
   protected RTMStart doRTMStart () throws IOException {
     RTMStart startData;
     try ( InputStream inputStream = doPost ( "rtm.start", Collections.<String, String>emptyMap () ) ) {
-      final String json = IOUtils.toString ( inputStream );
+      final String json = IOUtils.toString ( inputStream, Charset.forName ( "UTF-8" ) );
       log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       startData = mapper.readValue ( json, RTMStart.class );
     }
@@ -86,7 +87,7 @@ public class API {
     params.put ( "channel", channel );
     params.put ( "ts", ts.toString () );
     try ( InputStream inputStream = doPost ( endpoint, params ) ) {
-      final String json = IOUtils.toString ( inputStream );
+      final String json = IOUtils.toString ( inputStream, Charset.forName ( "UTF-8" ) );
       log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       rt = mapper.readValue ( json, BasePacket.class );
       if ( !rt.getOk () ) {
@@ -108,7 +109,7 @@ public class API {
       params.put ( "attachments", mapper.writeValueAsString ( attachments ) );
     }
     try ( InputStream inputStream = doPost ( "chat.update", params ) ) {
-      final String json = IOUtils.toString ( inputStream );
+      final String json = IOUtils.toString ( inputStream, Charset.forName ( "UTF-8" ) );
       log.log ( LogService.LOG_DEBUG, format ( "Json is {0}", json ) );
       rt = mapper.readValue ( json, BasePacket.class );
       if ( !rt.getOk () ) {

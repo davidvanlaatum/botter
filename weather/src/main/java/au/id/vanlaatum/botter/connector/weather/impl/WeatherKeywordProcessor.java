@@ -30,11 +30,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
 import static au.id.vanlaatum.botter.connector.weather.api.WeatherLocationType.CITY;
 import static java.text.MessageFormat.format;
@@ -49,6 +53,18 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   static final String DEFAULT_LOCATION_TYPE = "location.default.type";
   static final String DEFAULT_LOCATION_COUNTRY = "location.default.country";
   static final String DEFAULT_LOCATION_CITY = "location.default.city";
+  private static final Map<Integer, String> daysOfWeek = new TreeMap<> ();
+
+  static {
+    daysOfWeek.put ( Calendar.MONDAY, "Monday" );
+    daysOfWeek.put ( Calendar.TUESDAY, "Tuesday" );
+    daysOfWeek.put ( Calendar.WEDNESDAY, "Wednesday" );
+    daysOfWeek.put ( Calendar.THURSDAY, "Thursday" );
+    daysOfWeek.put ( Calendar.FRIDAY, "Friday" );
+    daysOfWeek.put ( Calendar.SATURDAY, "Saturday" );
+    daysOfWeek.put ( Calendar.SUNDAY, "Sunday" );
+  }
+
   @Inject
   @Named ( "Connectors" )
   private List<WeatherConnector> connectors;
@@ -96,29 +112,57 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
 
   void weatherQuestion ( Command message, WeatherQuestion question ) throws WeatherFetchFailedException {
     List<WeatherFetchFailedException> exceptions = new ArrayList<> ();
+    Calendar date = null;
+    final WeatherSettings settings = determineWeatherSettings ( message );
     switch ( question.getTimeType () ) {
       case TODAY:
         for ( WeatherConnector connector : getRelevantConnectors ( message ) ) {
           try {
-            final WeatherSettings settings = determineWeatherSettings ( message );
-            final WeatherDetails currentWeather =
-                connector.getCurrentWeather ( determineLocation ( question, message ), settings );
+            final WeatherDetails currentWeather = connector.getCurrentWeather ( determineLocation ( question, message ), settings );
             replyWithDetails ( currentWeather, question, settings, message );
             exceptions.clear ();
             break;
           } catch ( WeatherFetchFailedException ex ) {
+            log.log ( LogService.LOG_WARNING, null, ex );
             exceptions.add ( ex );
           }
         }
         break;
       case TOMORROW:
+        date = (Calendar) Calendar.getInstance ( message.getUser ().getTimezone () ).clone ();
+        date.add ( Calendar.DAY_OF_MONTH, 1 );
         break;
       case DOW:
+        date = (Calendar) Calendar.getInstance ( message.getUser ().getTimezone () ).clone ();
+        date.set ( Calendar.DAY_OF_WEEK, question.getDow () );
+        if ( date.before ( Calendar.getInstance () ) ) {
+          date.add ( Calendar.DAY_OF_MONTH, 7 );
+        }
         break;
       case DATE:
+        date = (Calendar) Calendar.getInstance ( message.getUser ().getTimezone () ).clone ();
+        date.setTime ( question.getDate () );
         break;
       default:
         throw new WeatherFetchFailedException ( "Unknown time " + question.getTimeType () );
+    }
+
+    if ( date != null ) {
+      date.set ( Calendar.HOUR_OF_DAY, 0 );
+      date.clear ( Calendar.MINUTE );
+      date.clear ( Calendar.SECOND );
+      date.clear ( Calendar.MILLISECOND );
+      for ( WeatherConnector connector : getRelevantConnectors ( message ) ) {
+        try {
+          final WeatherDetails details = connector.getDailyForecast ( determineLocation ( question, message ), settings, date );
+          replyWithDetails ( details, question, settings, message );
+          exceptions.clear ();
+          break;
+        } catch ( WeatherFetchFailedException ex ) {
+          log.log ( LogService.LOG_WARNING, null, ex );
+          exceptions.add ( ex );
+        }
+      }
     }
 
     if ( !exceptions.isEmpty () ) {
@@ -145,8 +189,14 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   void replyWithDetails ( WeatherDetails currentWeather, WeatherQuestion question, WeatherSettings settings, Command message ) {
     switch ( question.getSubject () ) {
       case TEMPERATURE:
-        message.reply ( format ( "The temperature is currently {0}{1} in {2}, {3}", currentWeather.getTemperature (),
-            settings.getUnits ().temperatureUnits (), currentWeather.getCity (), currentWeather.getCountry () ) );
+        if ( currentWeather.isToday () ) {
+          message.reply ( format ( "The temperature is currently {0}{1} in {2}, {3}", currentWeather.getTemperature (),
+              settings.getUnits ().temperatureUnits (), currentWeather.getCity (), currentWeather.getCountry () ) );
+        } else {
+          message.reply ( format ( "The temperature {0} will be between {1}{5} and {2}{5} in {3}, {4}",
+              dateToString ( currentWeather.getDate () ), currentWeather.getTemperatureMin (), currentWeather.getTemperatureMax (),
+              currentWeather.getCity (), currentWeather.getCountry (), settings.getUnits ().temperatureUnits () ) );
+        }
         break;
       case WEATHER:
         StringBuilder buffer = new StringBuilder ();
@@ -168,6 +218,31 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
         }
         message.reply ( buffer.toString ().trim () );
         break;
+    }
+    message.reply ( currentWeather.getDate ().getTime ().toString () );
+  }
+
+  String dateToString ( Calendar date ) {
+    final Calendar today = Calendar.getInstance ( date.getTimeZone () );
+    today.set ( Calendar.HOUR_OF_DAY, 0 );
+    today.clear ( Calendar.MINUTE );
+    today.clear ( Calendar.SECOND );
+    Calendar tomorrow = (Calendar) today.clone ();
+    tomorrow.roll ( Calendar.DAY_OF_MONTH, true );
+    Calendar nextDay = (Calendar) tomorrow.clone ();
+    nextDay.roll ( Calendar.DAY_OF_MONTH, true );
+    Calendar nextWeek = (Calendar) today.clone ();
+    nextWeek.roll ( Calendar.DAY_OF_MONTH, 7 );
+
+    if ( date.compareTo ( today ) >= 0 && date.compareTo ( tomorrow ) < 0 ) {
+      return "today";
+    } else if ( date.compareTo ( tomorrow ) >= 0 && date.compareTo ( nextDay ) < 0 ) {
+      return "tomorrow";
+    } else if ( date.compareTo ( today ) >= 0 && date.compareTo ( nextWeek ) < 0 ) {
+      return "on " + daysOfWeek.get ( date.get ( Calendar.DAY_OF_WEEK ) );
+    } else {
+      return String.format ( "on %04d-%02d-%02d", date.get ( Calendar.YEAR ), date.get ( Calendar.MONTH ) + 1,
+          date.get ( Calendar.DAY_OF_MONTH ) );
     }
   }
 

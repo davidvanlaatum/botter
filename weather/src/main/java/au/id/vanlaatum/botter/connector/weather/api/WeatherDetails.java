@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.connector.weather.api;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 
 public interface WeatherDetails {
 
@@ -18,7 +19,11 @@ public interface WeatherDetails {
 
   String getCountry ();
 
-  Integer getPressure ();
+  BigDecimal getPressure ();
 
   Integer getHumidity ();
+
+  Calendar getDate();
+
+  boolean isToday ();
 }

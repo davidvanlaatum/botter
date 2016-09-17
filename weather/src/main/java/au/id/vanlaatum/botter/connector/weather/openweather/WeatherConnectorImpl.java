@@ -10,7 +10,9 @@ import au.id.vanlaatum.botter.connector.weather.api.WeatherLocation;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherSettings;
 import au.id.vanlaatum.botter.connector.weather.impl.CityLocation;
 import au.id.vanlaatum.botter.connector.weather.openweather.Model.CurrentWeather;
-import au.id.vanlaatum.botter.connector.weather.openweather.Model.WeatherDetailsImpl;
+import au.id.vanlaatum.botter.connector.weather.openweather.Model.Forecast;
+import au.id.vanlaatum.botter.connector.weather.openweather.Model.WeatherDetailsCurrentImpl;
+import au.id.vanlaatum.botter.connector.weather.openweather.Model.WeatherDetailsForecast;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -39,11 +41,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import static java.text.MessageFormat.format;
+import static java.util.Objects.requireNonNull;
 
 @Named ( "OpenWeatherConnector" )
 @Singleton
@@ -65,6 +69,9 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
   @Inject
   @Named ( "currentWeatherCache" )
   private CurrentWeatherCache currentWeatherCache;
+  @Inject
+  @Named ( "forecastWeatherCache" )
+  private ForecastWeatherCache forecastWeatherCache;
 
   public WeatherConnectorImpl () throws URISyntaxException {
     mapper.disable ( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES );
@@ -104,9 +111,9 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
     addLocationParameters ( parameters, location );
     final URI uri = base.resolve ( "weather?" + URLEncodedUtils.format ( parameters, "UTF-8" ) );
     try {
-      return currentWeatherCache.lookup ( uri, new Callable<WeatherDetailsImpl> () {
+      return currentWeatherCache.lookup ( uri, new Callable<WeatherDetailsCurrentImpl> () {
         @Override
-        public WeatherDetailsImpl call () throws Exception {
+        public WeatherDetailsCurrentImpl call () throws Exception {
           log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
           final HttpGet get = new HttpGet ( uri );
           final CloseableHttpResponse response = httpClient.execute ( get );
@@ -115,12 +122,50 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
             if ( !weather.isSuccess () ) {
               throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
             }
-            return new WeatherDetailsImpl ( weather );
+            return new WeatherDetailsCurrentImpl ( weather );
           } else {
             throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
           }
         }
       } );
+    } catch ( WeatherFetchFailedException e ) {
+      throw e;
+    } catch ( Exception e ) {
+      throw new WeatherFetchFailedException ( e );
+    }
+  }
+
+  @Override
+  public WeatherDetails getDailyForecast ( WeatherLocation location, WeatherSettings settings, final Calendar date )
+      throws WeatherFetchFailedException {
+    if ( location == null ) {
+      throw new WeatherFetchFailedException ( "No location specified" );
+    }
+    final List<BasicNameValuePair> parameters = new ArrayList<> ( Arrays.asList (
+        new BasicNameValuePair ( "appid", apiKey ),
+        new BasicNameValuePair ( "units", settings.getUnits ().toString () )
+    ) );
+    addLocationParameters ( parameters, location );
+    final URI uri = base.resolve ( "forecast/daily?" + URLEncodedUtils.format ( parameters, "UTF-8" ) );
+    try {
+      return new WeatherDetailsForecast (
+          requireNonNull ( forecastWeatherCache, "forecastWeatherCache is null" ).lookup ( uri, new Callable<Forecast> () {
+            @Override
+            public Forecast call () throws Exception {
+              log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
+              final HttpGet get = new HttpGet ( uri );
+              final CloseableHttpResponse response = httpClient.execute ( get );
+              if ( response.getStatusLine ().getStatusCode () == 200 ) {
+                final Forecast weather = mapper.readValue ( response.getEntity ().getContent (), Forecast.class );
+                if ( !weather.isSuccess () ) {
+                  throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
+                }
+                return weather;
+              } else {
+                throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
+              }
+            }
+          } ), date );
     } catch ( WeatherFetchFailedException e ) {
       throw e;
     } catch ( Exception e ) {
@@ -144,7 +189,7 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
 
   @Override
   public boolean isEnabled () {
-    return enabled && StringUtils.isNotBlank (apiKey);
+    return enabled && StringUtils.isNotBlank ( apiKey );
   }
 
   public WeatherConnectorImpl setEnabled ( boolean enabled ) {
@@ -219,6 +264,12 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
 
   public WeatherConnectorImpl setCurrentWeatherCache ( CurrentWeatherCache currentWeatherCache ) {
     this.currentWeatherCache = currentWeatherCache;
+    return this;
+  }
+
+  public WeatherConnectorImpl setForecastWeatherCache (
+      ForecastWeatherCache forecastWeatherCache ) {
+    this.forecastWeatherCache = forecastWeatherCache;
     return this;
   }
 }

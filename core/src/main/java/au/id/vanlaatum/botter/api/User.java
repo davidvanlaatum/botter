@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.api;
 
+import java.util.TimeZone;
+
 public interface User {
 
   boolean isBot ();
@@ -11,4 +13,6 @@ public interface User {
   String getName ();
 
   String getUniqID ();
+
+  TimeZone getTimezone();
 }
