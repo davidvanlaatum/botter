@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.Dictionary;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import static au.id.vanlaatum.botter.connector.weather.impl.Subject.TEMPERATURE;
@@ -212,9 +213,11 @@ public class WeatherKeywordProcessorTest {
     return mock ( LogService.class, new Answer () {
       @Override
       public Object answer ( InvocationOnMock invocation ) throws Throwable {
-        System.out.println ( Arrays.asList ( invocation.getArguments () ) );
-        if ( invocation.getArguments ().length > 2 && invocation.getArguments ()[2] instanceof Exception ) {
-          ( (Exception) invocation.getArguments ()[2] ).printStackTrace ();
+        if ( Objects.equals ( invocation.getMethod ().getName (), "log" ) ) {
+          System.out.println ( Arrays.asList ( invocation.getArguments () ) );
+          if ( invocation.getArguments ().length > 2 && invocation.getArguments ()[2] instanceof Exception ) {
+            ( (Exception) invocation.getArguments ()[2] ).printStackTrace ();
+          }
         }
         return null;
       }
