@@ -143,7 +143,8 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
     }
     final List<BasicNameValuePair> parameters = new ArrayList<> ( Arrays.asList (
         new BasicNameValuePair ( "appid", apiKey ),
-        new BasicNameValuePair ( "units", settings.getUnits ().toString () )
+        new BasicNameValuePair ( "units", settings.getUnits ().toString () ),
+        new BasicNameValuePair ( "cnt", "14" )
     ) );
     addLocationParameters ( parameters, location );
     final URI uri = base.resolve ( "forecast/daily?" + URLEncodedUtils.format ( parameters, "UTF-8" ) );

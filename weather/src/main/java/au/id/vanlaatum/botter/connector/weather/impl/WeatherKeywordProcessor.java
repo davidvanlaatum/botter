@@ -219,7 +219,6 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
         message.reply ( buffer.toString ().trim () );
         break;
     }
-    message.reply ( currentWeather.getDate ().getTime ().toString () );
   }
 
   String dateToString ( Calendar date ) {
