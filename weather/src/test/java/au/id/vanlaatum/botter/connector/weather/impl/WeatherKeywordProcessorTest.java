@@ -134,7 +134,7 @@ public class WeatherKeywordProcessorTest {
     processor.setPreferencesService ( preferences );
     assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the temperature" ), null ) );
     verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
-    verify ( lastCommand ).reply ( "The temperature is currently 10°C in Adelaide, Australia" );
+    verify ( lastCommand ).reply ( "The temperature is currently 10°C with a max of 12°C and a min of 8°C in Adelaide, Australia" );
   }
 
   @Test
@@ -148,9 +148,11 @@ public class WeatherKeywordProcessorTest {
     processor.setDirectionMap ( new DirectionMapImpl () );
     assertTrue ( processor.checkForKeywords ( mockCommand ( "what is the weather" ), null ) );
     verify ( connector ).getCurrentWeather ( refEq ( new CityLocation ( "Australia", "Adelaide" ) ), any ( WeatherSettings.class ) );
-    verify ( lastCommand ).reply ( "In Adelaide, Australia:\n" +
+    verify ( lastCommand ).reply ( "In Adelaide, Australia: Cloudy\n" +
         "\tTemperature is currently 10°C min: 8°C max: 12°C\n" +
-        "\tWind speed is 10KM/H NbE" );
+        "\tWind speed 10KM/H NbE\n" +
+        "\tHumidity 12%\n" +
+        "\tPressure 13hPa" );
   }
 
   private PreferencesService mockUserPreferences () {
@@ -178,6 +180,7 @@ public class WeatherKeywordProcessorTest {
     when ( details.getCountry () ).thenReturn ( "Australia" );
     when ( details.getDate () ).thenReturn ( Calendar.getInstance () );
     when ( details.isToday () ).thenReturn ( true );
+    when ( details.getDescription () ).thenReturn ( "Cloudy" );
     return connector;
   }
 

@@ -1,10 +1,23 @@
 package au.id.vanlaatum.botter.connector.weather.openweather.Model;
 
+import java.util.List;
+
 public class WeatherConditions {
   private Integer id;
   private String main;
   private String description;
   private String icon;
+
+  public static String toString ( List<WeatherConditions> weather ) {
+    StringBuilder buffer = new StringBuilder ();
+    for ( WeatherConditions conditions : weather ) {
+      if ( buffer.length () > 0 ) {
+        buffer.append ( ", " );
+      }
+      buffer.append ( conditions.getDescription () );
+    }
+    return buffer.toString ();
+  }
 
   public Integer getId () {
     return id;

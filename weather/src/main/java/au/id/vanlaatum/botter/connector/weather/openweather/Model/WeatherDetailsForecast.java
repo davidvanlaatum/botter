@@ -81,4 +81,9 @@ public class WeatherDetailsForecast implements WeatherDetails {
   public boolean isToday () {
     return false;
   }
+
+  @Override
+  public String getDescription () {
+    return WeatherConditions.toString ( details.getWeather () );
+  }
 }

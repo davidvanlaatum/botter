@@ -13,6 +13,8 @@ import au.id.vanlaatum.botter.connector.weather.api.WeatherLocationType;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherSettings;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BufferedTokenStream;
+import org.antlr.v4.runtime.LexerNoViableAltException;
+import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
@@ -92,7 +94,8 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       }
       return question != null;
     } catch ( Exception ex ) {
-      log.log ( LogService.LOG_INFO, null, ex );
+      log.log ( ex.getCause () instanceof LexerNoViableAltException || ex.getCause () instanceof NoViableAltException ?
+          LogService.LOG_DEBUG : LogService.LOG_INFO, null, ex );
       return false;
     }
   }
@@ -185,35 +188,46 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     message.reply ( "Location updated" );
   }
 
-  void replyWithDetails ( WeatherDetails currentWeather, WeatherQuestion question, WeatherSettings settings, Command message ) {
+  void replyWithDetails ( WeatherDetails weather, WeatherQuestion question, WeatherSettings settings, Command message ) {
     switch ( question.getSubject () ) {
       case TEMPERATURE:
-        if ( currentWeather.isToday () ) {
-          message.reply ( format ( "The temperature is currently {0}{1} in {2}, {3}", currentWeather.getTemperature (),
-              settings.getUnits ().temperatureUnits (), currentWeather.getCity (), currentWeather.getCountry () ) );
+        if ( weather.isToday () ) {
+          message.reply ( format ( "The temperature is currently {0}{1} with a max of {4}{1} and a min of {5}{1} in {2}, {3}",
+              weather.getTemperature (), settings.getUnits ().temperatureUnits (), weather.getCity (),
+              weather.getCountry (), weather.getTemperatureMax (), weather.getTemperatureMin () ) );
         } else {
           message.reply ( format ( "The temperature {0} will be between {1}{5} and {2}{5} in {3}, {4}",
-              dateToString ( currentWeather.getDate () ), currentWeather.getTemperatureMin (), currentWeather.getTemperatureMax (),
-              currentWeather.getCity (), currentWeather.getCountry (), settings.getUnits ().temperatureUnits () ) );
+              dateToString ( weather.getDate () ), weather.getTemperatureMin (), weather.getTemperatureMax (),
+              weather.getCity (), weather.getCountry (), settings.getUnits ().temperatureUnits () ) );
         }
         break;
       case WEATHER:
         StringBuilder buffer = new StringBuilder ();
-        buffer.append ( format ( "In {0}, {1}:\n", currentWeather.getCity (), currentWeather.getCountry () ) );
-        buffer.append ( format ( "\tTemperature is currently {0}{1}", currentWeather.getTemperature (),
-            settings.getUnits ().temperatureUnits () ) );
-        if ( currentWeather.getTemperatureMax () != null ) {
-          buffer.append ( " min: " ).append ( currentWeather.getTemperatureMin () ).append ( settings.getUnits ().temperatureUnits () );
-          buffer.append ( " max: " ).append ( currentWeather.getTemperatureMax () ).append ( settings.getUnits ().temperatureUnits () );
+        buffer.append ( format ( "In {0}, {1}: {2}\n", weather.getCity (), weather.getCountry (), weather.getDescription () ) );
+        if ( weather.isToday () ) {
+          buffer.append ( format ( "\tTemperature is currently {0}{1}", weather.getTemperature (),
+              settings.getUnits ().temperatureUnits () ) );
+        } else {
+          buffer.append ( "\tTemperature" );
+        }
+        if ( weather.getTemperatureMax () != null ) {
+          buffer.append ( " min: " ).append ( weather.getTemperatureMin () ).append ( settings.getUnits ().temperatureUnits () );
+          buffer.append ( " max: " ).append ( weather.getTemperatureMax () ).append ( settings.getUnits ().temperatureUnits () );
         }
         buffer.append ( "\n" );
-        if ( currentWeather.getWindSpeed () != null ) {
-          buffer.append ( "\tWind speed is " ).append ( currentWeather.getWindSpeed () ).append ( settings.getUnits ().speedUnits () );
-          if ( currentWeather.getWindDirection () != null ) {
-            buffer.append ( " " )
-                .append ( directionMap.getDescriptionForDegrees ( new BigDecimal ( currentWeather.getWindDirection () ) ) );
+        if ( weather.getWindSpeed () != null ) {
+          buffer.append ( "\tWind speed " ).append ( weather.getWindSpeed () ).append ( settings.getUnits ().speedUnits () );
+          if ( weather.getWindDirection () != null ) {
+            buffer.append ( " " ).append ( directionMap.getDescriptionForDegrees ( new BigDecimal ( weather.getWindDirection () ) ) );
           }
           buffer.append ( "\n" );
+        }
+        if ( weather.getHumidity () != null ) {
+          buffer.append ( "\tHumidity " ).append ( weather.getHumidity () ).append ( "%" ).append ( "\n" );
+        }
+        if ( weather.getPressure () != null ) {
+          buffer.append ( "\tPressure " ).append ( weather.getPressure () ).append ( settings.getUnits ().pressureUnits () )
+              .append ( "\n" );
         }
         message.reply ( buffer.toString ().trim () );
         break;

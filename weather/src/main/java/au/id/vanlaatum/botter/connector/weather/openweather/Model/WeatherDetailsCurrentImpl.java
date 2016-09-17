@@ -66,4 +66,9 @@ public class WeatherDetailsCurrentImpl implements WeatherDetails {
   public boolean isToday () {
     return true;
   }
+
+  @Override
+  public String getDescription () {
+    return WeatherConditions.toString ( currentWeather.getWeather () );
+  }
 }

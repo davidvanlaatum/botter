@@ -26,4 +26,6 @@ public interface WeatherDetails {
   Calendar getDate ();
 
   boolean isToday ();
+
+  String getDescription ();
 }

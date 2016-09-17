@@ -23,7 +23,7 @@
   </licenses>
 
   <properties>
-    <pax.logging.version>1.8.5</pax.logging.version>
+    <pax.logging.version>1.8.6</pax.logging.version>
     <powermock.version>1.6.5</powermock.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
