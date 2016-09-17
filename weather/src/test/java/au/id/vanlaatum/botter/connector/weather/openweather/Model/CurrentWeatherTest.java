@@ -54,6 +54,6 @@ public class CurrentWeatherTest {
   public void name () throws Exception {
     ObjectMapper mapper = new ObjectMapper ();
     final CurrentWeather currentWeather = mapper.readValue ( JSON, CurrentWeather.class );
-    assertJsonEquals ( mapper.valueToTree ( currentWeather ), JSON );
+    assertJsonEquals ( JSON, mapper.valueToTree ( currentWeather ) );
   }
 }

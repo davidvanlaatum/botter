@@ -98,7 +98,6 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     List<WeatherFetchFailedException> exceptions = new ArrayList<> ();
     switch ( question.getTimeType () ) {
       case TODAY:
-      default:
         for ( WeatherConnector connector : getRelevantConnectors ( message ) ) {
           try {
             final WeatherSettings settings = determineWeatherSettings ( message );
@@ -106,12 +105,20 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
                 connector.getCurrentWeather ( determineLocation ( question, message ), settings );
             replyWithDetails ( currentWeather, question, settings, message );
             exceptions.clear ();
+            break;
           } catch ( WeatherFetchFailedException ex ) {
             exceptions.add ( ex );
           }
-          break;
         }
         break;
+      case TOMORROW:
+        break;
+      case DOW:
+        break;
+      case DATE:
+        break;
+      default:
+        throw new WeatherFetchFailedException ( "Unknown time " + question.getTimeType () );
     }
 
     if ( !exceptions.isEmpty () ) {

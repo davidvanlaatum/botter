@@ -6,12 +6,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class CurrentWeather {
+public class CurrentWeather extends BaseResponse {
   private Long id;
   private String name;
-  private Integer cod;
   private Coord coord;
-  private List<Weather> weather;
+  private List<WeatherConditions> weather;
   private String base;
   private Main main;
   private Long visibility;
@@ -19,16 +18,6 @@ public class CurrentWeather {
   private Clouds clouds;
   private Date dt;
   private Sys sys;
-  private String message;
-
-  public String getMessage () {
-    return message;
-  }
-
-  public CurrentWeather setMessage ( String message ) {
-    this.message = message;
-    return this;
-  }
 
   public Coord getCoord () {
     return coord;
@@ -39,12 +28,11 @@ public class CurrentWeather {
     return this;
   }
 
-  public List<Weather> getWeather () {
+  public List<WeatherConditions> getWeather () {
     return weather;
   }
 
-  public CurrentWeather setWeather (
-      List<Weather> weather ) {
+  public CurrentWeather setWeather ( List<WeatherConditions> weather ) {
     this.weather = weather;
     return this;
   }
@@ -94,15 +82,6 @@ public class CurrentWeather {
     return this;
   }
 
-  public Integer getCod () {
-    return cod;
-  }
-
-  public CurrentWeather setCod ( Integer cod ) {
-    this.cod = cod;
-    return this;
-  }
-
   public Wind getWind () {
     return wind;
   }
@@ -137,49 +116,6 @@ public class CurrentWeather {
   public CurrentWeather setSys ( Sys sys ) {
     this.sys = sys;
     return this;
-  }
-
-  public static class Weather {
-    private Integer id;
-    private String main;
-    private String description;
-    private String icon;
-
-    public Integer getId () {
-      return id;
-    }
-
-    public Weather setId ( Integer id ) {
-      this.id = id;
-      return this;
-    }
-
-    public String getMain () {
-      return main;
-    }
-
-    public Weather setMain ( String main ) {
-      this.main = main;
-      return this;
-    }
-
-    public String getDescription () {
-      return description;
-    }
-
-    public Weather setDescription ( String description ) {
-      this.description = description;
-      return this;
-    }
-
-    public String getIcon () {
-      return icon;
-    }
-
-    public Weather setIcon ( String icon ) {
-      this.icon = icon;
-      return this;
-    }
   }
 
   public static class Coord {

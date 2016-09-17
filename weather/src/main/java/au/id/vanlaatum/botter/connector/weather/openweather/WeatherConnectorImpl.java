@@ -112,7 +112,7 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
           final CloseableHttpResponse response = httpClient.execute ( get );
           if ( response.getStatusLine ().getStatusCode () == 200 ) {
             final CurrentWeather weather = mapper.readValue ( response.getEntity ().getContent (), CurrentWeather.class );
-            if ( weather.getCod () != 200 ) {
+            if ( !weather.isSuccess () ) {
               throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
             }
             return new WeatherDetailsImpl ( weather );
