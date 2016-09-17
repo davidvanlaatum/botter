@@ -23,7 +23,7 @@ public interface WeatherDetails {
 
   Integer getHumidity ();
 
-  Calendar getDate();
+  Calendar getDate ();
 
   boolean isToday ();
 }

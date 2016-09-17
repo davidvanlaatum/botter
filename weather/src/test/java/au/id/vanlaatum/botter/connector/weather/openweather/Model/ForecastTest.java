@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import static net.javacrumbs.jsonunit.JsonAssert.assertJsonEquals;
 import static net.javacrumbs.jsonunit.JsonAssert.when;
-import static org.junit.Assert.*;
 
 public class ForecastTest {
   public static final String JSON = "{\n" +

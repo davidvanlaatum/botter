@@ -14,5 +14,5 @@ public interface User {
 
   String getUniqID ();
 
-  TimeZone getTimezone();
+  TimeZone getTimezone ();
 }

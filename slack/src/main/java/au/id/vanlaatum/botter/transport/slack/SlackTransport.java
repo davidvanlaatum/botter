@@ -34,7 +34,6 @@ import javax.websocket.ClientEndpointConfig;
 import javax.websocket.CloseReason;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
-import javax.websocket.DeploymentException;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.Endpoint;
@@ -153,7 +152,7 @@ public class SlackTransport implements Transport, ManagedService {
   }
 
   protected void unregisterService () {
-    if ( registration != null) {
+    if ( registration != null ) {
       registration.unregister ();
       registration = null;
     }
@@ -457,7 +456,7 @@ public class SlackTransport implements Transport, ManagedService {
         lastPacket = new Date ();
         log.log ( LogService.LOG_DEBUG, format ( "Message {0}: {1}", packet, packet.getRaw () ) );
         if ( packet instanceof Message && !Objects.equals ( ( (Message) packet ).getUser (), self.getId () ) ) {
-          channels.get ( ( (Message) packet ).getChannel () ).setMark ( ( (Message) packet ).getTs () );
+          channels.get ( ( (Message) packet ).getChannel () ).setMark ( packet.getTs () );
           botFactory.processMessage ( buildSlackMessageDTO ( (Message) packet ) );
         } else if ( packet instanceof Hello ) {
           connectedSince = new Date ();
@@ -470,7 +469,7 @@ public class SlackTransport implements Transport, ManagedService {
         } else if ( packet instanceof ReconnectURL ) {
           reconnectURL = ( (ReconnectURL) packet ).getUrl ();
         } else if ( packet instanceof Marked ) {
-          channels.get ( ( (Marked) packet ).getChannel () ).updateMark ( ( (Marked) packet ).getTs () );
+          channels.get ( ( (Marked) packet ).getChannel () ).updateMark ( packet.getTs () );
         }
       } catch ( Exception e ) {
         log.log ( LogService.LOG_WARNING, "Exception while processing packet", e );

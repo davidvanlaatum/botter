@@ -9,5 +9,6 @@ public interface BotFactory {
   void processMessage ( Message message );
 
   boolean matchesPhrase ( List<Word> phrase, List<String> words, Map<String, Object> data );
+
   boolean matchesPhrase ( List<Word> phrase, List<String> words );
 }

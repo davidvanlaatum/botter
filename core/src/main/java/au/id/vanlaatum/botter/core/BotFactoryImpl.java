@@ -55,8 +55,8 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   @Named ( "Keywords" )
   private List<KeyWordProcessor> keyWordProcessors;
   @Inject
-  @Named("Caches")
-  private List<GenericCache<?,?>> cacheList;
+  @Named ( "Caches" )
+  private List<GenericCache<?, ?>> cacheList;
   private ScheduledExecutorService executor;
   private ThreadGroup threadGroup;
   private ServiceRegistration<StatusInfoProvider> statusProvider;
@@ -242,7 +242,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
     @Override
     public String getStatus () {
       return format ( "{0} Commands\n{1} Transports\n{2} Keywords\n{3} Caches containing {4} items\n", commands.size (), transports.size (),
-          keyWordProcessors.size (), cacheList.size (), sumCaches() );
+          keyWordProcessors.size (), cacheList.size (), sumCaches () );
     }
 
     private int sumCaches () {

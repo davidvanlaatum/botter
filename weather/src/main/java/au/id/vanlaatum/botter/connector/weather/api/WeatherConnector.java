@@ -9,5 +9,6 @@ public interface WeatherConnector {
 
   boolean isEnabled ();
 
-  WeatherDetails getDailyForecast ( WeatherLocation weatherLocation, WeatherSettings settings, Calendar date ) throws WeatherFetchFailedException;
+  WeatherDetails getDailyForecast ( WeatherLocation weatherLocation, WeatherSettings settings, Calendar date )
+      throws WeatherFetchFailedException;
 }

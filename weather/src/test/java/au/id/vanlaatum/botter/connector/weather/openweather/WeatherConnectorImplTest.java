@@ -13,7 +13,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.internal.stubbing.defaultanswers.TriesToReturnSelf;
 import org.osgi.service.log.LogService;
@@ -22,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.powermock.api.mockito.PowerMockito.mock;

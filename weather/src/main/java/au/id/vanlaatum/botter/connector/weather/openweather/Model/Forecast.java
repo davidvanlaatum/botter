@@ -118,8 +118,8 @@ public class Forecast extends BaseResponse {
   }
 
   public static class Details {
-    @JsonDeserialize (using = UnixTimestampDeserializer.class)
-    @JsonSerialize(using = UnixTimestampSerializer.class)
+    @JsonDeserialize ( using = UnixTimestampDeserializer.class )
+    @JsonSerialize ( using = UnixTimestampSerializer.class )
     private Date dt;
     private Temp temp;
     private BigDecimal pressure;

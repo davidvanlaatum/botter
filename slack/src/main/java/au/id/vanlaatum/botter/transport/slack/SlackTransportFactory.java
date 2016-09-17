@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static java.text.MessageFormat.format;
-
 @Singleton
 @Named ( "SlackTransportFactory" )
 public class SlackTransportFactory implements ManagedServiceFactory, MetaTypeProvider {

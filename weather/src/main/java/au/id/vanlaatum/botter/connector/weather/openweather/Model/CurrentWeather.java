@@ -244,11 +244,11 @@ public class CurrentWeather extends BaseResponse {
     private Integer id;
     private BigDecimal message;
     private String country;
-    @JsonDeserialize (using = UnixTimestampDeserializer.class)
-    @JsonSerialize(using = UnixTimestampSerializer.class)
+    @JsonDeserialize ( using = UnixTimestampDeserializer.class )
+    @JsonSerialize ( using = UnixTimestampSerializer.class )
     private Date sunrise;
-    @JsonDeserialize (using = UnixTimestampDeserializer.class)
-    @JsonSerialize(using = UnixTimestampSerializer.class)
+    @JsonDeserialize ( using = UnixTimestampDeserializer.class )
+    @JsonSerialize ( using = UnixTimestampSerializer.class )
     private Date sunset;
 
     public Integer getType () {

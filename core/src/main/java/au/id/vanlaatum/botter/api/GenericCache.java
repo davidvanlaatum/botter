@@ -13,7 +13,7 @@ public interface GenericCache<Key, Value> {
 
   int size ();
 
-  String getName();
+  String getName ();
 
   interface CacheObject<Value> {
   }
