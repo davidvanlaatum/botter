@@ -58,3 +58,4 @@ fabric.properties
 core/target/
 slack/target/
 .idea/sonarIssues.xml
+.idea/dataSources/
