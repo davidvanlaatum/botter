@@ -26,6 +26,15 @@
     <feature>jackson</feature>
     <bundle>mvn:au.id.vanlaatum.botter/weather/${au.id.vanlaatum.botter/weather/version}</bundle>
   </feature>
+  <feature name="botter-whereis" version="${project.version}" description="Botter Where is">
+    <feature>jpa</feature>
+    <feature>antlr4</feature>
+    <feature>botter</feature>
+    <feature>hibernate</feature>
+    <feature>aries-proxy</feature>
+    <bundle>mvn:au.id.vanlaatum.botter/whereis/${au.id.vanlaatum.botter/whereis/version}</bundle>
+    <configfile finalname="org.ops4j.datasource-whereis.cfg"/>
+  </feature>
   <feature name="jackson">
     <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${com.fasterxml.jackson.core/jackson-databind/version}</bundle>
     <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${com.fasterxml.jackson.core/jackson-annotations/version}</bundle>

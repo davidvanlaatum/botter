@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+  <persistence-unit name="whereis" transaction-type="JTA">
+    <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</jta-data-source>
+    <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</non-jta-data-source>
+    <class>au.id.vanlaatum.botter.connector.whereis.impl.model.User</class>
+    <class>au.id.vanlaatum.botter.connector.whereis.impl.model.LocationAt</class>
+    <properties>
+      <!--<property name="hibernate.hbm2ddl.auto" value="verify"/>-->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.use_sql_comments" value="true"/>
+    </properties>
+  </persistence-unit>
+</persistence>

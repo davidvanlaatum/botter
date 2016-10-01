@@ -11,6 +11,7 @@
     <file type="Osmorc" url="file://$PROJECT_DIR$/fisheye" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/slack" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/weather" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/whereis" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -21,7 +22,7 @@
   </component>
   <component name="Osmorc">
     <option name="bundlesOutputPath" value="$PROJECT_DIR$/out/bundles" />
-    <option name="frameworkInstanceName" value="Felix (5.4.0)" />
+    <option name="frameworkInstanceName" value="Felix (5.6.0)" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />

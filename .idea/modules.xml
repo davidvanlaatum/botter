@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/fisheye/fisheye.iml" filepath="$PROJECT_DIR$/fisheye/fisheye.iml" />
       <module fileurl="file://$PROJECT_DIR$/slack/slack.iml" filepath="$PROJECT_DIR$/slack/slack.iml" />
       <module fileurl="file://$PROJECT_DIR$/weather/weather.iml" filepath="$PROJECT_DIR$/weather/weather.iml" />
+      <module fileurl="file://$PROJECT_DIR$/whereis/whereis.iml" filepath="$PROJECT_DIR$/whereis/whereis.iml" />
     </modules>
   </component>
 </project>

@@ -31,6 +31,10 @@
       <artifactId>weather</artifactId>
     </dependency>
     <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>whereis</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.glassfish.tyrus.bundles</groupId>
       <artifactId>websocket-ri-bundle</artifactId>
     </dependency>
@@ -50,11 +54,13 @@
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>3.1.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>javax.xml.stream</artifactId>
       <version>10.0-b28</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.servicemix.specs</groupId>
@@ -78,11 +84,11 @@
       <version>0.12.0</version>
       <type>xml</type>
       <classifier>features</classifier>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.prefs</artifactId>
-      <version>1.0.6</version>
     </dependency>
   </dependencies>
 

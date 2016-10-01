@@ -3,6 +3,7 @@ package au.id.vanlaatum.botter.transport.slack;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
+import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Attachment;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
 import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
@@ -313,6 +314,11 @@ public class SlackTransport implements Transport, ManagedService {
       name = name.substring ( 1 );
     }
     return self.getName ().equalsIgnoreCase ( name );
+  }
+
+  @Override
+  public User getUser ( String userName ) throws UserNotFoundException {
+    return new SlackUserDTO ( users.getUserByUsername ( userName ), this );
   }
 
   private synchronized Integer nextId () {

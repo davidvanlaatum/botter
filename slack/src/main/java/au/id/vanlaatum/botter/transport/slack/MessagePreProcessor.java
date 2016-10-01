@@ -1,5 +1,6 @@
 package au.id.vanlaatum.botter.transport.slack;
 
+import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
 import org.osgi.service.log.LogService;
 
@@ -31,7 +32,7 @@ public class MessagePreProcessor {
           try {
             final SlackUser user = transport.getUsers ().getUser ( exp.substring ( 1 ) );
             matcher.appendReplacement ( out, "@" + user.getName () );
-          } catch ( UserNotFoundException ignore ) {
+          } catch ( Transport.UserNotFoundException ignore ) {
             log.log ( LogService.LOG_DEBUG, "User " + exp.substring ( 1 ) + " not found", ignore );
           }
         } else if ( URL.matcher ( exp ).matches () ) {
