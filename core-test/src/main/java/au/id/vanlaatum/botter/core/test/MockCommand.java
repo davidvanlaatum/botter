@@ -27,6 +27,10 @@ public class MockCommand extends CommandImpl {
     addUser ( "joe" );
   }
 
+  public static MockCommand MockCommand ( String message ) {
+    return new MockCommand ( message );
+  }
+
   @Override
   public void reply ( String message ) {
     recordedCalls.add ( new MessageCall ( CallType.REPLY, message ) );
