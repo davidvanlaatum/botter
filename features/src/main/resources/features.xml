@@ -32,6 +32,7 @@
     <feature>botter</feature>
     <feature>hibernate</feature>
     <feature>aries-proxy</feature>
+    <feature>joda-time</feature>
     <bundle>mvn:au.id.vanlaatum.botter/whereis/${au.id.vanlaatum.botter/whereis/version}</bundle>
     <configfile finalname="org.ops4j.datasource-whereis.cfg"/>
   </feature>
@@ -69,5 +70,8 @@
   </feature>
   <feature name="antlr4">
     <bundle>mvn:org.antlr/antlr4-runtime/${org.antlr/antlr4-runtime/version}</bundle>
+  </feature>
+  <feature name="joda-time">
+    <bundle>mvn:joda-time/joda-time/${joda-time/joda-time/version}</bundle>
   </feature>
 </features>

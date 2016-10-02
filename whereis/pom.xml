@@ -171,13 +171,8 @@
       <artifactId>joda-time</artifactId>
     </dependency>
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time-hibernate</artifactId>
-    </dependency>
-    <dependency>
       <groupId>au.id.vanlaatum.botter</groupId>
       <artifactId>core-test</artifactId>
-      <version>1.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
