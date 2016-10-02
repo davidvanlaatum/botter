@@ -10,20 +10,20 @@ question locals [QuestionType type = null;]:
     whereisquestion { $type = QuestionType.WHEREIS; } |
     notinquestion { $type = QuestionType.NOTIN;} ;
 
-whereisquestion locals [String userName = null;]: whereis AT? username { $userName = $username.text; };
+whereisquestion locals [String userName = null;]: whereis WS AT? username { $userName = $username.text; };
 notinquestion locals [
     RelativeTime from = null,
     RelativeTime to = null,
     String userName = null,
     String valueReason = null;]:
-    NOT IN (time)? (reason)? {
+    NOT WS IN (WS time)? (WS reason)? {
         if ( $time.ctx != null ) {
             $from = $time.value;
         } else {
             $from = new RelativeTime(TimeConstant.TODAY);
         }
         $valueReason = $reason.ctx != null ? $reason.reasonValue : "not in";
-    } | AT? username IS NOT IN (time)? (reason)? {
+    } | AT? username WS IS WS NOT WS IN (WS time)? (WS reason)? {
         if ( $time.ctx != null ) {
             $from = $time.value;
         } else {
@@ -31,11 +31,11 @@ notinquestion locals [
         }
         $userName = $username.text;
         $valueReason = $reason.ctx != null ? $reason.reasonValue : "not in";
-    } | AT? username IS SICK {
+    } | AT? username WS IS WS SICK {
         $from = new RelativeTime(TimeConstant.TODAY);
         $userName = $username.text;
         $valueReason = "sick";
-    } | WILL BE IN BY time {
+    } | (WILL WS)? (BE WS)? IN WS BY WS time {
         $from = new RelativeTime(TimeConstant.NOW);
         $to = $time.value;
         $valueReason = $text;
@@ -92,7 +92,7 @@ SUNDAY: 'sunday' ('\''?'s')?;
 WHERE: 'where';
 ANYLETTER: [A-Za-z];
 AT: '@';
-WS: [ \t\r\n]+ -> skip;
+WS: [ \t\r\n]+;
 NOT: 'not';
 IN: 'in';
 NUM: [0-9];

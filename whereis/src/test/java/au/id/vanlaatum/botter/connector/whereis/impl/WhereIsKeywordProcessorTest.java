@@ -261,6 +261,13 @@ public class WhereIsKeywordProcessorTest {
         hasProperty ( "userName", nullValue () ),
         hasProperty ( "reason", equalTo ( "not in" ) )
     ) );
+    assertThat ( processor.parseQuestion ( "in by 10", GMT ), allOf (
+        isA ( (Class<Question>) NotInQuestion.class.asSubclass ( Question.class ) ),
+        hasProperty ( "from", equalTo ( date ( "2016-01-01 00:00:00GMT" ) ) ),
+        hasProperty ( "to", equalTo ( date ( "2016-01-01 10:00:00GMT" ) ) ),
+        hasProperty ( "userName", nullValue () ),
+        hasProperty ( "reason", equalTo ( "in by 10" ) )
+    ) );
   }
 
   private DateTime date ( String date ) {

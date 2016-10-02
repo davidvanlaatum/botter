@@ -1,7 +1,6 @@
 package au.id.vanlaatum.botter.connector.whereis.impl;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 import java.util.TimeZone;
 
@@ -17,57 +16,25 @@ public class NotInQuestion implements Question {
     requireNonNull ( notinquestion.from, "from null" );
     userName = notinquestion.userName;
     reason = notinquestion.valueReason;
+    from = notinquestion.from.resolveTime ( timezone );
     switch ( notinquestion.from.getType () ) {
-      case DATE:
-        from = notinquestion.from.getTime ();
-        break;
-      case TODAY: {
-        final DateTime now = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) );
-        from = now.dayOfMonth ().roundFloorCopy ();
+      case TODAY:
         to = from.dayOfMonth ().addToCopy ( 1 );
         break;
-      }
-      case TOMORROW: {
-        final DateTime now = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) );
-        from = now.dayOfMonth ().roundFloorCopy ().plusDays ( 1 );
+      case TOMORROW:
         to = from.dayOfMonth ().addToCopy ( 1 );
-        break;
-      }
-      case NOW:
-        from = new DateTime ();
         break;
       case DOW:
-        from = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).withDayOfWeek ( notinquestion.from.getDow () ).dayOfWeek ()
-            .roundFloorCopy ();
-        if ( from.isBeforeNow () ) {
-          from = from.dayOfYear ().addToCopy ( 7 );
-        }
         to = from.dayOfWeek ().addToCopy ( 1 );
+        break;
+      case DATE:
+      case NOW:
         break;
       default:
         throw new RuntimeException ( "Unknown from type " + notinquestion.from.getType () );
     }
     if ( notinquestion.to != null ) {
-      switch ( notinquestion.to.getType () ) {
-        case DATE:
-          to = notinquestion.to.getTime ();
-          break;
-        case HOUR:
-          to = new DateTime ().dayOfMonth ().roundFloorCopy ().hourOfDay ().setCopy ( notinquestion.to.getHour () );
-          if ( to.isBeforeNow () ) {
-            to = to.hourOfDay ().addToCopy ( 12 );
-          }
-          break;
-        case HOUR_MIN:
-          to = new DateTime ().dayOfMonth ().roundFloorCopy ().hourOfDay ().setCopy ( notinquestion.to.getHour () );
-          to = to.minuteOfHour ().setCopy ( notinquestion.to.getMinute () );
-          if ( to.isBeforeNow () ) {
-            to = to.hourOfDay ().addToCopy ( 12 );
-          }
-          break;
-        default:
-          throw new RuntimeException ( "Unknown to type " + notinquestion.to.getType () );
-      }
+      to = notinquestion.to.resolveTime ( timezone );
     }
   }
 

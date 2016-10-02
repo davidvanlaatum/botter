@@ -5,5 +5,6 @@ public enum TimeConstant {
   TOMORROW,
   DOW,
   DATE,
-  HOUR, HOUR_MIN, NOW
+  HOUR_MIN,
+  NOW
 }

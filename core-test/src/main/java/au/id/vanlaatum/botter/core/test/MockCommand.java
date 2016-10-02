@@ -69,7 +69,7 @@ public class MockCommand extends CommandImpl {
   }
 
   public MockCommand assertMatchesKeywords ( KeyWordProcessor processor ) {
-    Assert.assertTrue ( processor.checkForKeywords ( this, null ) );
+    Assert.assertTrue ( getCommandText () + " is a keyword", processor.checkForKeywords ( this, null ) );
     return this;
   }
 

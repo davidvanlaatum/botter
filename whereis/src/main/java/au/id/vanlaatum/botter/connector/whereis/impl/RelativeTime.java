@@ -1,6 +1,9 @@
 package au.id.vanlaatum.botter.connector.whereis.impl;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
+import java.util.TimeZone;
 
 public class RelativeTime {
   private final TimeConstant type;
@@ -47,5 +50,40 @@ public class RelativeTime {
 
   public int getMinute () {
     return minute;
+  }
+
+  public DateTime resolveTime ( TimeZone timezone ) {
+    DateTime rt;
+    switch ( type ) {
+      case DATE:
+        rt = time;
+        break;
+      case TODAY:
+        rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).dayOfMonth ().roundFloorCopy ();
+        break;
+      case TOMORROW:
+        rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).dayOfMonth ().roundFloorCopy ().plusDays ( 1 );
+        break;
+      case DOW:
+        rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).withDayOfWeek ( dow ).dayOfWeek ()
+            .roundFloorCopy ();
+        if ( rt.isBeforeNow () ) {
+          rt = rt.dayOfYear ().addToCopy ( 7 );
+        }
+        break;
+      case NOW:
+        rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) );
+        break;
+      case HOUR_MIN:
+        rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).dayOfMonth ().roundFloorCopy ().hourOfDay ().setCopy ( hour )
+            .minuteOfHour ().setCopy ( minute );
+        if ( rt.isBeforeNow () ) {
+          rt = rt.hourOfDay ().addToCopy ( 12 );
+        }
+        break;
+      default:
+        throw new UnsupportedOperationException ( type.toString () );
+    }
+    return rt;
   }
 }
