@@ -6,7 +6,6 @@
     <class>au.id.vanlaatum.botter.connector.whereis.impl.model.User</class>
     <class>au.id.vanlaatum.botter.connector.whereis.impl.model.LocationAt</class>
     <properties>
-      <!--<property name="hibernate.hbm2ddl.auto" value="verify"/>-->
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.use_sql_comments" value="true"/>

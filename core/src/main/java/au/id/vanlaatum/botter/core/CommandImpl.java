@@ -35,7 +35,7 @@ public class CommandImpl implements Command {
     return commandText;
   }
 
-  void setCommandText ( String commandText ) {
+  protected void setCommandText ( String commandText ) {
     this.commandText = commandText;
     splitParts ();
   }
@@ -77,6 +77,16 @@ public class CommandImpl implements Command {
   @Override
   public void error ( String message ) {
     this.transport.error ( this.message, message );
+  }
+
+  @Override
+  public void error ( Throwable e ) {
+    StringBuilder builder = new StringBuilder ();
+    while ( e != null ) {
+      builder.append ( e.getClass ().getName () ).append ( ": " ).append ( e.getMessage () ).append ( "\n" );
+      e = e.getCause ();
+    }
+    error ( builder.toString () );
   }
 
   @Override

@@ -23,6 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="core" />
+        <module name="core-test" />
         <module name="fisheye" />
         <module name="slack" />
         <module name="weather" />
@@ -32,6 +33,7 @@
     <bytecodeTargetLevel>
       <module name="botter" target="1.5" />
       <module name="core" target="1.7" />
+      <module name="core-test" target="1.7" />
       <module name="features" target="1.5" />
       <module name="fisheye" target="1.7" />
       <module name="slack" target="1.7" />

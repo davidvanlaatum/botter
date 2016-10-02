@@ -17,6 +17,8 @@ public interface Transport {
 
   User getUser ( String userName ) throws UserNotFoundException;
 
+  User getUserByUniqID ( String userId ) throws UserNotFoundException;
+
   class UserNotFoundException extends Exception {
     public UserNotFoundException () {
     }

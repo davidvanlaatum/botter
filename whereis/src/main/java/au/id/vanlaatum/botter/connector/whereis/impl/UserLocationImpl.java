@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.connector.whereis.api.UserLocation;
 import au.id.vanlaatum.botter.connector.whereis.impl.dto.LocationDTO;
 import au.id.vanlaatum.botter.connector.whereis.impl.model.LocationAt;
 import au.id.vanlaatum.botter.connector.whereis.impl.model.User;
+import org.joda.time.DateTime;
 import org.ops4j.pax.cdi.api.OsgiServiceProvider;
 import org.osgi.service.log.LogService;
 
@@ -20,6 +21,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
 
 @OsgiServiceProvider ( classes = UserLocation.class )
 @Singleton
@@ -59,8 +62,11 @@ public class UserLocationImpl implements UserLocation {
       final TypedQuery<LocationAt> query = em.createNamedQuery ( "LocationAt.findCurrentByUser", LocationAt.class );
       query.setParameter ( "user", user );
       query.setParameter ( "now", now );
-      final LocationAt resultList = query.getSingleResult ();
-      rt = new LocationDTO ( resultList );
+      query.setMaxResults ( 1 );
+      final List<LocationAt> resultList = query.getResultList ();
+      if ( !resultList.isEmpty () ) {
+        rt = new LocationDTO ( resultList.get ( 0 ) );
+      }
     } catch ( NoResultException ex ) {
       log.log ( LogService.LOG_DEBUG, "Not found", ex );
     } finally {
@@ -69,7 +75,7 @@ public class UserLocationImpl implements UserLocation {
     return rt;
   }
 
-  User getOrCreateUser ( String id, EntityManager em ) {
+  private User getOrCreateUser ( String id, EntityManager em ) {
     User rt;
     try {
       final TypedQuery<User> findByID = em.createNamedQuery ( "findByID", User.class );
@@ -84,16 +90,24 @@ public class UserLocationImpl implements UserLocation {
   }
 
   @Override
-  public void addLocationForUser ( String id, Date from, Date to, String description ) {
+  public Location addLocationForUser ( String id, DateTime from, DateTime to, String description ) {
+    requireNonNull ( from, "from null" );
+    requireNonNull ( to, "to null" );
+    requireNonNull ( id, "id null" );
+    requireNonNull ( description, "description null" );
+    if ( to.isBefore ( from ) ) {
+      throw new RuntimeException ( "to mast be after from " + from + " >= " + to );
+    }
     EntityManager em = emf.createEntityManager ();
     try {
       User user = getOrCreateUser ( id, em );
       LocationAt locationAt = new LocationAt ();
       locationAt.setUser ( user );
-      locationAt.setStart ( from );
-      locationAt.setEnd ( to );
+      locationAt.setStart ( from.toDate () );
+      locationAt.setEnd ( to.toDate () );
       locationAt.setDescription ( description );
       em.persist ( locationAt );
+      return new LocationDTO ( locationAt );
     } finally {
       em.close ();
     }

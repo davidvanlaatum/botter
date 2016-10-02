@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/features" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fisheye" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/slack" charset="UTF-8" />

@@ -8,14 +8,19 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.Date;
 
 @Entity
 @NamedQueries ( {
     @NamedQuery ( name = "LocationAt.findByUser", query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.start >= :start" ),
     @NamedQuery ( name = "LocationAt.findCurrentByUser",
-        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.start <= :now AND l.end > :now" )
+        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.start <= :now AND l.end > :now ORDER BY l.id DESC" ),
+    @NamedQuery ( name = "LocationAt.findOverlappingByUser",
+        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND (l.start BETWEEN :start AND :end) OR (l.end BETWEEN :start AND :end) OR (:start BETWEEN l.start AND l.end) OR (:end BETWEEN l.start AND l.end)" )
 } )
+@Table ( uniqueConstraints = @UniqueConstraint ( columnNames = { "user_id", "start", "end" } ) )
 public class LocationAt {
   @Id
   @GeneratedValue ( strategy = GenerationType.IDENTITY )

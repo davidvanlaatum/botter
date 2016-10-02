@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.connector.whereis.api;
 
+import org.joda.time.DateTime;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,5 +10,5 @@ public interface UserLocation {
 
   Location getCurrentLocationForUser ( String id, Date now );
 
-  void addLocationForUser ( String id, Date from, Date to, String description );
+  Location addLocationForUser ( String id, DateTime from, DateTime to, String description );
 }

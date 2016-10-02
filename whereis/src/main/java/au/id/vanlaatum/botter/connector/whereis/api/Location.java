@@ -1,13 +1,13 @@
 package au.id.vanlaatum.botter.connector.whereis.api;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public interface Location {
   User getUser ();
 
   String getDescription ();
 
-  Date getStart ();
+  DateTime getStart ();
 
-  Date getEnd ();
+  DateTime getEnd ();
 }

@@ -321,6 +321,15 @@ public class SlackTransport implements Transport, ManagedService {
     return new SlackUserDTO ( users.getUserByUsername ( userName ), this );
   }
 
+  @Override
+  public User getUserByUniqID ( String userId ) throws UserNotFoundException {
+    if ( userId.startsWith ( pid ) ) {
+      return new SlackUserDTO ( users.getUser ( userId.substring ( pid.length () + 1 ) ), this );
+    } else {
+      throw new UserNotFoundException ();
+    }
+  }
+
   private synchronized Integer nextId () {
     if ( msgId < 0 ) {
       msgId = 0;

@@ -17,6 +17,8 @@ public interface Command {
 
   void error ( String message );
 
+  void error ( Throwable e );
+
   void annotate ( String message );
 
   void attach ( String name, Object value );

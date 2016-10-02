@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.TimeZone;
 
@@ -41,6 +42,6 @@ public class SlackUserDTO implements User {
 
   @Override
   public TimeZone getTimezone () {
-    return TimeZone.getTimeZone ( user.getTz () );
+    return StringUtils.isNoneBlank ( user.getTz () ) ? TimeZone.getTimeZone ( user.getTz () ) : TimeZone.getDefault ();
   }
 }
