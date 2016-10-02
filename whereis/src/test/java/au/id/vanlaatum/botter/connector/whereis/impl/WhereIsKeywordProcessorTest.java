@@ -38,7 +38,7 @@ public class WhereIsKeywordProcessorTest {
 
   @Before
   public void setup () {
-    DateTimeUtils.setCurrentMillisFixed ( date ( "2016-01-01 00:00:00GMT" ).getMillis () );
+    DateTimeUtils.setCurrentMillisFixed ( date ( "2016-01-01 10:00:00GMT" ).getMillis () );
   }
 
   @After
@@ -263,10 +263,24 @@ public class WhereIsKeywordProcessorTest {
     ) );
     assertThat ( processor.parseQuestion ( "in by 10", GMT ), allOf (
         isA ( (Class<Question>) NotInQuestion.class.asSubclass ( Question.class ) ),
-        hasProperty ( "from", equalTo ( date ( "2016-01-01 00:00:00GMT" ) ) ),
+        hasProperty ( "from", equalTo ( date ( "2016-01-01 10:00:00GMT" ) ) ),
         hasProperty ( "to", equalTo ( date ( "2016-01-01 10:00:00GMT" ) ) ),
         hasProperty ( "userName", nullValue () ),
         hasProperty ( "reason", equalTo ( "in by 10" ) )
+    ) );
+    assertThat ( processor.parseQuestion ( "Ill be in by 2pm", GMT ), allOf (
+        isA ( (Class<Question>) NotInQuestion.class.asSubclass ( Question.class ) ),
+        hasProperty ( "from", equalTo ( date ( "2016-01-01 10:00:00GMT" ) ) ),
+        hasProperty ( "to", equalTo ( date ( "2016-01-01 14:00:00GMT" ) ) ),
+        hasProperty ( "userName", nullValue () ),
+        hasProperty ( "reason", equalTo ( "Ill be in by 2pm" ) )
+    ) );
+    assertThat ( processor.parseQuestion ( "Ill be in by 2am", GMT ), allOf (
+        isA ( (Class<Question>) NotInQuestion.class.asSubclass ( Question.class ) ),
+        hasProperty ( "from", equalTo ( date ( "2016-01-01 10:00:00GMT" ) ) ),
+        hasProperty ( "to", equalTo ( date ( "2016-01-01 2:00:00GMT" ) ) ),
+        hasProperty ( "userName", nullValue () ),
+        hasProperty ( "reason", equalTo ( "Ill be in by 2am" ) )
     ) );
   }
 

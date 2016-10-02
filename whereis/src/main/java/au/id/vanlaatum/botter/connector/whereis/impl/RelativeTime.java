@@ -1,5 +1,6 @@
 package au.id.vanlaatum.botter.connector.whereis.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -11,6 +12,7 @@ public class RelativeTime {
   private int dow;
   private int hour;
   private int minute;
+  private boolean hasHalfDay;
 
   public RelativeTime ( DateTime time ) {
     type = TimeConstant.DATE;
@@ -26,10 +28,14 @@ public class RelativeTime {
     this.dow = dow;
   }
 
-  public RelativeTime ( int hour, int minute ) {
+  public RelativeTime ( int hour, int minute, String ampm ) {
     type = TimeConstant.HOUR_MIN;
     this.hour = hour;
     this.minute = minute;
+    hasHalfDay = StringUtils.isNoneBlank ( ampm );
+    if ( "pm".equalsIgnoreCase ( ampm ) ) {
+      this.hour += 12;
+    }
   }
 
   public DateTime getTime () {
@@ -77,7 +83,7 @@ public class RelativeTime {
       case HOUR_MIN:
         rt = DateTime.now ( DateTimeZone.forTimeZone ( timezone ) ).dayOfMonth ().roundFloorCopy ().hourOfDay ().setCopy ( hour )
             .minuteOfHour ().setCopy ( minute );
-        if ( rt.isBeforeNow () ) {
+        if ( rt.isBeforeNow () && !hasHalfDay ) {
           rt = rt.hourOfDay ().addToCopy ( 12 );
         }
         break;

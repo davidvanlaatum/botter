@@ -35,7 +35,7 @@ notinquestion locals [
         $from = new RelativeTime(TimeConstant.TODAY);
         $userName = $username.text;
         $valueReason = "sick";
-    } | (WILL WS)? (BE WS)? IN WS BY WS time {
+    } | ((WILL|I) WS)? (BE WS)? IN WS BY WS time (WS reason)? {
         $from = new RelativeTime(TimeConstant.NOW);
         $to = $time.value;
         $valueReason = $text;
@@ -53,6 +53,8 @@ reason returns [String reasonValue] @init{
     };
 
 whereis: WHERE WS? IS;
+ampm: (AM|PM)?;
+num: NUM+;
 time returns [RelativeTime value]
 @init {
     RelativeTime value = null;
@@ -61,8 +63,8 @@ time returns [RelativeTime value]
     TOMORROW { $value = new RelativeTime(TimeConstant.TOMORROW); } |
     ON date { $value = new RelativeTime($date.value); } |
     ON? dow { $value = new RelativeTime($dow.value); } |
-    NUM+ { $value = new RelativeTime(Integer.parseInt($text),0); } |
-    NUM+ ':' NUM+ { $value = new RelativeTime(Integer.parseInt($NUM(0).getText()),Integer.parseInt($NUM(1).getText())); };
+    num WS? ampm { $value = new RelativeTime(Integer.parseInt($num.text),0,$ampm.text); } |
+    hour=num ':' min=num WS? ampm { $value = new RelativeTime(Integer.parseInt($hour.text),Integer.parseInt($min.text),$ampm.text); };
 date returns [DateTime value]
  @init{
         DateTime value = null;
@@ -102,4 +104,7 @@ SICK: 'sick';
 WILL: 'will';
 BE: 'be';
 BY: 'by';
+I: 'ill' | 'i\'ll' | 'i';
+PM: 'pm';
+AM: 'am';
 WORD: [a-zA-Z]+;

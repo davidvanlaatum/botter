@@ -34,8 +34,8 @@ public class RelativeTimeResolveTest {
     rt.add ( new Object[]{ "Now", date ( "2016-01-01 10:00:00GMT" ), new RelativeTime ( TimeConstant.NOW ) } );
     rt.add ( new Object[]{ "Sunday", date ( "2016-01-03 00:00:00GMT" ), new RelativeTime ( DateTimeConstants.SUNDAY ) } );
     rt.add ( new Object[]{ "Tuesday", date ( "2016-01-05 00:00:00GMT" ), new RelativeTime ( DateTimeConstants.TUESDAY ) } );
-    rt.add ( new Object[]{ "10:15", date ( "2016-01-01 10:15:00GMT" ), new RelativeTime ( 10, 15 ) } );
-    rt.add ( new Object[]{ "1:15", date ( "2016-01-01 13:15:00GMT" ), new RelativeTime ( 1, 15 ) } );
+    rt.add ( new Object[]{ "10:15", date ( "2016-01-01 10:15:00GMT" ), new RelativeTime ( 10, 15, null ) } );
+    rt.add ( new Object[]{ "1:15", date ( "2016-01-01 13:15:00GMT" ), new RelativeTime ( 1, 15, null ) } );
     rt.add ( new Object[]{ "Today", date ( "2016-01-01 00:00:00GMT" ), new RelativeTime ( TimeConstant.TODAY ) } );
     rt.add ( new Object[]{ "Tomorrow", date ( "2016-01-02 00:00:00GMT" ), new RelativeTime ( TimeConstant.TOMORROW ) } );
     return rt;
