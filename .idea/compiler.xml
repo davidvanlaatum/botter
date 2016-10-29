@@ -25,9 +25,11 @@
         <module name="core" />
         <module name="core-test" />
         <module name="fisheye" />
+        <module name="mock-transport" />
         <module name="slack" />
         <module name="weather" />
         <module name="whereis" />
+        <module name="whereis-modal" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -36,9 +38,11 @@
       <module name="core-test" target="1.7" />
       <module name="features" target="1.5" />
       <module name="fisheye" target="1.7" />
+      <module name="mock-transport" target="1.7" />
       <module name="slack" target="1.7" />
       <module name="weather" target="1.7" />
       <module name="whereis" target="1.7" />
+      <module name="whereis-modal" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -2,7 +2,7 @@ package au.id.vanlaatum.botter.connector.whereis.impl.dto;
 
 import au.id.vanlaatum.botter.connector.whereis.api.Location;
 import au.id.vanlaatum.botter.connector.whereis.api.User;
-import au.id.vanlaatum.botter.connector.whereis.impl.model.LocationAt;
+import au.id.vanlaatum.botter.connector.whereis.model.LocationAt;
 import org.joda.time.DateTime;
 
 public class LocationDTO implements Location {
@@ -13,8 +13,8 @@ public class LocationDTO implements Location {
 
   public LocationDTO ( LocationAt at ) {
     description = at.getDescription ();
-    start = new DateTime ( at.getStart () );
-    end = new DateTime ( at.getEnd () );
+    start = new DateTime ( at.getStartDate () );
+    end = new DateTime ( at.getEndDate () );
     user = new UserDTO ( at.getUser () );
   }
 

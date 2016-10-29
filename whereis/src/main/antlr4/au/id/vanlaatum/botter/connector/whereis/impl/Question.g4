@@ -36,7 +36,7 @@ notinquestion locals [
         $userName = $username.text;
         $valueReason = "sick";
     } | ((WILL|I) WS)? (BE WS)? IN WS BY WS time (WS reason)? {
-        $from = new RelativeTime(TimeConstant.NOW);
+        $from = new RelativeTime(TimeConstant.TODAY);
         $to = $time.value;
         $valueReason = $text;
     };

@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.connector.whereis.impl.model;
+package au.id.vanlaatum.botter.connector.whereis.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +14,13 @@ import java.util.Date;
 
 @Entity
 @NamedQueries ( {
-    @NamedQuery ( name = "LocationAt.findByUser", query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.start >= :start" ),
+    @NamedQuery ( name = "LocationAt.findByUser", query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.startDate >= :start" ),
     @NamedQuery ( name = "LocationAt.findCurrentByUser",
-        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.start <= :now AND l.end > :now ORDER BY l.id DESC" ),
+        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.startDate <= :now AND l.endDate > :now ORDER BY l.id DESC" ),
     @NamedQuery ( name = "LocationAt.findOverlappingByUser",
-        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND (l.start BETWEEN :start AND :end) OR (l.end BETWEEN :start AND :end) OR (:start BETWEEN l.start AND l.end) OR (:end BETWEEN l.start AND l.end)" )
+        query = "SELECT l FROM LocationAt l WHERE l.user = :user AND l.startDate = :start AND l.endDate = :end" )
 } )
-@Table ( uniqueConstraints = @UniqueConstraint ( columnNames = { "user_id", "start", "end" } ) )
+@Table ( name = "locations", uniqueConstraints = @UniqueConstraint ( columnNames = { "user_id", "startDate", "endDate" } ) )
 public class LocationAt {
   @Id
   @GeneratedValue ( strategy = GenerationType.IDENTITY )
@@ -30,10 +30,10 @@ public class LocationAt {
   private User user;
 
   @Column ( nullable = false )
-  private Date start;
+  private Date startDate;
 
   @Column ( nullable = false )
-  private Date end;
+  private Date endDate;
 
   @Column ( nullable = false )
   private String description;
@@ -56,21 +56,21 @@ public class LocationAt {
     return this;
   }
 
-  public Date getStart () {
-    return start;
+  public Date getStartDate () {
+    return startDate;
   }
 
-  public LocationAt setStart ( Date start ) {
-    this.start = start;
+  public LocationAt setStartDate ( Date start ) {
+    this.startDate = start;
     return this;
   }
 
-  public Date getEnd () {
-    return end;
+  public Date getEndDate () {
+    return endDate;
   }
 
-  public LocationAt setEnd ( Date end ) {
-    this.end = end;
+  public LocationAt setEndDate ( Date end ) {
+    this.endDate = end;
     return this;
   }
 

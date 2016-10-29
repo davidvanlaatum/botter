@@ -5,7 +5,7 @@ import au.id.vanlaatum.botter.connector.whereis.api.User;
 public class UserDTO implements User {
   private final String uniqId;
 
-  UserDTO ( au.id.vanlaatum.botter.connector.whereis.impl.model.User user ) {
+  UserDTO ( au.id.vanlaatum.botter.connector.whereis.model.User user ) {
     uniqId = user.getUserId ();
   }
 

@@ -3,8 +3,8 @@
   <persistence-unit name="whereis" transaction-type="JTA">
     <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</jta-data-source>
     <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</non-jta-data-source>
-    <class>au.id.vanlaatum.botter.connector.whereis.impl.model.User</class>
-    <class>au.id.vanlaatum.botter.connector.whereis.impl.model.LocationAt</class>
+    <class>au.id.vanlaatum.botter.connector.whereis.model.User</class>
+    <class>au.id.vanlaatum.botter.connector.whereis.model.LocationAt</class>
     <properties>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>

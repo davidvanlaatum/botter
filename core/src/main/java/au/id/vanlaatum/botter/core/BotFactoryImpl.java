@@ -29,6 +29,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +85,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @PostConstruct
   public void init () {
+    log.log ( LogService.LOG_INFO, "Botter Core Starting====================" );
     threadGroup = new ThreadGroup ( "Botter Command Processing" );
     executor = Executors.newScheduledThreadPool ( 1, new ThreadFactory () {
 
@@ -113,7 +115,14 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @PreDestroy
   public void shutdown () {
-    threadGroup.destroy ();
+    log.log ( LogService.LOG_INFO, "Botter core shutting down" );
+    try {
+      threadGroup.setDaemon ( true );
+      executor.shutdownNow ();
+      executor.awaitTermination ( 10, TimeUnit.SECONDS );
+    } catch ( InterruptedException e ) {
+      log.log ( LogService.LOG_WARNING, null, e );
+    }
     threadGroup = null;
     if ( statusProvider != null ) {
       statusProvider.unregister ();
@@ -149,7 +158,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   }
 
   @Override
-  public void processMessage ( final Message message ) {
+  public Future<?> processMessage ( final Message message ) {
     log.log ( LogService.LOG_INFO, format ( "Received message {0} on {1} from {2}", message.getText (),
         message.getChannel ().getName (), message.getUser ().getName () ) );
     final CommandImpl command = new CommandImpl ();
@@ -158,7 +167,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
     command.setUser ( message.getUser () );
     command.setCommandText ( message.getText () );
 
-    executor.submit ( new Runnable () {
+    return executor.submit ( new Runnable () {
       @Override
       public void run () {
         if ( message.getChannel ().isDirect () ) {
@@ -231,6 +240,11 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
       log.log ( LogService.LOG_WARNING,
           "Ignoring command from user " + command.getMessage ().getUser ().getName () + " not a permitted user" );
     }
+  }
+
+  @Override
+  public void awaitBackgroundTasks () throws InterruptedException {
+    executor.awaitTermination ( 10, TimeUnit.SECONDS );
   }
 
   private class StatusProvider implements StatusInfoProvider {

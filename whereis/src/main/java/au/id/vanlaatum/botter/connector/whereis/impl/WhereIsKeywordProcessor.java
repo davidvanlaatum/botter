@@ -69,7 +69,7 @@ public class WhereIsKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
             break;
         }
       } catch ( Exception e ) {
-        log.log ( LogService.LOG_WARNING, null, e );
+        log.log ( LogService.LOG_WARNING, "Unhandled exception in " + getClass ().getSimpleName (), e );
         message.error ( e );
       }
     }

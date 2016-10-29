@@ -78,82 +78,8 @@
       <artifactId>antlr4-runtime</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.ops4j.pax.jdbc</groupId>
-      <artifactId>pax-jdbc-config</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.jdbc</groupId>
-      <artifactId>pax-jdbc-sqlite</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.jdbc</groupId>
-      <artifactId>pax-jdbc-pool-dbcp2</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <artifactId>org.apache.servicemix.bundles.jasypt</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.1-api</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-osgi</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <artifactId>org.apache.servicemix.bundles.dom4j</artifactId>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.aries.jpa</groupId>
-      <artifactId>org.apache.aries.jpa.api</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.aries.jpa</groupId>
-      <artifactId>org.apache.aries.jpa.blueprint</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.aries.jpa</groupId>
-      <artifactId>org.apache.aries.jpa.support</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.aries.jpa</groupId>
       <artifactId>org.apache.aries.jpa.container</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.servicemix.bundles</groupId>
-      <artifactId>org.apache.servicemix.bundles.woodstox</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.jdbc</groupId>
-      <artifactId>pax-jdbc-mysql</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
     <dependency>
@@ -175,26 +101,57 @@
       <artifactId>core-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam-junit4</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.base</groupId>
+      <artifactId>ops4j-base</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>whereis-modal</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>mock-transport</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.antlr</groupId>
-        <artifactId>antlr4-maven-plugin</artifactId>
+        <groupId>org.apache.servicemix.tooling</groupId>
+        <artifactId>depends-maven-plugin</artifactId>
+        <configuration>
+          <outputFile>${project.build.testOutputDirectory}/META-INF/maven/dependencies.properties</outputFile>
+        </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <configuration>
-          <instructions>
-            <Export-Package>au.id.vanlaatum.botter.connector.whereis.api</Export-Package>
-            <Private-Package>au.id.vanlaatum.botter.connector.whereis.impl.*</Private-Package>
-            <Meta-Persistence>OSGI-INF/persistence.xml</Meta-Persistence>
-            <Dynamic-Import-Package>*, org.hibernate.proxy, javassist.util.proxy</Dynamic-Import-Package>
-            <Import-Package>*, org.hibernate.proxy, javassist.util.proxy</Import-Package>
-          </instructions>
-        </configuration>
+        <groupId>org.ops4j.pax.exam</groupId>
+        <artifactId>exam-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.aries.blueprint</groupId>
@@ -209,6 +166,84 @@
           </scanPaths>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Export-Package>au.id.vanlaatum.botter.connector.whereis.api</Export-Package>
+            <Private-Package>au.id.vanlaatum.botter.connector.whereis.impl.*</Private-Package>
+          </instructions>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>felix</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.ops4j.pax.exam</groupId>
+          <artifactId>pax-exam-container-forked</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>org.apache.felix.framework</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>karaf</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.ops4j.pax.exam</groupId>
+          <artifactId>pax-exam-container-karaf</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.karaf</groupId>
+          <artifactId>apache-karaf</artifactId>
+          <type>tar.gz</type>
+        </dependency>
+        <dependency>
+          <groupId>org.ops4j.pax.cdi</groupId>
+          <artifactId>pax-cdi-features</artifactId>
+          <classifier>features</classifier>
+          <type>xml</type>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.ops4j.pax.jdbc</groupId>
+          <artifactId>pax-jdbc-features</artifactId>
+          <classifier>features</classifier>
+          <type>xml</type>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-osgi</artifactId>
+          <type>xml</type>
+          <classifier>karaf</classifier>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemProperties>
+                <container>karaf</container>
+              </systemProperties>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

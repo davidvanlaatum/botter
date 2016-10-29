@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.connector.whereis.impl.model;
+package au.id.vanlaatum.botter.connector.whereis.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +12,9 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @NamedQueries (
-    @NamedQuery ( name = "findByID", query = "SELECT u FROM User u WHERE u.userId = :userId" )
+    @NamedQuery ( name = "User.findByID", query = "SELECT u FROM User u WHERE u.userId = :userId" )
 )
-@Table ( uniqueConstraints = @UniqueConstraint ( columnNames = "userId" ) )
+@Table ( name = "users", uniqueConstraints = @UniqueConstraint ( columnNames = "userId" ) )
 public class User {
   @Id
   @GeneratedValue ( strategy = GenerationType.IDENTITY )

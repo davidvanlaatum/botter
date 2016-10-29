@@ -8,10 +8,13 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="Osmorc" url="file://$PROJECT_DIR$/core" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/core-test" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/fisheye" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/mock-transport" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/slack" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/weather" />
     <file type="Osmorc" url="file://$PROJECT_DIR$/whereis" />
+    <file type="Osmorc" url="file://$PROJECT_DIR$/whereis-modal" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

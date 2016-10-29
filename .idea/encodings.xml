@@ -6,9 +6,11 @@
     <file url="file://$PROJECT_DIR$/core-test" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/features" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fisheye" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mock-transport" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/slack" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/weather" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/whereis" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/whereis-modal" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

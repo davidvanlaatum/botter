@@ -7,9 +7,11 @@
       <module fileurl="file://$PROJECT_DIR$/core-test/core-test.iml" filepath="$PROJECT_DIR$/core-test/core-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/features/features.iml" filepath="$PROJECT_DIR$/features/features.iml" />
       <module fileurl="file://$PROJECT_DIR$/fisheye/fisheye.iml" filepath="$PROJECT_DIR$/fisheye/fisheye.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mock-transport/mock-transport.iml" filepath="$PROJECT_DIR$/mock-transport/mock-transport.iml" />
       <module fileurl="file://$PROJECT_DIR$/slack/slack.iml" filepath="$PROJECT_DIR$/slack/slack.iml" />
       <module fileurl="file://$PROJECT_DIR$/weather/weather.iml" filepath="$PROJECT_DIR$/weather/weather.iml" />
       <module fileurl="file://$PROJECT_DIR$/whereis/whereis.iml" filepath="$PROJECT_DIR$/whereis/whereis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/whereis-modal/whereis-modal.iml" filepath="$PROJECT_DIR$/whereis-modal/whereis-modal.iml" />
     </modules>
   </component>
 </project>
