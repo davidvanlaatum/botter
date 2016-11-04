@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-  <persistence-unit name="whereis" transaction-type="JTA">
-    <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</jta-data-source>
-    <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=whereis)</non-jta-data-source>
+  <persistence-unit name="botter-whereis" transaction-type="JTA">
+    <jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=botter-whereis)</jta-data-source>
+    <non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=botter-whereis)</non-jta-data-source>
     <class>au.id.vanlaatum.botter.connector.whereis.model.User</class>
     <class>au.id.vanlaatum.botter.connector.whereis.model.LocationAt</class>
     <properties>

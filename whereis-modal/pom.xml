@@ -19,6 +19,30 @@
       <artifactId>hibernate-jpa-2.1-api</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-osgi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.enterprise</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.cdi</groupId>
+      <artifactId>pax-cdi-api</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -45,7 +69,6 @@
             <Meta-Persistence>OSGI-INF/persistence.xml</Meta-Persistence>
             <Dynamic-Import-Package>*, org.hibernate.proxy, javassist.util.proxy</Dynamic-Import-Package>
             <Import-Package>*, org.hibernate.proxy;resolution:=optional, javassist.util.proxy;resolution:=optional</Import-Package>
-            <!--<_plugin>org.apache.felix.bundleplugin.BlueprintPlugin,aQute.lib.spring.SpringXMLType</_plugin>-->
           </instructions>
         </configuration>
       </plugin>

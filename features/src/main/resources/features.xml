@@ -1,4 +1,4 @@
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="Botter">
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="Botter-${project.version}">
   <feature name="botter" version="${project.version}" description="Botter Core API">
     <feature version="0.12.0">pax-cdi</feature>
     <feature>eventadmin</feature>
@@ -31,11 +31,13 @@
     <feature>jndi</feature>
     <feature version="${org.antlr/antlr4-runtime/version}">antlr4</feature>
     <feature>botter</feature>
-    <feature version="[4,6)">hibernate-orm</feature>
+    <feature version="[4,6)">hibernate</feature>
     <feature>aries-proxy</feature>
     <feature version="${joda-time/joda-time/version}">joda-time</feature>
     <feature>transaction</feature>
     <feature>pax-jdbc-config</feature>
+    <feature>jdbc</feature>
+    <feature version="${org.liquibase/liquibase-osgi/version}">liquibase</feature>
     <bundle>mvn:au.id.vanlaatum.botter/whereis-modal/${project.version}</bundle>
     <bundle>mvn:au.id.vanlaatum.botter/whereis/${project.version}</bundle>
     <configfile finalname="/etc/org.ops4j.datasource-whereis.cfg">mvn:au.id.vanlaatum.botter/features/${project.version}/cfg/datasource</configfile>
@@ -77,5 +79,10 @@
   </feature>
   <feature name="joda-time" version="${joda-time/joda-time/version}">
     <bundle>mvn:joda-time/joda-time/${joda-time/joda-time/version}</bundle>
+  </feature>
+  <feature name="liquibase" version="${org.liquibase/liquibase-osgi/version}">
+    <bundle>mvn:org.liquibase/liquibase-osgi/${org.liquibase/liquibase-osgi/version}</bundle>
+    <bundle>mvn:org.yaml/snakeyaml/${org.yaml/snakeyaml/version}</bundle>
+    <feature>framework</feature>
   </feature>
 </features>

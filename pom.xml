@@ -30,6 +30,7 @@
     <pax.logging.version>1.8.6</pax.logging.version>
     <pax.exam.version>4.8.0</pax.exam.version>
     <powermock.version>1.6.5</powermock.version>
+    <liquibase.version>3.4.2</liquibase.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -416,7 +417,7 @@
       <dependency>
         <groupId>org.apache.karaf</groupId>
         <artifactId>apache-karaf</artifactId>
-        <version>4.0.6</version>
+        <version>4.0.7</version>
         <type>tar.gz</type>
         <scope>test</scope>
       </dependency>
@@ -433,6 +434,18 @@
         <version>0.9.0</version>
         <classifier>features</classifier>
         <type>xml</type>
+      </dependency>
+      <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-osgi</artifactId>
+        <version>${liquibase.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-parent</artifactId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>${liquibase.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -128,6 +128,14 @@
       <type>xml</type>
       <classifier>karaf</classifier>
     </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-osgi</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -192,8 +200,13 @@
         <extensions>true</extensions>
         <version>2.4.4</version>
         <configuration>
+          <karafVersion>4.0.1</karafVersion>
+          <addTransitiveFeatures>false</addTransitiveFeatures>
           <featuresFile>${project.build.outputDirectory}/features.xml</featuresFile>
           <repositories>
+            <repository>mvn:org.apache.karaf.features/standard/4.0.7/xml/features</repository>
+            <repository>mvn:org.apache.karaf.features/enterprise/4.0.7/xml/features</repository>
+            <repository>mvn:org.apache.karaf.features/framework/4.0.7/xml/features</repository>
             <repository>mvn:org.ops4j.pax.cdi/pax-cdi-features/0.12.0/xml/features</repository>
             <repository>mvn:org.ops4j.pax.jdbc/pax-jdbc-features/0.9.0/xml/features</repository>
             <repository>mvn:org.hibernate/hibernate-osgi/5.2.2.Final/xml/karaf</repository>
@@ -206,14 +219,6 @@
             <version>2.10</version>
           </dependency>
         </dependencies>
-        <!--<executions>-->
-        <!--<execution>-->
-        <!--<phase>install</phase>-->
-        <!--<goals>-->
-        <!--<goal>validate</goal>-->
-        <!--</goals>-->
-        <!--</execution>-->
-        <!--</executions>-->
       </plugin>
     </plugins>
   </build>

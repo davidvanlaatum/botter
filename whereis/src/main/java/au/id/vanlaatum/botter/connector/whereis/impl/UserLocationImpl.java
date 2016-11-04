@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 @Singleton
 @Transactional ( value = Transactional.TxType.REQUIRED )
 public class UserLocationImpl implements UserLocation {
-  @PersistenceContext ( unitName = "whereis" )
+  @PersistenceContext ( unitName = "botter-whereis" )
   private EntityManager em;
   @Inject
   @Named ( "logService" )

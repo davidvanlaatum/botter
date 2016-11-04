@@ -9,4 +9,6 @@ public interface MockTransportConfigurator {
   MessageBuilder injectMessage ( String message );
 
   void start ();
+
+  void stop ();
 }

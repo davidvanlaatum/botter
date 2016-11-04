@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageAssert;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MockTransportConfigurator;
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.options.UrlProvisionOption;
 import org.ops4j.pax.exam.util.PathUtils;
 import org.osgi.framework.BundleContext;
@@ -52,6 +54,7 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfi
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.features;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 
 @RunWith ( PaxExam.class )
 public class WhereIsKeywordIT {
@@ -78,7 +81,7 @@ public class WhereIsKeywordIT {
   public Option[] configure () throws IOException, URISyntaxException {
     String version = mavenBundle ( "au.id.vanlaatum.botter", "whereis" ).versionAsInProject ().getURL ().split ( "/" )[2];
     return options (
-        systemProperty ( "hibernate.hbm2ddl.auto" ).value ( "create" ),
+        systemProperty ( "hibernate.hbm2ddl.auto" ).value ( "verify" ),
         cleanCaches (),
 //        systemProperty("pax.exam.invoker").value("junit"),
         junitBundles (),
@@ -170,6 +173,8 @@ public class WhereIsKeywordIT {
             .instructions ( "Fragment-Host=org.ops4j.pax.tipi.hamcrest.core" )
             .noStart (),
         mavenBundle ( "org.apache.commons", "commons-lang3" ).versionAsInProject (),
+        mavenBundle ( "org.liquibase", "liquibase-osgi" ).versionAsInProject (),
+        mavenBundle ( "org.yaml", "snakeyaml" ).versionAsInProject (),
         bundleLink ( "au.id.vanlaatum.botter.core" ),
         bundleLink ( "au.id.vanlaatum.botter.mock-transport" ),
         bundleLink ( "au.id.vanlaatum.botter.whereis-modal" ),
@@ -183,7 +188,7 @@ public class WhereIsKeywordIT {
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiRegistryPort", "2000" ),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiServerPort", "44445" ),
         editConfigurationFilePut ( "etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port", "8182" ),
-//        logLevel ( LogLevelOption.LogLevel.INFO ),
+        logLevel ( LogLevelOption.LogLevel.WARN ),
         karafDistributionConfiguration ().frameworkUrl ( maven ( "org.apache.karaf", "apache-karaf" ).versionAsInProject ().type ( "tar.gz" ) )
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
         configureConsole ().ignoreRemoteShell ().ignoreLocalConsole (),
@@ -207,9 +212,16 @@ public class WhereIsKeywordIT {
       Dictionary<String, String> props = new Hashtable<> ();
       props.put ( DataSourceFactory.OSGI_JDBC_DRIVER_NAME, "derby" );
       props.put ( DataSourceFactory.JDBC_URL, "jdbc:derby:memory:TEST1;create=true" );
-      props.put ( "dataSourceName", "whereis" );
+      props.put ( "dataSourceName", "botter-whereis" );
+      props.put ( "liquibase", "true" );
       config.update ( props );
+      mockTransportConfigurator.start ();
     }
+  }
+
+  @After
+  public void end () throws IOException {
+    mockTransportConfigurator.stop ();
   }
 
   public void createConfigForLogging () throws IOException {
@@ -218,7 +230,7 @@ public class WhereIsKeywordIT {
     props.put ( "log4j.logger.au.id.vanlaatum.botter", "DEBUG, stdout" );
     props.put ( "log4j.appender.stdout", "org.apache.log4j.ConsoleAppender" );
     props.put ( "log4j.appender.stdout.layout", "org.apache.log4j.PatternLayout" );
-    props.put ( "log4j.appender.stdout.layout.ConversionPattern", "%d{ISO8601} | %-5.5p | %-16.16t | %c | %m%n" );
+//    props.put ( "log4j.appender.stdout.layout.ConversionPattern", "%d{ISO8601} | %-5.5p | %-16.16t | %c | %m%n" );
     logConfig.update ( props );
   }
 
@@ -241,14 +253,14 @@ public class WhereIsKeywordIT {
   public void keywordTest () throws Exception {
     try {
       assertNotNull ( bundleContext );
-      waitForService ( "(osgi.jndi.service.name=whereis)" );
+      waitForService ( "(osgi.jndi.service.name=botter-whereis)" );
       waitForService ( KeyWordProcessor.class, "(osgi.service.blueprint.compname=WhereIsKeyword)" );
       assertNotNull ( botFactory );
       botFactory.cleanCaches ();
       mockTransportConfigurator.addUser ( "joe" ).build ();
       mockTransportConfigurator.addUser ( "david" ).build ();
       mockTransportConfigurator.addChannel ( "abc1" ).build ();
-      mockTransportConfigurator.start ();
+//      mockTransportConfigurator.start ();
       MessageAssert messageAssert = mockTransportConfigurator.injectMessage ( "where is david" ).from ( "joe" ).channel ( "abc1" ).send ();
       messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, "I have no idea where david is" );
 

@@ -51,7 +51,15 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
 
   @Override
   public void start () {
-    this.registration = context.registerService ( Transport.class, transport, new Hashtable<String, Object> () );
+    registration = context.registerService ( Transport.class, transport, new Hashtable<String, Object> () );
+  }
+
+  @Override
+  public void stop () {
+    if ( registration != null ) {
+      registration.unregister ();
+      registration = null;
+    }
   }
 
   BotFactory getBotFactory () {
@@ -69,8 +77,6 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
       if ( Objects.equals ( mockUser.getUniqID (), userId ) ) {
         user = mockUser;
         break;
-      } else {
-        System.out.println ( mockUser.getUniqID () + " != " + userId );
       }
     }
 
