@@ -58,6 +58,10 @@
       <artifactId>powermock-api-mockito2</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
@@ -83,15 +87,6 @@
       <plugin>
         <groupId>org.antlr</groupId>
         <artifactId>antlr4-maven-plugin</artifactId>
-        <version>4.5.3</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>antlr4</goal>
-            </goals>
-            <phase>generate-sources</phase>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -99,7 +94,9 @@
         <configuration>
           <instructions>
             <Export-Package>au.id.vanlaatum.botter.connector.weather.api</Export-Package>
-            <Private-Package>au.id.vanlaatum.botter.connector.weather.impl.*,au.id.vanlaatum.botter.connector.weather.openweather.*
+            <Private-Package>
+              au.id.vanlaatum.botter.connector.weather.impl.*,
+              au.id.vanlaatum.botter.connector.weather.openweather.*
             </Private-Package>
           </instructions>
         </configuration>

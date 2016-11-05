@@ -230,7 +230,7 @@ public class WhereIsKeywordIT {
     props.put ( "log4j.logger.au.id.vanlaatum.botter", "DEBUG, stdout" );
     props.put ( "log4j.appender.stdout", "org.apache.log4j.ConsoleAppender" );
     props.put ( "log4j.appender.stdout.layout", "org.apache.log4j.PatternLayout" );
-//    props.put ( "log4j.appender.stdout.layout.ConversionPattern", "%d{ISO8601} | %-5.5p | %-16.16t | %c | %m%n" );
+    props.put ( "log4j.appender.stdout.layout.ConversionPattern", "%d{ISO8601} | %-5.5p | %-16.16t | %c | %m%n" );
     logConfig.update ( props );
   }
 
@@ -260,7 +260,6 @@ public class WhereIsKeywordIT {
       mockTransportConfigurator.addUser ( "joe" ).build ();
       mockTransportConfigurator.addUser ( "david" ).build ();
       mockTransportConfigurator.addChannel ( "abc1" ).build ();
-//      mockTransportConfigurator.start ();
       MessageAssert messageAssert = mockTransportConfigurator.injectMessage ( "where is david" ).from ( "joe" ).channel ( "abc1" ).send ();
       messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, "I have no idea where david is" );
 

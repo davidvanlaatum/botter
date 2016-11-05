@@ -41,9 +41,9 @@ public class LiquibaseRunner implements ServiceListener {
   @Override
   public void serviceChanged ( ServiceEvent event ) {
     if ( event.getType () == ServiceEvent.MODIFIED || event.getType () == ServiceEvent.REGISTERED ) {
-      log.log ( LogService.LOG_ERROR, "Migration!!!!!!!" );
       @SuppressWarnings ( "unchecked" )
-      final DataSource dataSource = context.getService ( (ServiceReference<DataSource>) event.getServiceReference () );
+      final ServiceReference<DataSource> serviceReference = (ServiceReference<DataSource>) event.getServiceReference ();
+      final DataSource dataSource = context.getService ( serviceReference );
       runMigration ( dataSource );
       context.ungetService ( event.getServiceReference () );
     }
@@ -59,12 +59,12 @@ public class LiquibaseRunner implements ServiceListener {
 
         @Override
         public Set<String> list ( String s, String s1, boolean b, boolean b1, boolean b2 ) throws IOException {
-          return null;
+          throw new UnsupportedOperationException ( "Not implemented" );
         }
 
         @Override
         public ClassLoader toClassLoader () {
-          return null;
+          throw new UnsupportedOperationException ( "Not implemented" );
         }
       }, new JdbcConnection ( connection ) );
       liquibase.update ( (String) null );
