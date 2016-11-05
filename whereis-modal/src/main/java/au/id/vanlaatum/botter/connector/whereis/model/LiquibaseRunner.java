@@ -35,7 +35,7 @@ public class LiquibaseRunner implements ServiceListener {
 
   @PostConstruct
   public void start () throws InvalidSyntaxException {
-    context.addServiceListener ( this, "(&(osgi.jndi.service.name=botter-whereis)(liquibase=true))" );
+    context.addServiceListener ( this, "(osgi.jndi.service.name=botter-whereis)" );
   }
 
   @Override

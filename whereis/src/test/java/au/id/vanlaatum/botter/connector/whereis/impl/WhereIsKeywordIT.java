@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
-import org.ops4j.pax.exam.CoreOptions;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.karaf.options.LogLevelOption;
@@ -22,7 +21,6 @@ import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.ConfigurationAdmin;
-import org.osgi.service.jdbc.DataSourceFactory;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -35,14 +33,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 
 import static java.lang.String.format;
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.cleanCaches;
+import static org.ops4j.pax.exam.CoreOptions.composite;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -83,92 +80,8 @@ public class WhereIsKeywordIT {
     return options (
         systemProperty ( "hibernate.hbm2ddl.auto" ).value ( "verify" ),
         cleanCaches (),
-//        systemProperty("pax.exam.invoker").value("junit"),
         junitBundles (),
-//        systemProperty ( "felix.log.level" ).value ( "4" ),
-//        systemProperty ( "org.ops4j.pax.logging.DefaultServiceLog.level" ).value ( "INFO" ),
-//        mavenBundle ( "org.ops4j.pax.logging", "pax-logging-api" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.swissbox.property" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.url.commons" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.url.classpath" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.url.link" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.url.reference" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-//        linkBundle ( "org.ops4j.pax.url.mvn" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        /*mavenBundle ( "org.apache.felix", "org.apache.felix.log" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.felix", "org.apache.felix.coordinator" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.felix", "org.apache.felix.eventadmin" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.blueprint", "org.apache.aries.blueprint.core" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.blueprint", "org.apache.aries.blueprint.api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries", "org.apache.aries.util" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.quiesce", "org.apache.aries.quiesce.api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.proxy", "org.apache.aries.proxy.api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "javax.el", "javax.el-api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "javax.interceptor", "javax.interceptor-api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "javax.enterprise", "cdi-api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.ops4j.pax.cdi", "pax-cdi-api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.commons", "commons-lang3" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "com.fasterxml.jackson.core", "jackson-databind" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "com.fasterxml.jackson.core", "jackson-annotations" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "com.fasterxml.jackson.core", "jackson-core" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.httpcomponents", "httpclient-osgi" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "commons-logging", "commons-logging" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "commons-codec", "commons-codec" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.httpcomponents", "httpcore-osgi" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.antlr", "antlr4-runtime" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.ops4j.pax.jdbc", "pax-jdbc-pool-dbcp2" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.commons", "commons-pool2" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.commons", "commons-dbcp2" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.geronimo.specs", "geronimo-jta_1.1_spec" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.ops4j.pax.jdbc", "pax-jdbc-pool-common" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "commons-io", "commons-io" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "javax.transaction", "javax.transaction-api" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.servicemix.specs", "org.apache.servicemix.specs.jaxb-api-2.2" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.servicemix.specs", "org.apache.servicemix.specs.stax-api-1.0" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.geronimo.specs", "geronimo-activation_1.1_spec" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.servicemix.bundles", "org.apache.servicemix.bundles.jasypt" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.osgi", "org.osgi.compendium" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.servicemix.bundles", "org.apache.servicemix.bundles.javax-inject" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.geronimo.specs", "geronimo-osgi-locator" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.geronimo.specs", "geronimo-osgi-registry" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.blueprint", "org.apache.aries.blueprint.cm" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.apache.aries.proxy", "org.apache.aries.proxy.impl" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.ops4j.pax.jdbc", "pax-jdbc-config" ).versionAsInProject ().startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.hibernate.javax.persistence", "hibernate-jpa-2.1-api" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.javassist", "javassist" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.jboss.logging", "jboss-logging" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.servicemix.bundles", "org.apache.servicemix.bundles.dom4j" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.apache.servicemix.bundles", "org.apache.servicemix.bundles.antlr" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.hibernate", "hibernate-core" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.hibernate", "hibernate-osgi" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.jboss", "jandex" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "com.fasterxml", "classmate" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.hibernate.common", "hibernate-commons-annotations" ).versionAsInProject ().startLevel ( 3 ),
-        mavenBundle ( "org.apache.felix", "org.apache.felix.configadmin" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.api" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.blueprint" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.support" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.container" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.servicemix.bundles", "org.apache.servicemix.bundles.woodstox" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.transaction", "org.apache.aries.transaction.manager" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.aries.transaction", "org.apache.aries.transaction.blueprint" ).versionAsInProject ()
-            .startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "joda-time", "joda-time" ).versionAsInProject ().startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
-        mavenBundle ( "org.apache.derby", "derby" ).startLevel ( START_LEVEL_DEFAULT_PROVISION ),
-        mavenBundle ( "org.ops4j.pax.jdbc", "pax-jdbc-derby" ).startLevel ( START_LEVEL_DEFAULT_PROVISION ),*/
-//        bundle ( "reference:file:" + PathUtils.getBaseDir () + "/target/classes/" ).startLevel ( START_LEVEL_TEST_BUNDLE ),
-//        vmOption ( "-Xrunjdwp:transport=dt_socket,server=n,suspend=y,address=localhost:5005" ),
-//        mavenBundle("org.ops4j.pax.exam","pax-exam-link-mvn").versionAsInProject (),
         karafOptions (),
-//        mavenBundle ( "org.apache.aries.transaction", "org.apache.aries.transaction.wrappers", "1.0.0" ),
-//        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.api", "1.0.2" ),
-//        mavenBundle ( "org.apache.aries.jpa", "org.apache.aries.jpa.container", "2.4.0" ),
-//        mavenBundle ( "org.apache.geronimo.specs", "geronimo-jta_1.1_spec", "1.1.1" ),
-//        linkBundle ( "org.ops4j.pax.url.wrap" ).startLevel ( START_LEVEL_SYSTEM_BUNDLES ),
         wrappedBundle ( maven ( "org.hamcrest", "hamcrest-library" ).versionAsInProject () )
             .instructions ( "Fragment-Host=org.ops4j.pax.tipi.hamcrest.core" )
             .noStart (),
@@ -183,11 +96,13 @@ public class WhereIsKeywordIT {
   }
 
   private Option karafOptions () throws URISyntaxException {
-    return CoreOptions.composite (
+    return composite (
         keepRuntimeFolder (),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiRegistryPort", "2000" ),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiServerPort", "44445" ),
         editConfigurationFilePut ( "etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port", "8182" ),
+        composite ( editConfigurationFilePut ( "etc/org.ops4j.pax.logging.cfg", Paths.get ( "target/test-classes/logging.properties" ).toFile () ) ),
+        composite ( editConfigurationFilePut ( "etc/org.ops4j.datasource-whereis.cfg", Paths.get ( "target/test-classes/datasource.properties" ).toFile () ) ),
         logLevel ( LogLevelOption.LogLevel.WARN ),
         karafDistributionConfiguration ().frameworkUrl ( maven ( "org.apache.karaf", "apache-karaf" ).versionAsInProject ().type ( "tar.gz" ) )
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
@@ -206,32 +121,12 @@ public class WhereIsKeywordIT {
 
   @Before
   public void createConfigForDataSource () throws Exception {
-    if ( config == null ) {
-      createConfigForLogging ();
-      config = configAdmin.createFactoryConfiguration ( "org.ops4j.datasource", null );
-      Dictionary<String, String> props = new Hashtable<> ();
-      props.put ( DataSourceFactory.OSGI_JDBC_DRIVER_NAME, "derby" );
-      props.put ( DataSourceFactory.JDBC_URL, "jdbc:derby:memory:TEST1;create=true" );
-      props.put ( "dataSourceName", "botter-whereis" );
-      props.put ( "liquibase", "true" );
-      config.update ( props );
-      mockTransportConfigurator.start ();
-    }
+    mockTransportConfigurator.start ();
   }
 
   @After
   public void end () throws IOException {
     mockTransportConfigurator.stop ();
-  }
-
-  public void createConfigForLogging () throws IOException {
-    org.osgi.service.cm.Configuration logConfig = configAdmin.getConfiguration ( "org.ops4j.pax.logging", null );
-    Dictionary<String, String> props = new Hashtable<> ();
-    props.put ( "log4j.logger.au.id.vanlaatum.botter", "DEBUG, stdout" );
-    props.put ( "log4j.appender.stdout", "org.apache.log4j.ConsoleAppender" );
-    props.put ( "log4j.appender.stdout.layout", "org.apache.log4j.PatternLayout" );
-    props.put ( "log4j.appender.stdout.layout.ConversionPattern", "%d{ISO8601} | %-5.5p | %-16.16t | %c | %m%n" );
-    logConfig.update ( props );
   }
 
   private <T> void waitForService ( Class<T> clazz, String filter ) throws InvalidSyntaxException, InterruptedException {
