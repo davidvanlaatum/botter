@@ -12,6 +12,7 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.service.log.LogService;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -23,9 +24,12 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Set;
 
+import static java.util.Objects.requireNonNull;
+
 @Singleton
 @Named ( "LiquibaseRunner" )
 public class LiquibaseRunner implements ServiceListener {
+  public static final String FILTER = "(osgi.jndi.service.name=botter-whereis)";
   @Inject
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
@@ -35,7 +39,12 @@ public class LiquibaseRunner implements ServiceListener {
 
   @PostConstruct
   public void start () throws InvalidSyntaxException {
-    context.addServiceListener ( this, "(osgi.jndi.service.name=botter-whereis)" );
+    context.addServiceListener ( this, FILTER );
+  }
+
+  @PreDestroy
+  public void stop () {
+    context.removeServiceListener ( this );
   }
 
   @Override
@@ -49,12 +58,14 @@ public class LiquibaseRunner implements ServiceListener {
     }
   }
 
-  private void runMigration ( DataSource dataSource ) {
+  synchronized private void runMigration ( DataSource dataSource ) {
     try ( Connection connection = dataSource.getConnection () ) {
+      log.log ( LogService.LOG_INFO, "Running liquibase" );
       final Liquibase liquibase = new Liquibase ( "OSGI-INF/liquibase/master.xml", new ResourceAccessor () {
         @Override
         public Set<InputStream> getResourcesAsStream ( String s ) throws IOException {
-          return Collections.singleton ( context.getBundle ().getEntry ( s ).openStream () );
+          requireNonNull ( context, "Context Null" );
+          return Collections.singleton ( requireNonNull ( context.getBundle ().getEntry ( s ), "Failed to open " + s ).openStream () );
         }
 
         @Override

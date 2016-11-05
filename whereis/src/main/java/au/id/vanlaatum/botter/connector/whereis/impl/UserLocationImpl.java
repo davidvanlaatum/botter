@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 
 @OsgiServiceProvider ( classes = UserLocation.class )
 @Singleton
-@Transactional ( value = Transactional.TxType.REQUIRED )
 public class UserLocationImpl implements UserLocation {
   @PersistenceContext ( unitName = "botter-whereis" )
   private EntityManager em;
@@ -48,6 +47,7 @@ public class UserLocationImpl implements UserLocation {
   }
 
   @Override
+  @Transactional ( value = Transactional.TxType.REQUIRED )
   public Location getCurrentLocationForUser ( String id, Date now ) {
     Location rt = null;
     try {
@@ -81,6 +81,7 @@ public class UserLocationImpl implements UserLocation {
   }
 
   @Override
+  @Transactional ( value = Transactional.TxType.REQUIRED )
   public Location addLocationForUser ( String id, DateTime from, DateTime to, String description ) {
     requireNonNull ( from, "from null" );
     requireNonNull ( to, "to null" );

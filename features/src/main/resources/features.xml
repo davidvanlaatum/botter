@@ -27,19 +27,23 @@
     <bundle>mvn:au.id.vanlaatum.botter/weather/${project.version}</bundle>
   </feature>
   <feature name="botter-whereis" version="${project.version}" description="Botter Where is">
-    <feature prerequisite="true">jpa</feature>
-    <feature>jndi</feature>
     <feature version="${org.antlr/antlr4-runtime/version}">antlr4</feature>
     <feature>botter</feature>
-    <feature version="[4,6)">hibernate</feature>
-    <feature>aries-proxy</feature>
     <feature version="${joda-time/joda-time/version}">joda-time</feature>
-    <feature>transaction</feature>
+    <feature>botter-whereis-modal</feature>
+    <bundle>mvn:au.id.vanlaatum.botter/whereis/${project.version}</bundle>
+  </feature>
+  <feature name="botter-whereis-modal" version="${project.version}" description="Botter Where is DB Modal">
+    <feature version="[2.2, 3)">jpa</feature>
+    <feature>jndi</feature>
     <feature>pax-jdbc-config</feature>
+    <feature>pax-jdbc-pool-dbcp2</feature>
+    <feature>pax-jdbc-derby</feature>
+    <feature>transaction</feature>
+    <feature version="[4.3,5)">hibernate</feature>
     <feature>jdbc</feature>
     <feature version="${org.liquibase/liquibase-osgi/version}">liquibase</feature>
     <bundle>mvn:au.id.vanlaatum.botter/whereis-modal/${project.version}</bundle>
-    <bundle>mvn:au.id.vanlaatum.botter/whereis/${project.version}</bundle>
     <configfile finalname="/etc/org.ops4j.datasource-whereis.cfg">mvn:au.id.vanlaatum.botter/features/${project.version}/cfg/datasource</configfile>
   </feature>
   <feature name="jackson" version="${com.fasterxml.jackson.core/jackson-databind/version}">

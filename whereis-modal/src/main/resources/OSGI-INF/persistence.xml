@@ -6,7 +6,7 @@
     <class>au.id.vanlaatum.botter.connector.whereis.model.User</class>
     <class>au.id.vanlaatum.botter.connector.whereis.model.LocationAt</class>
     <properties>
-      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.use_sql_comments" value="true"/>
     </properties>

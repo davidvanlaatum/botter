@@ -159,7 +159,7 @@
         <configuration>
           <namespaces>
             <namespace>http://aries.apache.org/xmlns/jpa/v2.0.0</namespace>
-            <namespace>http://aries.apache.org/xmlns/transactions/v2.0.0</namespace>
+            <namespace>http://aries.apache.org/xmlns/transactions/v1.2.0</namespace>
           </namespaces>
           <scanPaths>
             <scanPath>au.id.vanlaatum.botter.connector.whereis</scanPath>
@@ -173,6 +173,7 @@
           <instructions>
             <Export-Package>au.id.vanlaatum.botter.connector.whereis.api</Export-Package>
             <Private-Package>au.id.vanlaatum.botter.connector.whereis.impl.*</Private-Package>
+            <Dynamic-Import-Package>*, org.hibernate.proxy, javassist.util.proxy</Dynamic-Import-Package>
           </instructions>
         </configuration>
       </plugin>

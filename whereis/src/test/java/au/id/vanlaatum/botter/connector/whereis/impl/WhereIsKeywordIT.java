@@ -138,7 +138,7 @@ public class WhereIsKeywordIT {
     ServiceTracker<Object, Object> tracker = new ServiceTracker<> ( bundleContext, flt, null );
     tracker.open ();
     try {
-      assertNotNull ( "timeout waiting for service", tracker.waitForService ( 10000 ) );
+      assertNotNull ( "timeout waiting for service", tracker.waitForService ( 60000 ) );
     } finally {
       tracker.close ();
     }

@@ -7,6 +7,7 @@
           <property key="Bundle-Description" value="Tracks where people are" />
           <property key="Export-Package" value="au.id.vanlaatum.botter.connector.whereis.api" />
           <property key="Private-Package" value="au.id.vanlaatum.botter.connector.whereis.impl.*" />
+          <property key="Dynamic-Import-Package" value="*, org.hibernate.proxy, javassist.util.proxy" />
           <property key="Bundle-Category" value="Botter" />
           <property key="Bundle-Name" value="Botter Where is" />
           <property key="Include-Resource" value="OSGI-INF/blueprint/config.xml=$MODULE_DIR$/src/main/resources/OSGI-INF/blueprint/config.xml" />
