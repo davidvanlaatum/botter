@@ -133,9 +133,9 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-mockito-common:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-support:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-all:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit:1.15.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-core:1.15.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-fluent:1.15.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit:1.16.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-core:1.16.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-fluent:1.16.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.aries.jpa:org.apache.aries.jpa.container:2.4.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.aries.transaction:org.apache.aries.transaction.manager:1.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.aries.transaction:org.apache.aries.transaction.blueprint:2.1.0" level="project" />

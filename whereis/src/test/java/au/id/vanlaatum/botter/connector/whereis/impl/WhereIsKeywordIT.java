@@ -4,7 +4,6 @@ import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageAssert;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MockTransportConfigurator;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +34,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertNotNull;
 import static org.ops4j.pax.exam.CoreOptions.bundle;
 import static org.ops4j.pax.exam.CoreOptions.cleanCaches;
@@ -155,7 +155,7 @@ public class WhereIsKeywordIT {
       messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, "I have no idea where david is" );
 
       messageAssert = mockTransportConfigurator.injectMessage ( "not in today" ).from ( "david" ).channel ( "abc1" ).send ();
-      messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, CoreMatchers.startsWith ( "ok I have set your location to not in between " ) );
+      messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, startsWith ( "ok I have set your location to not in between " ) );
 
       messageAssert = mockTransportConfigurator.injectMessage ( "where is david" ).from ( "joe" ).channel ( "abc1" ).send ();
       messageAssert.assertMessage ( MessageAssert.MessageResponseType.REPLY, "david is not in" );
