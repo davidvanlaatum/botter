@@ -20,7 +20,6 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.log.LogService;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -56,8 +55,6 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 @RunWith ( PaxExam.class )
 public class WhereIsKeywordIT {
 
-  @Inject
-  protected ConfigurationAdmin configAdmin;
   @Inject
   private BundleContext bundleContext;
   @Inject
