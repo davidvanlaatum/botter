@@ -1,5 +1,5 @@
 language: java
-script: "mvn verify -B && mvn -pl features features:validate"
+script: "mvn verify -B -fae && mvn -pl features features:validate"
 sudo: false
 
 jdk:

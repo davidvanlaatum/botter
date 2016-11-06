@@ -71,7 +71,7 @@ public class SlackTransportIT {
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiServerPort", "44445" ),
         editConfigurationFilePut ( "etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port", "8182" ),
         composite ( editConfigurationFilePut ( "etc/org.ops4j.pax.logging.cfg", Paths.get ( "target/test-classes/logging.properties" ).toFile () ) ),
-        logLevel ( LogLevelOption.LogLevel.WARN ),
+        logLevel ( LogLevelOption.LogLevel.INFO ),
         karafDistributionConfiguration ().frameworkUrl ( maven ( "org.apache.karaf", "apache-karaf" ).versionAsInProject ().type ( "tar.gz" ) )
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
         configureConsole ().ignoreRemoteShell ().ignoreLocalConsole (),
