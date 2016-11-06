@@ -4,13 +4,13 @@ import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.core.CommandImpl;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.hamcrest.core.AllOf;
 import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 
@@ -52,7 +52,7 @@ public class MockCommand extends CommandImpl {
   }
 
   public MockCommand verifyMessageCall ( CallType callType, Matcher<String> message ) {
-    assertThat ( recordedCalls, CoreMatchers.<MessageCall>hasItem ( allOf (
+    assertThat ( recordedCalls, CoreMatchers.<MessageCall>hasItem ( AllOf.allOf (
         hasProperty ( "callType", equalTo ( callType ) ),
         hasProperty ( "message", message )
     ) ) );

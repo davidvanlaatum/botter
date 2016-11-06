@@ -97,6 +97,9 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.ops4j.pax.exam</groupId>
         <artifactId>exam-maven-plugin</artifactId>
       </plugin>
