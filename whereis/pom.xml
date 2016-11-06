@@ -21,6 +21,13 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>features</artifactId>
+      <scope>provided</scope>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.compendium</artifactId>
     </dependency>
@@ -107,6 +114,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.ops4j.pax.exam</groupId>
+      <artifactId>pax-exam</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>provided</scope>
@@ -115,11 +127,6 @@
       <groupId>org.ops4j.base</groupId>
       <artifactId>ops4j-base</artifactId>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ops4j.pax.exam</groupId>
-      <artifactId>pax-exam</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>au.id.vanlaatum.botter</groupId>
@@ -223,13 +230,6 @@
           <artifactId>pax-jdbc-features</artifactId>
           <classifier>features</classifier>
           <type>xml</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.hibernate</groupId>
-          <artifactId>hibernate-osgi</artifactId>
-          <type>xml</type>
-          <classifier>karaf</classifier>
           <scope>test</scope>
         </dependency>
       </dependencies>

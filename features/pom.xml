@@ -14,26 +14,6 @@
   <name>Botter Karaf Feature</name>
 
   <dependencies>
-    <!--<dependency>-->
-    <!--<groupId>au.id.vanlaatum.botter</groupId>-->
-    <!--<artifactId>botter-core</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>au.id.vanlaatum.botter</groupId>-->
-    <!--<artifactId>fisheye</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>au.id.vanlaatum.botter</groupId>-->
-    <!--<artifactId>slack-transport</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>au.id.vanlaatum.botter</groupId>-->
-    <!--<artifactId>weather</artifactId>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>au.id.vanlaatum.botter</groupId>-->
-    <!--<artifactId>whereis</artifactId>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.glassfish.tyrus.bundles</groupId>
       <artifactId>websocket-ri-bundle</artifactId>
@@ -50,18 +30,18 @@
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi.enterprise</artifactId>
     </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>javax.xml.stream</artifactId>
-      <version>10.0-b28</version>
-      <scope>provided</scope>
-    </dependency>
+    <!--<dependency>-->
+    <!--<groupId>javax.servlet</groupId>-->
+    <!--<artifactId>javax.servlet-api</artifactId>-->
+    <!--<version>3.1.0</version>-->
+    <!--<scope>provided</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>org.glassfish</groupId>-->
+    <!--<artifactId>javax.xml.stream</artifactId>-->
+    <!--<version>10.0-b28</version>-->
+    <!--<scope>provided</scope>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>org.apache.servicemix.specs</groupId>
       <artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
@@ -111,7 +91,13 @@
     <dependency>
       <groupId>org.ops4j.pax.cdi</groupId>
       <artifactId>pax-cdi-features</artifactId>
-      <version>0.12.0</version>
+      <type>xml</type>
+      <classifier>features</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.ops4j.pax.web</groupId>
+      <artifactId>pax-web-features</artifactId>
       <type>xml</type>
       <classifier>features</classifier>
       <scope>provided</scope>
@@ -123,11 +109,24 @@
       <classifier>features</classifier>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-osgi</artifactId>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>standard</artifactId>
       <type>xml</type>
-      <classifier>karaf</classifier>
+      <classifier>features</classifier>
     </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>enterprise</artifactId>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>framework</artifactId>
+      <type>xml</type>
+      <classifier>features</classifier>
+    </dependency>
+
     <dependency>
       <groupId>org.yaml</groupId>
       <artifactId>snakeyaml</artifactId>
@@ -198,27 +197,19 @@
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>features-maven-plugin</artifactId>
         <extensions>true</extensions>
-        <version>2.4.4</version>
         <configuration>
-          <karafVersion>4.0.1</karafVersion>
           <addTransitiveFeatures>false</addTransitiveFeatures>
           <featuresFile>${project.build.outputDirectory}/features.xml</featuresFile>
           <repositories>
-            <repository>mvn:org.apache.karaf.features/standard/4.0.7/xml/features</repository>
-            <repository>mvn:org.apache.karaf.features/enterprise/4.0.7/xml/features</repository>
-            <repository>mvn:org.apache.karaf.features/framework/4.0.7/xml/features</repository>
+            <repository>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</repository>
+            <repository>mvn:org.apache.karaf.features/enterprise/${karaf.version}/xml/features</repository>
+            <repository>mvn:org.apache.karaf.features/framework/${karaf.version}/xml/features</repository>
             <repository>mvn:org.ops4j.pax.cdi/pax-cdi-features/0.12.0/xml/features</repository>
             <repository>mvn:org.ops4j.pax.jdbc/pax-jdbc-features/0.9.0/xml/features</repository>
-            <repository>mvn:org.hibernate/hibernate-osgi/5.2.2.Final/xml/karaf</repository>
+            <repository>mvn:org.ops4j.pax.web/pax-web-features/4.3.0/xml/features</repository>
+            <repository>mvn:org.apache.openejb/javaee-api/6.0-5/xml/features</repository>
           </repositories>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-http</artifactId>
-            <version>2.10</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>

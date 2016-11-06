@@ -1,15 +1,22 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" name="Botter-${project.version}">
+  <repository>mvn:org.apache.openejb/openejb-feature/LATEST/xml/features</repository>
   <feature name="botter" version="${project.version}" description="Botter Core API">
     <feature version="0.12.0">pax-cdi</feature>
     <feature>eventadmin</feature>
+    <feature version="${org.apache.commons/commons-lang3/version}">commons-lang</feature>
     <feature prerequisite="false" dependency="false">aries-blueprint</feature>
     <bundle>mvn:au.id.vanlaatum.botter/botter-core/${project.version}</bundle>
+  </feature>
+  <feature name="commons-lang" version="${org.apache.commons/commons-lang3/version}">
     <bundle>mvn:org.apache.commons/commons-lang3/${org.apache.commons/commons-lang3/version}</bundle>
   </feature>
   <feature name="botter-slack" version="${project.version}" description="Botter Slack Transport">
     <feature>botter</feature>
     <feature version="${org.glassfish.tyrus.bundles/websocket-ri-bundle/version}">tyrus</feature>
+    <feature version="${commons-io/commons-io/version}">commons-io</feature>
     <bundle>mvn:au.id.vanlaatum.botter/slack-transport/${project.version}</bundle>
+  </feature>
+  <feature name="commons-io" version="${commons-io/commons-io/version}">
     <bundle dependency="true">mvn:commons-io/commons-io/${commons-io/commons-io/version}</bundle>
   </feature>
   <feature name="botter-fisheye" version="${project.version}" description="Botter Fisheye Connector">
@@ -30,10 +37,11 @@
     <feature version="${org.antlr/antlr4-runtime/version}">antlr4</feature>
     <feature>botter</feature>
     <feature version="${joda-time/joda-time/version}">joda-time</feature>
-    <feature>botter-whereis-modal</feature>
+    <feature version="${project.version}">botter-whereis-modal</feature>
     <bundle>mvn:au.id.vanlaatum.botter/whereis/${project.version}</bundle>
   </feature>
   <feature name="botter-whereis-modal" version="${project.version}" description="Botter Where is DB Modal">
+    <feature version="0.12.0">pax-cdi</feature>
     <feature version="[2.2, 3)">jpa</feature>
     <feature>jndi</feature>
     <feature>pax-jdbc-config</feature>
@@ -64,16 +72,9 @@
     <bundle>mvn:org.glassfish.grizzly/grizzly-http-server/${org.glassfish.grizzly/grizzly-http-server/version}</bundle>
     <bundle>mvn:org.glassfish.grizzly/grizzly-http/${org.glassfish.grizzly/grizzly-http/version}</bundle>
     <bundle>mvn:org.glassfish.grizzly/grizzly-framework/${org.glassfish.grizzly/grizzly-framework/version}</bundle>
+    <feature>jetty</feature>
+    <feature>javaee-api</feature>
     <bundle>mvn:javax.ejb/javax.ejb-api/${javax.ejb/javax.ejb-api/version}</bundle>
-    <bundle>mvn:javax.servlet/javax.servlet-api/${javax.servlet/javax.servlet-api/version}</bundle>
-    <bundle>mvn:org.glassfish/javax.xml.stream/${org.glassfish/javax.xml.stream/version}</bundle>
-    <bundle>
-      mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/${org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/version}
-    </bundle>
-    <bundle>
-      mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/${org.apache.servicemix.specs/org.apache.servicemix.specs.activation-api-1.1/version}
-    </bundle>
-    <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${org.apache.geronimo.specs/geronimo-jta_1.1_spec/version}</bundle>
   </feature>
   <feature name="userprefs" version="${org.apache.felix/org.apache.felix.prefs/version}">
     <bundle>mvn:org.apache.felix/org.apache.felix.prefs/${org.apache.felix/org.apache.felix.prefs/version}</bundle>

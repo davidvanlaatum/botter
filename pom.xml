@@ -33,6 +33,7 @@
     <liquibase.version>3.4.2</liquibase.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <karaf.version>4.0.7</karaf.version>
   </properties>
 
   <developers>
@@ -184,6 +185,13 @@
         <groupId>au.id.vanlaatum.botter</groupId>
         <artifactId>botter-core</artifactId>
         <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>au.id.vanlaatum.botter</groupId>
+        <artifactId>features</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <classifier>features</classifier>
+        <type>xml</type>
       </dependency>
       <dependency>
         <groupId>au.id.vanlaatum.botter</groupId>
@@ -365,14 +373,7 @@
       <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-osgi</artifactId>
-        <version>5.2.2.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-osgi</artifactId>
-        <version>5.2.2.Final</version>
-        <type>xml</type>
-        <classifier>karaf</classifier>
+        <version>4.3.6.Final</version>
       </dependency>
       <dependency>
         <groupId>org.apache.aries.transaction</groupId>
@@ -423,7 +424,7 @@
       <dependency>
         <groupId>org.apache.karaf</groupId>
         <artifactId>apache-karaf</artifactId>
-        <version>4.0.7</version>
+        <version>${karaf.version}</version>
         <type>tar.gz</type>
         <scope>test</scope>
       </dependency>
@@ -435,12 +436,42 @@
         <type>xml</type>
       </dependency>
       <dependency>
+        <groupId>org.ops4j.pax.web</groupId>
+        <artifactId>pax-web-features</artifactId>
+        <version>4.3.0</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.ops4j.pax.jdbc</groupId>
         <artifactId>pax-jdbc-features</artifactId>
         <version>0.9.0</version>
         <classifier>features</classifier>
         <type>xml</type>
       </dependency>
+      <dependency>
+        <groupId>org.apache.karaf.features</groupId>
+        <artifactId>standard</artifactId>
+        <version>${karaf.version}</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.karaf.features</groupId>
+        <artifactId>enterprise</artifactId>
+        <version>${karaf.version}</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.karaf.features</groupId>
+        <artifactId>framework</artifactId>
+        <version>${karaf.version}</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+      </dependency>
+
       <dependency>
         <groupId>org.liquibase</groupId>
         <artifactId>liquibase-osgi</artifactId>
@@ -459,6 +490,18 @@
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.karaf.tooling</groupId>
+          <artifactId>features-maven-plugin</artifactId>
+          <version>2.4.4</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-http</artifactId>
+              <version>2.10</version>
+            </dependency>
+          </dependencies>
+        </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>2.9</version>

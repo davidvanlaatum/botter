@@ -56,7 +56,6 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 @RunWith ( PaxExam.class )
 public class WhereIsKeywordIT {
 
-  private static org.osgi.service.cm.Configuration config;
   @Inject
   protected ConfigurationAdmin configAdmin;
   @Inject
