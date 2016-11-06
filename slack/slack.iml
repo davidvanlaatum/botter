@@ -29,9 +29,9 @@
     <orderEntry type="module" module-name="core" scope="PROVIDED" />
     <orderEntry type="library" name="Maven: org.osgi:org.osgi.compendium:5.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.coordinator:1.0.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.configadmin:1.8.10" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.configadmin:1.8.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.eventadmin:1.4.8" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.core:1.6.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.core:1.7.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.api:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries:org.apache.aries.util:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.quiesce:org.apache.aries.quiesce.api:1.0.0" level="project" />
@@ -41,26 +41,29 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.cdi:pax-cdi-api:0.12.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-jdk14:1.7.21" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.transaction:javax.transaction-api:1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.servicemix.bundles:org.apache.servicemix.bundles.javax-inject:1_2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-osgi-locator:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-osgi-registry:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.cm:1.0.8" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.cm:1.0.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.proxy:org.apache.aries.proxy.impl:1.0.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.tyrus.bundles:websocket-ri-bundle:1.13" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.27" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http-server:2.3.28" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.jaxb-api-2.2:2.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.stax-api-1.0:2.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:1.0.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-activation_1.1_spec:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.servicemix.specs:org.apache.servicemix.specs.activation-api-1.1:2.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.prefs:1.0.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.prefs:1.1.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.service.prefs:1.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mockito:mockito-all:1.10.19" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.antlr:antlr4-runtime:4.5.3" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient-osgi:4.5.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore:4.4.5" level="project" />
@@ -87,8 +90,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.sshd:sshd-core:0.14.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.eclipse.tycho:org.eclipse.osgi:3.10.101.v20150820-1432" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jledit:core:0.2.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.logging:pax-logging-api:1.8.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.logging:pax-logging-service:1.8.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.logging:pax-logging-api:1.9.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.logging:pax-logging-service:1.9.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.ops4j.pax.url:pax-url-aether:2.4.7" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.fileinstall:3.5.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.karaf.features:org.apache.karaf.features.core:4.0.7" level="project" />
@@ -98,11 +101,10 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.core:5.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.enterprise:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.ejb:javax.ejb-api:3.2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.27" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.27" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-http:2.3.28" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish.grizzly:grizzly-framework:2.3.28" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-module-junit4:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-module-junit4-common:1.6.5" level="project" />
@@ -115,9 +117,9 @@
     <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-mockito-common:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-support:1.6.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-junit4:4.8.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-spi:4.8.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam:4.8.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-junit4:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-spi:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam:4.9.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-spi:1.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.tinybundles:tinybundles:2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-store:1.5.0" level="project" />
@@ -126,10 +128,10 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-io:1.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-monitors:1.5.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-util-property:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-karaf:4.8.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-remote:4.8.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc-client:4.8.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc:4.8.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-karaf:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-remote:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc-client:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc:4.9.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-core:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-lifecycle:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-net:1.5.0" level="project" />
