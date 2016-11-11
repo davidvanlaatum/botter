@@ -177,7 +177,7 @@
             <namespace>http://aries.apache.org/xmlns/transactions/v1.2.0</namespace>
           </namespaces>
           <scanPaths>
-            <scanPath>au.id.vanlaatum.botter.connector.whereis</scanPath>
+            <scanPath>au.id.vanlaatum.botter.connector.whereis.impl</scanPath>
           </scanPaths>
         </configuration>
       </plugin>

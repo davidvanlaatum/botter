@@ -2,14 +2,14 @@ package au.id.vanlaatum.botter.connector.whereis.model;
 
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
-import liquibase.exception.LiquibaseException;
 import liquibase.resource.ResourceAccessor;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,53 +19,67 @@ import javax.inject.Singleton;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
 @Singleton
 @Named ( "LiquibaseRunner" )
-public class LiquibaseRunner implements ServiceListener {
-  public static final String FILTER = "(osgi.jndi.service.name=botter-whereis)";
+public class LiquibaseRunner implements ServiceTrackerCustomizer<DataSource, DataSource> {
+  private static final String FILTER = "(&(osgi.jndi.service.name=botter-whereis)(!(liquibase=*)))";
   @Inject
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
   @Inject
   @Named ( "logService" )
   private LogService log;
+  private ServiceTracker<DataSource, DataSource> tracker;
+  private ServiceReference<DataSource> dataSourceServiceReference;
+  private ServiceRegistration<DataSource> dataSourceServiceRegistration;
+  private DataSource dataSource;
 
   @PostConstruct
   public void start () throws InvalidSyntaxException {
-    context.addServiceListener ( this, FILTER );
+    tracker = new ServiceTracker<> ( context, context.createFilter ( FILTER ), this );
+    tracker.open ();
   }
 
   @PreDestroy
   public void stop () {
-    context.removeServiceListener ( this );
+    tracker.close ();
+    tracker = null;
   }
 
-  @Override
-  public void serviceChanged ( ServiceEvent event ) {
-    if ( event.getType () == ServiceEvent.MODIFIED || event.getType () == ServiceEvent.REGISTERED ) {
-      @SuppressWarnings ( "unchecked" )
-      final ServiceReference<DataSource> serviceReference = (ServiceReference<DataSource>) event.getServiceReference ();
-      final DataSource dataSource = context.getService ( serviceReference );
-      runMigration ( dataSource );
-      context.ungetService ( event.getServiceReference () );
+  private Dictionary<String, Object> buildServiceProperties ( ServiceReference<DataSource> serviceReference ) {
+    Dictionary<String, Object> prop = new Hashtable<> ();
+    for ( String key : serviceReference.getPropertyKeys () ) {
+      String newKey = key;
+      if ( key.startsWith ( "service." ) ) {
+        newKey = "origin." + key;
+      }
+      if ( !Objects.equals ( key, "objectClass" ) ) {
+        prop.put ( newKey, serviceReference.getProperty ( key ) );
+      }
     }
+    prop.put ( "liquibase", true );
+    return prop;
   }
 
-  synchronized private void runMigration ( DataSource dataSource ) {
+  private synchronized boolean runMigration ( DataSource dataSource ) {
     try ( Connection connection = dataSource.getConnection () ) {
       log.log ( LogService.LOG_INFO, "Running liquibase" );
       final Liquibase liquibase = new Liquibase ( "OSGI-INF/liquibase/master.xml", new ResourceAccessor () {
         @Override
         public Set<InputStream> getResourcesAsStream ( String s ) throws IOException {
           requireNonNull ( context, "Context Null" );
-          return Collections.singleton ( requireNonNull ( context.getBundle ().getEntry ( s ), "Failed to open " + s ).openStream () );
+          final URL url = context.getBundle ().getEntry ( s );
+          return url != null ? Collections.singleton ( url.openStream () ) : null;
         }
 
         @Override
@@ -79,8 +93,49 @@ public class LiquibaseRunner implements ServiceListener {
         }
       }, new JdbcConnection ( connection ) );
       liquibase.update ( (String) null );
-    } catch ( SQLException | LiquibaseException e ) {
-      log.log ( LogService.LOG_ERROR, "Liquibase Exception", e );
+      log.log ( LogService.LOG_INFO, "Liquibase complete" );
+      return true;
+    } catch ( Throwable ex ) {
+      log.log ( LogService.LOG_ERROR, "Liquibase failed", ex );
+      return false;
+    }
+  }
+
+  @Override
+  public DataSource addingService ( ServiceReference<DataSource> reference ) {
+    if ( dataSourceServiceReference == null ) {
+      log.log ( LogService.LOG_DEBUG, "Registering datasource" );
+      dataSource = context.getService ( reference );
+      if ( runMigration ( dataSource ) ) {
+        dataSourceServiceReference = reference;
+        final Dictionary<String, Object> properties = buildServiceProperties ( reference );
+        log.log ( LogService.LOG_DEBUG, "Datasource properties are " + properties );
+        dataSourceServiceRegistration = context.registerService ( DataSource.class, dataSource, properties );
+      } else {
+        context.ungetService ( reference );
+        dataSource = null;
+      }
+    }
+    return dataSourceServiceReference == reference ? context.getService ( reference ) : null;
+  }
+
+  @Override
+  public void modifiedService ( ServiceReference<DataSource> reference, DataSource service ) {
+    if ( dataSourceServiceReference == reference ) {
+      final Dictionary<String, Object> properties = buildServiceProperties ( reference );
+      log.log ( LogService.LOG_DEBUG, "Updating datasource properties to " + properties );
+      dataSourceServiceRegistration.setProperties ( properties );
+    }
+  }
+
+  @Override
+  public void removedService ( ServiceReference<DataSource> reference, DataSource service ) {
+    if ( dataSourceServiceReference == reference ) {
+      log.log ( LogService.LOG_DEBUG, "Un-registering datasource" );
+      dataSourceServiceRegistration.unregister ();
+      dataSource = null;
+      dataSourceServiceReference = null;
+      dataSourceServiceRegistration = null;
     }
   }
 }
