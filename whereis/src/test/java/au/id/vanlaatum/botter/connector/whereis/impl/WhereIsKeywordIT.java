@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.List;
 
+import static au.id.vanlaatum.botter.core.test.FeatureFinder.getRequiredFeatures;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertNotNull;
@@ -90,6 +91,7 @@ public class WhereIsKeywordIT {
   }
 
   private Option karafOptions () throws URISyntaxException {
+    final String featuresPath = "file:" + PathUtils.getBaseDir () + "/../features/target/classes/";
     return composite (
         keepRuntimeFolder (),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiRegistryPort", "2000" ),
@@ -101,15 +103,8 @@ public class WhereIsKeywordIT {
         karafDistributionConfiguration ().frameworkUrl ( maven ( "org.apache.karaf", "apache-karaf" ).versionAsInProject ().type ( "tar.gz" ) )
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
         configureConsole ().ignoreRemoteShell ().ignoreLocalConsole (),
-        features ( maven ( "org.apache.karaf.features", "standard" ).classifier ( "features" ).type ( "xml" ).versionAsInProject (), "aries-blueprint",
-            "aries-proxy" ),
-        features ( maven ( "org.apache.karaf.features", "enterprise" ).classifier ( "features" ).type ( "xml" ).versionAsInProject (), "jpa",
-            "jndi", "jdbc", "transaction", "hibernate" ),
-        features ( maven ( "org.ops4j.pax.cdi", "pax-cdi-features" ).classifier ( "features" ).type ( "xml" ).versionAsInProject (), "pax-cdi" ),
-        features ( maven ( "org.ops4j.pax.jdbc", "pax-jdbc-features" ).classifier ( "features" ).type ( "xml" ).versionAsInProject (), "pax-jdbc-derby",
-            "pax-jdbc-config" ),
-        features ( "file:" + PathUtils.getBaseDir () + "/../features/target/classes/features-test.xml", "test-deps" ),
-        features ( "file:" + PathUtils.getBaseDir () + "/../features/target/classes/features.xml", "antlr4", "joda-time" )
+        features ( featuresPath + "features-test.xml", "test-deps" ),
+        features ( featuresPath + "features.xml", getRequiredFeatures ( featuresPath + "features.xml", "botter", "botter-whereis" ) )
     );
   }
 

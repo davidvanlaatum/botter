@@ -25,6 +25,11 @@
     </dependency>
     <dependency>
       <groupId>au.id.vanlaatum.botter</groupId>
+      <artifactId>core-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>au.id.vanlaatum.botter</groupId>
       <artifactId>features</artifactId>
       <scope>provided</scope>
       <classifier>features</classifier>
@@ -159,13 +164,6 @@
         <dependency>
           <groupId>org.ops4j.pax.cdi</groupId>
           <artifactId>pax-cdi-features</artifactId>
-          <classifier>features</classifier>
-          <type>xml</type>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.ops4j.pax.jdbc</groupId>
-          <artifactId>pax-jdbc-features</artifactId>
           <classifier>features</classifier>
           <type>xml</type>
           <scope>test</scope>

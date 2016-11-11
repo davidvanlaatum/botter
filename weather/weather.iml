@@ -23,10 +23,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/antlr4" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/antlr4" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target/bundles" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/target/exam" />
+      <excludeFolder url="file://$MODULE_DIR$/target/failsafe-reports" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-resources" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
+      <excludeFolder url="file://$MODULE_DIR$/target/pax-exam-links" />
       <excludeFolder url="file://$MODULE_DIR$/target/site" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire-reports" />
@@ -58,6 +62,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.geronimo.specs:geronimo-osgi-registry:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.blueprint:org.apache.aries.blueprint.cm:1.0.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.aries.proxy:org.apache.aries.proxy.impl:1.0.5" level="project" />
+    <orderEntry type="module" module-name="core-test" scope="TEST" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:1.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.core:5.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.osgi:org.osgi.enterprise:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.4" level="project" />
@@ -73,7 +80,6 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:fluent-hc:4.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore-osgi:4.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.5" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-module-junit4:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-module-junit4-common:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-core:1.6.5" level="project" />
@@ -85,12 +91,55 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-mockito-common:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.powermock:powermock-api-support:1.6.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit:1.16.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-core:1.16.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: net.javacrumbs.json-unit:json-unit-fluent:1.16.0" level="project" />
     <orderEntry type="library" name="Maven: org.antlr:antlr4-runtime:4.5.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-junit4:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-spi:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-spi:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.tinybundles:tinybundles:2.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-store:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: biz.aQute.bnd:bndlib:2.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-lang:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-io:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-monitors:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-util-property:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-karaf:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-remote:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc-client:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.exam:pax-exam-container-rbc:4.9.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-core:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-lifecycle:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-net:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.commons:commons-compress:1.4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.tukaani:xz:1.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-framework:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.swissbox:pax-swissbox-tracker:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.base:ops4j-base-exec:1.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:2.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf.features:base:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf:org.apache.karaf.main:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf:org.apache.karaf.exception:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf:org.apache.karaf.client:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf.jaas:org.apache.karaf.jaas.boot:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf.diagnostic:org.apache.karaf.diagnostic.boot:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.felix:org.apache.felix.framework:5.4.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf:org.apache.karaf.util:4.0.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.felix:org.apache.felix.utils:1.8.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna:4.2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna-platform:4.2.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: jline:jline:2.14.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.sshd:sshd-core:0.14.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.tycho:org.eclipse.osgi:3.10.101.v20150820-1432" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jledit:core:0.2.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.logging:pax-logging-api:1.9.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.logging:pax-logging-service:1.9.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.ops4j.pax.url:pax-url-aether:2.4.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.felix:org.apache.felix.fileinstall:3.5.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.karaf.features:org.apache.karaf.features.core:4.0.7" level="project" />
   </component>
   <component name="sonarModuleSettings">
     <option name="alternativeWorkingDirPath" value="" />

@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack;
+package au.id.vanlaatum.botter.connector.weather.impl;
 
 import au.id.vanlaatum.botter.api.BotFactory;
 import org.junit.Test;
@@ -39,7 +39,7 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.keepRunti
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
 
 @RunWith ( PaxExam.class )
-public class SlackTransportIT {
+public class WeatherConnectorIT {
   @Inject
   private BundleContext bundleContext;
   @Inject
@@ -55,13 +55,13 @@ public class SlackTransportIT {
 
   @Configuration
   public Option[] configure () throws IOException, URISyntaxException {
-    String version = mavenBundle ( "au.id.vanlaatum.botter", "slack-transport" ).versionAsInProject ().getURL ().split ( "/" )[2];
+    String version = mavenBundle ( "au.id.vanlaatum.botter", "weather" ).versionAsInProject ().getURL ().split ( "/" )[2];
     return options (
         cleanCaches (),
         junitBundles (),
         karafOptions (),
         bundleLink ( "au.id.vanlaatum.botter.core" ),
-        bundle ( "file:" + PathUtils.getBaseDir () + "/target/slack-transport-" + version + ".jar" )
+        bundle ( "file:" + PathUtils.getBaseDir () + "/target/weather-" + version + ".jar" )
     );
   }
 
@@ -78,12 +78,12 @@ public class SlackTransportIT {
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
         configureConsole ().ignoreRemoteShell ().ignoreLocalConsole (),
         features ( featuresPath + "features-test.xml", "test-deps" ),
-        features ( featuresPath + "features.xml", getRequiredFeatures ( featuresPath + "features.xml", "botter", "botter-slack" ) )
+        features ( featuresPath + "features.xml", getRequiredFeatures ( featuresPath + "features.xml", "botter", "botter-weather" ) )
     );
   }
 
   @Test
-  public void transportTest () {
+  public void loadTest () {
 
   }
 }
