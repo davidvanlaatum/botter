@@ -104,7 +104,7 @@ public class WhereIsKeywordIT {
             .unpackDirectory ( new File ( "target/exam" ) ).useDeployFolder ( false ),
         configureConsole ().ignoreRemoteShell ().ignoreLocalConsole (),
         features ( featuresPath + "features-test.xml", "test-deps" ),
-        features ( featuresPath + "features.xml", getRequiredFeatures ( featuresPath + "features.xml", "botter", "botter-whereis" ) )
+        features ( featuresPath + "features.xml", getRequiredFeatures ( featuresPath + "features.xml", "botter", "botter-whereis", "botter-whereis-modal" ) )
     );
   }
 
