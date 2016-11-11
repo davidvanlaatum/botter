@@ -44,6 +44,7 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemTimeout;
 import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
@@ -94,6 +95,7 @@ public class WhereIsKeywordIT {
     final String featuresPath = "file:" + PathUtils.getBaseDir () + "/../features/target/classes/";
     return composite (
         keepRuntimeFolder (),
+        systemTimeout ( 180000 ),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiRegistryPort", "2000" ),
         editConfigurationFilePut ( "etc/org.apache.karaf.management.cfg", "rmiServerPort", "44445" ),
         editConfigurationFilePut ( "etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port", "8182" ),

@@ -30,11 +30,20 @@ public class FeatureFinder {
         final XPathExpression expression = xpath.compile ( format ( "//feature[@name='%s']/feature", feature ) );
         NodeList nodes = (NodeList) expression.evaluate ( doc, XPathConstants.NODESET );
         for ( int i = 0; i < nodes.getLength (); i++ ) {
-          if ( !requestedFeatures.contains ( nodes.item ( i ).getTextContent () ) ) {
-            requiredFeatures.add ( nodes.item ( i ).getTextContent () );
+          final String requiredFeature = nodes.item ( i ).getTextContent ().trim ();
+          if ( !requestedFeatures.contains ( requiredFeature ) ) {
+            if ( requiredFeature.startsWith ( "botter" ) ) {
+              throw new RuntimeException ( "Attempted to add " + requiredFeature );
+            }
+            requiredFeatures.add ( requiredFeature );
           }
         }
+        if ( nodes.getLength () == 0 ) {
+          throw new RuntimeException ( "Failed to find feature " + feature + " in " + url );
+        }
       }
+
+      System.out.println ( "Required features: " + requiredFeatures );
 
       return requiredFeatures.toArray ( new String[requiredFeatures.size ()] );
     } catch ( Throwable ex ) {
