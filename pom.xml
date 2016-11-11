@@ -644,9 +644,17 @@
           <version>2.19.1</version>
           <executions>
             <execution>
+              <id>integration-test</id>
               <phase>integration-test</phase>
               <goals>
                 <goal>integration-test</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>verify</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>verify</goal>
               </goals>
             </execution>
           </executions>

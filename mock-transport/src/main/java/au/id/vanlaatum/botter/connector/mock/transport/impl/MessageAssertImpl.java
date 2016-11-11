@@ -16,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
+@SuppressWarnings ( "WeakerAccess" )
 public class MessageAssertImpl implements MessageAssert, Message {
 
   private final MockTransportConfiguratorImpl mockTransportConfigurator;
@@ -76,7 +77,7 @@ public class MessageAssertImpl implements MessageAssert, Message {
     assertMessage ( type, equalTo ( message ) );
   }
 
-  public class MessageResponse {
+  public static class MessageResponse {
     MessageResponseType type;
     String message;
 

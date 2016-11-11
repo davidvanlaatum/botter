@@ -98,8 +98,8 @@ public class UserLocationImpl implements UserLocation {
     LocationAt locationAt = new LocationAt ();
     try {
       locationAt = query.getSingleResult ();
-    } catch ( NoResultException ignore ) {
-
+    } catch ( NoResultException ex ) {
+      log.log ( LogService.LOG_DEBUG, "Not found", ex );
     }
     locationAt.setUser ( user );
     locationAt.setStartDate ( from.toDate () );
