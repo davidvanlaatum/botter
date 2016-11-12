@@ -26,14 +26,20 @@ public abstract class AbstractGenericCache<Key, Value> implements GenericCache<K
   }
 
   @Override
-  public Value lookup ( Key key, Callable<Value> method ) throws Exception {
+  public Value lookup ( Key key, Callable<Value> method ) throws CacheLookupException {
     final BaseCacheObject object = data.get ( key );
     if ( object != null && object.getDelay ( TimeUnit.MILLISECONDS ) > 0 ) {
       return object.get ();
     } else {
-      Value rt = method.call ();
-      add ( key, rt );
-      return rt;
+      try {
+        Value rt = method.call ();
+        add ( key, rt );
+        return rt;
+      } catch ( CacheLookupException ex ) {
+        throw ex;
+      } catch ( Exception ex ) {
+        throw new CacheLookupException ( ex );
+      }
     }
   }
 

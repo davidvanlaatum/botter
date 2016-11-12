@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.connector.weather.openweather;
 
 import au.id.vanlaatum.botter.api.Attribute;
 import au.id.vanlaatum.botter.api.BotFactory;
+import au.id.vanlaatum.botter.api.CacheLookupException;
 import au.id.vanlaatum.botter.connector.weather.api.UnsupportedLocationTypeException;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherConnector;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherDetails;
@@ -130,9 +131,7 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
           }
         }
       } );
-    } catch ( WeatherFetchFailedException e ) {
-      throw e;
-    } catch ( Exception e ) {
+    } catch ( CacheLookupException e ) {
       throw new WeatherFetchFailedException ( e );
     }
   }
@@ -170,9 +169,7 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
               }
             }
           } ), date );
-    } catch ( WeatherFetchFailedException e ) {
-      throw e;
-    } catch ( Exception e ) {
+    } catch ( CacheLookupException e ) {
       throw new WeatherFetchFailedException ( e );
     }
   }

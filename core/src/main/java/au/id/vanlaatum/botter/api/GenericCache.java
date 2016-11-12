@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 public interface GenericCache<Key, Value> {
   Value lookup ( Key key );
 
-  Value lookup ( Key key, Callable<Value> method ) throws Exception;
+  Value lookup ( Key key, Callable<Value> method ) throws CacheLookupException;
 
   void add ( Key key, Value value );
 
