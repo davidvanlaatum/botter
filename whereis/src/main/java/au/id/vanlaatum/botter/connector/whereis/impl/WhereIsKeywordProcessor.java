@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.connector.whereis.impl;
 
+import au.id.vanlaatum.botter.antlr.utils.CaseInsensitiveInputStream;
+import au.id.vanlaatum.botter.antlr.utils.ErrorToExceptionErrorListener;
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
 import au.id.vanlaatum.botter.api.Transport;
@@ -7,6 +9,7 @@ import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.connector.whereis.api.Location;
 import au.id.vanlaatum.botter.connector.whereis.api.UserLocation;
 import org.antlr.v4.runtime.ANTLRErrorListener;
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RecognitionException;
@@ -174,9 +177,8 @@ public class WhereIsKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     QuestionLexer lexer = new QuestionLexer ( new CaseInsensitiveInputStream ( text ) );
     QuestionParser parser = new QuestionParser ( new BufferedTokenStream ( lexer ) );
     lexer.removeErrorListeners ();
-    lexer.addErrorListener ( this );
-    parser.removeErrorListeners ();
-    parser.addErrorListener ( this );
+    lexer.addErrorListener ( new ErrorToExceptionErrorListener () );
+    parser.setErrorHandler ( new BailErrorStrategy () );
     QuestionParser.QuestionContext question = parser.question ();
     Question rt = null;
     if ( question != null && question.exception == null ) {

@@ -1,11 +1,11 @@
-package au.id.vanlaatum.botter.connector.whereis.impl;
+package au.id.vanlaatum.botter.antlr.utils;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.IntStream;
 
 public class CaseInsensitiveInputStream extends ANTLRInputStream {
 
-  protected char[] lookaheadData;
+  private char[] lookaheadData;
 
   public CaseInsensitiveInputStream ( String input ) {
     super ( input );

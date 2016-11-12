@@ -1,5 +1,6 @@
 package au.id.vanlaatum.botter.connector.weather.impl;
 
+import au.id.vanlaatum.botter.antlr.utils.CaseInsensitiveInputStream;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;

@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 class MessageBuilderImpl implements MessageBuilder {
+  public static final int TIMEOUT = 10;
   private final MockTransportConfigurator mockTransportConfigurator;
   private String message;
   private User user;
@@ -31,7 +32,7 @@ class MessageBuilderImpl implements MessageBuilder {
   @Override
   public MessageAssert send () throws InterruptedException, ExecutionException, TimeoutException {
     final MessageAssertImpl messageAssert = new MessageAssertImpl ( mockTransportConfigurator, message, user, channel );
-    mockTransportConfigurator.getBotFactory ().processMessage ( messageAssert ).get ( 10, TimeUnit.SECONDS );
+    mockTransportConfigurator.getBotFactory ().processMessage ( messageAssert ).get ( TIMEOUT, TimeUnit.SECONDS );
     return messageAssert;
   }
 
