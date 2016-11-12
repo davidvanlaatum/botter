@@ -1,7 +1,6 @@
 package au.id.vanlaatum.botter.connector.weather.openweather;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
@@ -12,9 +11,8 @@ import java.util.concurrent.TimeUnit;
 public class UnixTimestampDeserializer extends JsonDeserializer<Date> {
 
   @Override
-  public Date deserialize ( JsonParser parser, DeserializationContext context )
-      throws IOException, JsonProcessingException {
+  public Date deserialize ( JsonParser parser, DeserializationContext context ) throws IOException {
     String unixTimestamp = parser.getText ().trim ();
-    return new Date ( TimeUnit.SECONDS.toMillis ( Long.valueOf ( unixTimestamp ) ) );
+    return new Date ( TimeUnit.SECONDS.toMillis ( Long.parseLong ( unixTimestamp ) ) );
   }
 }
