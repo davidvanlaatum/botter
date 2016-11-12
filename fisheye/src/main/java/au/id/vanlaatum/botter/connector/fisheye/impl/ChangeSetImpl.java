@@ -53,31 +53,30 @@ public class ChangeSetImpl implements ChangeSet {
   }
 
   public List<String> getTags () {
-    return tags;
+    return Collections.unmodifiableList ( tags );
   }
 
   public ChangeSetImpl setTags ( List<String> tags ) {
-    this.tags = tags;
+    this.tags = new ArrayList<> ( tags );
     return this;
   }
 
   public List<String> getBranches () {
-    return branches;
+    return Collections.unmodifiableList ( branches );
   }
 
   public ChangeSetImpl setBranches ( List<String> branches ) {
-    this.branches = branches;
+    this.branches = new ArrayList<> ( branches );
     return this;
   }
 
   public List<String> getChildren () {
-    return children;
+    return Collections.unmodifiableList ( children );
   }
 
   public ChangeSetImpl setChildren ( List<String> children ) {
-    this.children = children;
+    this.children = new ArrayList<> ( children );
     return this;
-
   }
 
   public List<String> getParents () {
