@@ -39,7 +39,8 @@ import static java.text.MessageFormat.format;
 @Named ( "BotFactory" )
 @Singleton
 public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
-
+  private static final int CACHE_CLEAN_INTERVAL = 10;
+  private static final int SHUTDOWN_TIMEOUT = 10;
   @Inject
   @Named ( "blueprintBundleContext" )
   private BundleContext context;
@@ -85,7 +86,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @PostConstruct
   public void init () {
-    log.log ( LogService.LOG_INFO, "Botter Core Starting====================" );
+    log.log ( LogService.LOG_INFO, "Botter Core Starting" );
     threadGroup = new ThreadGroup ( "Botter Command Processing" );
     executor = Executors.newScheduledThreadPool ( 1, new ThreadFactory () {
 
@@ -101,9 +102,8 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
       public void run () {
         cleanCaches ();
       }
-    }, 0, 10, TimeUnit.SECONDS );
-    statusProvider =
-        context.registerService ( StatusInfoProvider.class, new StatusProvider (), new Hashtable<String, Object> () );
+    }, CACHE_CLEAN_INTERVAL, CACHE_CLEAN_INTERVAL, TimeUnit.SECONDS );
+    statusProvider = context.registerService ( StatusInfoProvider.class, new StatusProvider (), new Hashtable<String, Object> () );
   }
 
   @Override
@@ -119,7 +119,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
     try {
       threadGroup.setDaemon ( true );
       executor.shutdownNow ();
-      executor.awaitTermination ( 10, TimeUnit.SECONDS );
+      executor.awaitTermination ( SHUTDOWN_TIMEOUT, TimeUnit.SECONDS );
     } catch ( InterruptedException e ) {
       log.log ( LogService.LOG_WARNING, null, e );
     }
@@ -147,6 +147,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
         return new AttributeDefinition[]{};
       }
 
+      @Override
       public InputStream getIcon ( int i ) throws IOException {
         return null;
       }
@@ -158,7 +159,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   }
 
   @Override
-  public Future<?> processMessage ( final Message message ) {
+  public Future processMessage ( final Message message ) {
     log.log ( LogService.LOG_INFO, format ( "Received message {0} on {1} from {2}", message.getText (),
         message.getChannel ().getName (), message.getUser ().getName () ) );
     final CommandImpl command = new CommandImpl ();
@@ -244,7 +245,7 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
 
   @Override
   public void awaitBackgroundTasks () throws InterruptedException {
-    executor.awaitTermination ( 10, TimeUnit.SECONDS );
+    executor.awaitTermination ( SHUTDOWN_TIMEOUT, TimeUnit.SECONDS );
   }
 
   private class StatusProvider implements StatusInfoProvider {

@@ -12,6 +12,7 @@ import au.id.vanlaatum.botter.connector.weather.api.WeatherLocation;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherLocationType;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherSettings;
 import org.antlr.v4.runtime.ANTLRErrorListener;
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.LexerNoViableAltException;
 import org.antlr.v4.runtime.NoViableAltException;
@@ -294,8 +295,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     QuestionParser parser = new QuestionParser ( new BufferedTokenStream ( lexer ) );
     lexer.removeErrorListeners ();
     lexer.addErrorListener ( this );
-    parser.removeErrorListeners ();
-    parser.addErrorListener ( this );
+    parser.setErrorHandler ( new BailErrorStrategy () );
     QuestionParser.QuestionContext question = parser.question ();
     Question rt = null;
     if ( question != null && question.exception == null ) {

@@ -62,7 +62,8 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
     }
   }
 
-  BotFactory getBotFactory () {
+  @Override
+  public BotFactory getBotFactory () {
     return factory;
   }
 
@@ -71,7 +72,8 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
     return transport;
   }
 
-  MockUser getUserById ( String userId ) throws Transport.UserNotFoundException {
+  @Override
+  public MockUser getUserById ( String userId ) throws Transport.UserNotFoundException {
     MockUser user = null;
 
     for ( MockUser mockUser : users ) {
@@ -92,7 +94,8 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
     channels.put ( mockChannel.getID (), mockChannel );
   }
 
-  MockChannel getChannel ( String channelId ) {
+  @Override
+  public MockChannel getChannel ( String channelId ) {
     final MockChannel channel = channels.get ( channelId );
     if ( channel == null ) {
       throw new RuntimeException ( "Channel " + channelId + " not found" );

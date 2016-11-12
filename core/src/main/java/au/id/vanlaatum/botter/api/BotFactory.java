@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 public interface BotFactory {
   void cleanCaches ();
 
-  Future<?> processMessage ( Message message );
+  Future processMessage ( Message message );
 
   boolean matchesPhrase ( List<Word> phrase, List<String> words, Map<String, Object> data );
 

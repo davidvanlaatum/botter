@@ -25,7 +25,7 @@ public class MessageAssertImpl implements MessageAssert, Message {
   private final MockChannel channel;
   private final List<MessageResponse> responsesList = new ArrayList<> ();
 
-  MessageAssertImpl ( MockTransportConfiguratorImpl mockTransportConfigurator, String message, MockUser user, MockChannel channel ) {
+  MessageAssertImpl ( MockTransportConfigurator mockTransportConfigurator, String message, MockUser user, MockChannel channel ) {
     this.mockTransportConfigurator = requireNonNull ( mockTransportConfigurator );
     this.message = requireNonNull ( message );
     this.user = requireNonNull ( user );

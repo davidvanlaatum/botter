@@ -74,6 +74,8 @@ public class FisheyeConnectorImpl implements FisheyeConnector {
         throw new RemoteCallFailedException ();
       }
       return changeSet;
+    } finally {
+      get.releaseConnection ();
     }
   }
 

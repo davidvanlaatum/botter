@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.Objects;
 
 public class CityLocation implements WeatherLocation {
+  private static final long serialVersionUID = 1;
 
   private String country;
   private String city;

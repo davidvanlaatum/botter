@@ -11,10 +11,11 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractGenericCache<Key, Value> implements GenericCache<Key, Value> {
+  public final int DEFAULT_CACHE_TIME = 300000;
   private final Map<Key, BaseCacheObject> data = new TreeMap<> ();
   private final ReferenceQueue<Value> referenceQueue = new ReferenceQueue<> ();
   private final DelayQueue<BaseCacheObject> cleanupQueue = new DelayQueue<> ();
-  private long cacheTime = 300000;
+  private long cacheTime = DEFAULT_CACHE_TIME;
 
   @Override
   public synchronized Value lookup ( Key key ) {
