@@ -60,3 +60,5 @@ core/target/
 slack/target/
 .idea/sonarIssues.xml
 .idea/dataSources/
+.idea/inspectionProfiles/Sonar.xml
+.idea/sonarSettings.xml

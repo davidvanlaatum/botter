@@ -3,19 +3,22 @@ package au.id.vanlaatum.botter.core.test;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathVariableResolver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.lang.String.format;
-
 public class FeatureFinder {
+  private FeatureFinder () {
+  }
+
   public static String[] getRequiredFeatures ( String url, String... features ) {
     try {
       final List<String> requiredFeatures = new ArrayList<> ();
@@ -26,8 +29,14 @@ public class FeatureFinder {
       XPathFactory xPathfactory = XPathFactory.newInstance ();
       XPath xpath = xPathfactory.newXPath ();
 
-      for ( String feature : features ) {
-        final XPathExpression expression = xpath.compile ( format ( "//feature[@name='%s']/feature", feature ) );
+      for ( final String feature : features ) {
+        xpath.setXPathVariableResolver ( new XPathVariableResolver () {
+          @Override
+          public Object resolveVariable ( QName variableName ) {
+            return "feature".equals ( variableName.toString () ) ? feature : null;
+          }
+        } );
+        final XPathExpression expression = xpath.compile ( "//feature[@name=$feature]/feature" );
         NodeList nodes = (NodeList) expression.evaluate ( doc, XPathConstants.NODESET );
         for ( int i = 0; i < nodes.getLength (); i++ ) {
           final String requiredFeature = nodes.item ( i ).getTextContent ().trim ();
