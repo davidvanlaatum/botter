@@ -11,18 +11,18 @@ public class SlackMessageDTO implements Message {
   private String text;
   private SlackUserDTO user;
   private AbstractSlackMessageChannel channel;
-  private au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message originalMessage;
+  private au.id.vanlaatum.botter.transport.slack.modal.rtm.Message originalMessage;
 
   SlackMessageDTO ( SlackTransport transport ) {
     this.transport = transport;
   }
 
-  public au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message getOriginalMessage () {
+  public au.id.vanlaatum.botter.transport.slack.modal.rtm.Message getOriginalMessage () {
     return originalMessage;
   }
 
   public SlackMessageDTO setOriginalMessage (
-      au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message originalMessage ) {
+      au.id.vanlaatum.botter.transport.slack.modal.rtm.Message originalMessage ) {
     this.originalMessage = originalMessage;
     return this;
   }

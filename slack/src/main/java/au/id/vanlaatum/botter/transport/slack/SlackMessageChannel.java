@@ -1,6 +1,6 @@
 package au.id.vanlaatum.botter.transport.slack;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackChannel;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackChannel;
 
 public class SlackMessageChannel extends AbstractSlackMessageChannel {
 

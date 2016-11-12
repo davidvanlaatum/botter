@@ -1,7 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.api.User;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.TimeZone;

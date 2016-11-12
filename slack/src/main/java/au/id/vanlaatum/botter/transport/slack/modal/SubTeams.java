@@ -1,8 +1,7 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties ( ignoreUnknown = true )
-public class DnD {
-
+public class SubTeams {
 }

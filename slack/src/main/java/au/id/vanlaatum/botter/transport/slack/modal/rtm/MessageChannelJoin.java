@@ -1,6 +1,6 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUserProfile;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUserProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class MessageChannelJoin extends Message {

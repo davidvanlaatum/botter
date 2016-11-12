@@ -1,7 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.api.Channel;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackTimeStamp;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackTimeStamp;
 
 public abstract class AbstractSlackMessageChannel implements Channel {
   protected String id;
@@ -9,10 +9,12 @@ public abstract class AbstractSlackMessageChannel implements Channel {
   private SlackTimeStamp mark;
   private boolean callMark;
 
+  @Override
   public String getID () {
     return id;
   }
 
+  @Override
   public String getName () {
     return name;
   }

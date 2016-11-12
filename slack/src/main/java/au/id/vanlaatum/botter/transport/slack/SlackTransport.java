@@ -4,23 +4,23 @@ import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.StatusInfoProvider;
 import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.api.User;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Attachment;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Hello;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Marked;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Ping;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Pong;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.ReconnectURL;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.TeamJoin;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.UserChange;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTMStart;
-import au.id.vanlaatum.botter.transport.slack.Modal.Self;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackChannel;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackIM;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackTeam;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.RTMStart;
+import au.id.vanlaatum.botter.transport.slack.modal.Self;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackChannel;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackIM;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackTeam;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Attachment;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.BaseEvent;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.BasePacket;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Hello;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Marked;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Message;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Ping;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Pong;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.ReconnectURL;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.TeamJoin;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.UserChange;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.client.ClientProperties;
@@ -292,7 +292,7 @@ public class SlackTransport implements Transport, ManagedService {
     boolean sent = false;
     if ( message instanceof SlackMessageDTO ) {
       try {
-        final au.id.vanlaatum.botter.transport.slack.Modal.BasePacket basePacket =
+        final au.id.vanlaatum.botter.transport.slack.modal.BasePacket basePacket =
             api.doChatUpdate ( ( (SlackMessageDTO) message ).getOriginalMessage (),
                 Collections.singletonList ( new Attachment ( text ) ) );
         if ( basePacket.getOk () ) {

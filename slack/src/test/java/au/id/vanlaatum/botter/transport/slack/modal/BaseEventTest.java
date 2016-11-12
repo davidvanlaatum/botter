@@ -1,7 +1,7 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BasePacket;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.BaseEvent;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.BasePacket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;

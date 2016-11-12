@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
 import java.net.URI;
 import java.util.Map;

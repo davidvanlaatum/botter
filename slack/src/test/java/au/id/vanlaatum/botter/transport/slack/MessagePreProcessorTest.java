@@ -1,6 +1,6 @@
 package au.id.vanlaatum.botter.transport.slack;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

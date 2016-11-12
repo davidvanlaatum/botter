@@ -1,7 +1,7 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
 
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.Message;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.Message;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;

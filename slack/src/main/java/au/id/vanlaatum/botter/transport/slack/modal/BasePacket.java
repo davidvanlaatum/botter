@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
 public class BasePacket {
   private Boolean ok;

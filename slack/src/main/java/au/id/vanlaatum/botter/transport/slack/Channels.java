@@ -1,7 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackChannel;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackIM;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackChannel;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackIM;
 
 import java.util.ArrayList;
 import java.util.Collection;

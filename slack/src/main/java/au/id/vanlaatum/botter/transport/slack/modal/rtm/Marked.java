@@ -1,6 +1,6 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackTimeStamp;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackTimeStamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Marked extends BaseEvent {

@@ -1,7 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack;
 
 import au.id.vanlaatum.botter.api.Transport;
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUser;
 
 import java.util.Map;
 import java.util.Objects;

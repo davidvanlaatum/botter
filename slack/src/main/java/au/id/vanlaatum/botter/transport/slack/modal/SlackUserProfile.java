@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal;
+package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

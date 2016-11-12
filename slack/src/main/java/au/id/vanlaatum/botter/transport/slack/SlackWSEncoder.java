@@ -1,6 +1,6 @@
 package au.id.vanlaatum.botter.transport.slack;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.RTM.BaseEvent;
+import au.id.vanlaatum.botter.transport.slack.modal.rtm.BaseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
