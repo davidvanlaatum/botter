@@ -8,14 +8,8 @@ import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.connector.whereis.api.Location;
 import au.id.vanlaatum.botter.connector.whereis.api.UserLocation;
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.BufferedTokenStream;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -26,7 +20,6 @@ import org.osgi.service.log.LogService;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import java.util.BitSet;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -36,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 @Named ( "WhereIsKeyword" )
 @Singleton
-public class WhereIsKeywordProcessor implements KeyWordProcessor, ANTLRErrorListener {
+public class WhereIsKeywordProcessor implements KeyWordProcessor {
   @Inject
   @Named ( "logService" )
   private LogService log;
@@ -148,29 +141,6 @@ public class WhereIsKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     String until = location.getEnd ().isAfter ( tomorrow ) ? " until " +
         formatTime ( location.getEnd (), message, location.getUser ().getUniqID () ) : "";
     return String.format ( "%s is %s%s", question.getUserName (), location.getDescription (), until );
-  }
-
-  @Override
-  public void syntaxError ( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg,
-                            RecognitionException e ) {
-    throw new RuntimeException ( line + ":" + charPositionInLine + ' ' + msg, e );
-  }
-
-  @Override
-  public void reportAmbiguity ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts,
-                                ATNConfigSet configs ) {
-
-  }
-
-  @Override
-  public void reportAttemptingFullContext ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts,
-                                            ATNConfigSet configs ) {
-
-  }
-
-  @Override
-  public void reportContextSensitivity ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs ) {
-
   }
 
   Question parseQuestion ( String text, TimeZone timezone ) {

@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.connector.weather.impl;
 
 import au.id.vanlaatum.botter.antlr.utils.CaseInsensitiveInputStream;
+import au.id.vanlaatum.botter.antlr.utils.ErrorToExceptionErrorListener;
 import au.id.vanlaatum.botter.api.BotFactory;
 import au.id.vanlaatum.botter.api.Command;
 import au.id.vanlaatum.botter.api.KeyWordProcessor;
@@ -12,16 +13,10 @@ import au.id.vanlaatum.botter.connector.weather.api.WeatherFetchFailedException;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherLocation;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherLocationType;
 import au.id.vanlaatum.botter.connector.weather.api.WeatherSettings;
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.LexerNoViableAltException;
 import org.antlr.v4.runtime.NoViableAltException;
-import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.ops4j.pax.cdi.api.OsgiService;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
@@ -35,7 +30,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.List;
@@ -50,7 +44,7 @@ import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 @Named ( "WeatherKeyword" )
 @Singleton
-public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorListener, ManagedService {
+public class WeatherKeywordProcessor implements KeyWordProcessor, ManagedService {
   static final String USER_SETTING_COUNTRY = "country";
   static final String USER_SETTING_CITY = "city";
   static final String DEFAULT_LOCATION_TYPE = "location.default.type";
@@ -295,7 +289,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
     QuestionLexer lexer = new QuestionLexer ( new CaseInsensitiveInputStream ( text ) );
     QuestionParser parser = new QuestionParser ( new BufferedTokenStream ( lexer ) );
     lexer.removeErrorListeners ();
-    lexer.addErrorListener ( this );
+    lexer.addErrorListener ( new ErrorToExceptionErrorListener () );
     parser.setErrorHandler ( new BailErrorStrategy () );
     QuestionParser.QuestionContext question = parser.question ();
     Question rt = null;
@@ -327,29 +321,6 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
   public WeatherKeywordProcessor setPreferencesService ( PreferencesService preferencesService ) {
     this.preferencesService = preferencesService;
     return this;
-  }
-
-  @Override
-  public void syntaxError ( Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg,
-                            RecognitionException e ) {
-    throw new RuntimeException ( line + ":" + charPositionInLine + ' ' + msg, e );
-  }
-
-  @Override
-  public void reportAmbiguity ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, boolean exact, BitSet ambigAlts,
-                                ATNConfigSet configs ) {
-
-  }
-
-  @Override
-  public void reportAttemptingFullContext ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, BitSet conflictingAlts,
-                                            ATNConfigSet configs ) {
-
-  }
-
-  @Override
-  public void reportContextSensitivity ( Parser recognizer, DFA dfa, int startIndex, int stopIndex, int prediction, ATNConfigSet configs ) {
-
   }
 
   <T> T getSetting ( Dictionary<String, ?> dictionary, String name, Class<T> type ) {
