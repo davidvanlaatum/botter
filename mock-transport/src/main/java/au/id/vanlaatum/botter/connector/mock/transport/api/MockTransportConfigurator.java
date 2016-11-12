@@ -1,9 +1,9 @@
 package au.id.vanlaatum.botter.connector.mock.transport.api;
 
 import au.id.vanlaatum.botter.api.BotFactory;
+import au.id.vanlaatum.botter.api.Channel;
 import au.id.vanlaatum.botter.api.Transport;
-import au.id.vanlaatum.botter.connector.mock.transport.impl.MockChannel;
-import au.id.vanlaatum.botter.connector.mock.transport.impl.MockUser;
+import au.id.vanlaatum.botter.api.User;
 
 public interface MockTransportConfigurator {
 
@@ -21,7 +21,7 @@ public interface MockTransportConfigurator {
 
   Transport getTransport ();
 
-  MockUser getUserById ( String userId ) throws Transport.UserNotFoundException;
+  User getUserById ( String userId ) throws Transport.UserNotFoundException;
 
-  MockChannel getChannel ( String channelId );
+  Channel getChannel ( String channelId );
 }

@@ -21,11 +21,11 @@ import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 public class MessageAssertImpl implements MessageAssert, Message {
   private final MockTransportConfigurator mockTransportConfigurator;
   private final String message;
-  private final MockUser user;
-  private final MockChannel channel;
+  private final User user;
+  private final Channel channel;
   private final List<MessageResponse> responsesList = new ArrayList<> ();
 
-  MessageAssertImpl ( MockTransportConfigurator mockTransportConfigurator, String message, MockUser user, MockChannel channel ) {
+  MessageAssertImpl ( MockTransportConfigurator mockTransportConfigurator, String message, User user, Channel channel ) {
     this.mockTransportConfigurator = requireNonNull ( mockTransportConfigurator );
     this.message = requireNonNull ( message );
     this.user = requireNonNull ( user );

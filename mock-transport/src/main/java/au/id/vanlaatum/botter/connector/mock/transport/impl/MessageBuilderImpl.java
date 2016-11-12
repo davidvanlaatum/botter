@@ -1,6 +1,8 @@
 package au.id.vanlaatum.botter.connector.mock.transport.impl;
 
+import au.id.vanlaatum.botter.api.Channel;
 import au.id.vanlaatum.botter.api.Transport;
+import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageAssert;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageBuilder;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MockTransportConfigurator;
@@ -12,8 +14,8 @@ import java.util.concurrent.TimeoutException;
 class MessageBuilderImpl implements MessageBuilder {
   private final MockTransportConfigurator mockTransportConfigurator;
   private String message;
-  private MockUser user;
-  private MockChannel channel;
+  private User user;
+  private Channel channel;
 
   MessageBuilderImpl ( MockTransportConfigurator mockTransportConfigurator, String message ) {
     this.mockTransportConfigurator = mockTransportConfigurator;

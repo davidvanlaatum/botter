@@ -1,7 +1,9 @@
 package au.id.vanlaatum.botter.connector.mock.transport.impl;
 
 import au.id.vanlaatum.botter.api.BotFactory;
+import au.id.vanlaatum.botter.api.Channel;
 import au.id.vanlaatum.botter.api.Transport;
+import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.connector.mock.transport.api.ChannelBuilder;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageBuilder;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MockTransportConfigurator;
@@ -73,7 +75,7 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
   }
 
   @Override
-  public MockUser getUserById ( String userId ) throws Transport.UserNotFoundException {
+  public User getUserById ( String userId ) throws Transport.UserNotFoundException {
     MockUser user = null;
 
     for ( MockUser mockUser : users ) {
@@ -95,7 +97,7 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
   }
 
   @Override
-  public MockChannel getChannel ( String channelId ) {
+  public Channel getChannel ( String channelId ) {
     final MockChannel channel = channels.get ( channelId );
     if ( channel == null ) {
       throw new RuntimeException ( "Channel " + channelId + " not found" );
