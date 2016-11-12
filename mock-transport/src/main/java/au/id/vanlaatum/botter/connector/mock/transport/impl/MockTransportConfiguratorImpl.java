@@ -66,7 +66,8 @@ public class MockTransportConfiguratorImpl implements MockTransportConfigurator 
     return factory;
   }
 
-  public MockTransport getTransport () {
+  @Override
+  public Transport getTransport () {
     return transport;
   }
 

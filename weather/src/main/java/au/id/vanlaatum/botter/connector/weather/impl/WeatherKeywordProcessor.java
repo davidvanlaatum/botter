@@ -172,7 +172,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ANTLRErrorList
       for ( WeatherFetchFailedException exception : exceptions ) {
         buffer.append ( "\n " ).append ( exception.getMessage () );
       }
-      message.reply ( format ( "failed to fetch info: {0}", buffer.toString () ) );
+      message.reply ( format ( "failed to fetch info: {0}", buffer ) );
     }
   }
 

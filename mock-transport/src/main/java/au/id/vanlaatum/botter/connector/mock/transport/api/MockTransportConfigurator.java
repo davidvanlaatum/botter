@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.connector.mock.transport.api;
 
+import au.id.vanlaatum.botter.api.Transport;
+
 public interface MockTransportConfigurator {
 
   UserBuilder addUser ( String userId );
@@ -11,4 +13,6 @@ public interface MockTransportConfigurator {
   void start ();
 
   void stop ();
+
+  Transport getTransport ();
 }

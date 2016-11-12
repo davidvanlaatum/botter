@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.api.Message;
 import au.id.vanlaatum.botter.api.Transport;
 import au.id.vanlaatum.botter.api.User;
 import au.id.vanlaatum.botter.connector.mock.transport.api.MessageAssert;
+import au.id.vanlaatum.botter.connector.mock.transport.api.MockTransportConfigurator;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
@@ -18,8 +19,7 @@ import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
 @SuppressWarnings ( "WeakerAccess" )
 public class MessageAssertImpl implements MessageAssert, Message {
-
-  private final MockTransportConfiguratorImpl mockTransportConfigurator;
+  private final MockTransportConfigurator mockTransportConfigurator;
   private final String message;
   private final MockUser user;
   private final MockChannel channel;
@@ -67,8 +67,8 @@ public class MessageAssertImpl implements MessageAssert, Message {
   @Override
   public void assertMessage ( MessageResponseType type, Matcher<String> message ) {
     MatcherAssert.assertThat ( responsesList, CoreMatchers.<MessageResponse>hasItem ( CoreMatchers.allOf (
-        hasProperty ( "type", equalTo ( type ) ),
-        hasProperty ( "message", message )
+        hasProperty ( "message", message ),
+        hasProperty ( "type", equalTo ( type ) )
     ) ) );
   }
 

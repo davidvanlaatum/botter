@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FeatureFinder {
+public final class FeatureFinder {
   private FeatureFinder () {
   }
 

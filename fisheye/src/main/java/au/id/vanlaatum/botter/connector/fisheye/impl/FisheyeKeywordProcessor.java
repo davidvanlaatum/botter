@@ -66,8 +66,9 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
   private boolean decodeAndProcess ( FisheyeConnector connector, URI uri, Command message ) {
     boolean rt = false;
     URI path = connector.removePrefix ( uri );
-    if ( path.getPath ().startsWith ( "changelog/" ) ) {
-      final String repo = path.getPath ().substring ( "changelog/".length () );
+    final String sPath = path.getPath ();
+    if ( sPath.startsWith ( "changelog/" ) ) {
+      final String repo = sPath.substring ( "changelog/".length () );
       final List<NameValuePair> params = URLEncodedUtils.parse ( uri, "UTF-8" );
       String changeSet = null;
       for ( NameValuePair pair : params ) {
