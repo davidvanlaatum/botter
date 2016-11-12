@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.connector.fisheye.impl;
 
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,11 +154,11 @@ public class ChangeSetImpl implements ChangeSet {
 
   @Override
   public Date getDate () {
-    return (Date) date.clone ();
+    return ObjectUtils.clone ( date );
   }
 
   public ChangeSetImpl setDate ( Date date ) {
-    this.date = (Date) date.clone ();
+    this.date = ObjectUtils.clone ( date );
     return this;
   }
 

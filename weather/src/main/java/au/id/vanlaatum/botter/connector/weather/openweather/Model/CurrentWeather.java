@@ -5,6 +5,7 @@ import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampSeriali
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -109,11 +110,11 @@ public class CurrentWeather extends BaseResponse {
   }
 
   public Date getDt () {
-    return (Date) dt.clone ();
+    return ObjectUtils.clone ( dt );
   }
 
   public CurrentWeather setDt ( Date dt ) {
-    this.dt = (Date) dt.clone ();
+    this.dt = ObjectUtils.clone ( dt );
     return this;
   }
 
@@ -290,20 +291,20 @@ public class CurrentWeather extends BaseResponse {
     }
 
     public Date getSunrise () {
-      return (Date) sunrise.clone ();
+      return ObjectUtils.clone ( sunrise );
     }
 
     public Sys setSunrise ( Date sunrise ) {
-      this.sunrise = (Date) sunrise.clone ();
+      this.sunrise = ObjectUtils.clone ( sunrise );
       return this;
     }
 
     public Date getSunset () {
-      return (Date) sunset.clone ();
+      return ObjectUtils.clone ( sunset );
     }
 
     public Sys setSunset ( Date sunset ) {
-      this.sunset = (Date) sunset.clone ();
+      this.sunset = ObjectUtils.clone ( sunset );
       return this;
     }
   }

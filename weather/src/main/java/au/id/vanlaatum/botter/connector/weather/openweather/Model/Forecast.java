@@ -4,6 +4,7 @@ import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampDeseria
 import au.id.vanlaatum.botter.connector.weather.openweather.UnixTimestampSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -133,11 +134,11 @@ public class Forecast extends BaseResponse {
     private BigDecimal rain;
 
     public Date getDt () {
-      return (Date) dt.clone ();
+      return ObjectUtils.clone ( dt );
     }
 
     public Details setDt ( Date dt ) {
-      this.dt = (Date) dt.clone ();
+      this.dt = ObjectUtils.clone ( dt );
       return this;
     }
 

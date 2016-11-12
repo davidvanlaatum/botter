@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.connector.weather.impl;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.Date;
 
 public class WeatherQuestion implements Question {
@@ -13,7 +15,7 @@ public class WeatherQuestion implements Question {
   public WeatherQuestion ( TimeConstant time, int dow, Date date, Subject subject, String city, String country ) {
     this.timeType = time == null ? TimeConstant.TODAY : time;
     this.dow = dow;
-    this.date = (Date) date.clone ();
+    this.date = ObjectUtils.clone ( date );
     this.subject = subject;
     this.city = city;
     this.country = country;
@@ -33,7 +35,7 @@ public class WeatherQuestion implements Question {
   }
 
   public Date getDate () {
-    return (Date) date.clone ();
+    return ObjectUtils.clone ( date );
   }
 
   public Subject getSubject () {
