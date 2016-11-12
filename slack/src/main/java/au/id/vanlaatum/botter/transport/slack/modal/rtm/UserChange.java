@@ -1,6 +1,6 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
-import au.id.vanlaatum.botter.transport.slack.Modal.SlackUser;
+import au.id.vanlaatum.botter.transport.slack.modal.SlackUser;
 
 public class UserChange extends BaseEvent {
   private SlackUser user;

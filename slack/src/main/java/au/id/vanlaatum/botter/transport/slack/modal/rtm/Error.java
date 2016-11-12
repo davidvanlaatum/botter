@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
 public class Error extends BaseEvent {
   private SubError error;

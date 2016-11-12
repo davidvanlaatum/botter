@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
 public class Ack extends BasePacket {
   private Boolean ok;

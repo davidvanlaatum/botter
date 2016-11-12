@@ -1,4 +1,4 @@
-package au.id.vanlaatum.botter.transport.slack.Modal.RTM;
+package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,6 +22,7 @@ public class Attachment {
   }
 
   public Attachment () {
+    // default
   }
 
   public String getText () {

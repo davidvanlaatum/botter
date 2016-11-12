@@ -2,6 +2,7 @@ package au.id.vanlaatum.botter.api;
 
 public class CacheLookupException extends Exception {
   public CacheLookupException () {
+    super ();
   }
 
   public CacheLookupException ( String message ) {
