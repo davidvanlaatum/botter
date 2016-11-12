@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +17,11 @@ public class Forecast extends BaseResponse {
   private List<Details> list;
 
   public List<Details> getList () {
-    return list;
+    return Collections.unmodifiableList ( list );
   }
 
   public Forecast setList ( List<Details> list ) {
-    this.list = list;
+    this.list = new ArrayList<> ( list );
     return this;
   }
 
@@ -131,11 +133,11 @@ public class Forecast extends BaseResponse {
     private BigDecimal rain;
 
     public Date getDt () {
-      return dt;
+      return (Date) dt.clone ();
     }
 
     public Details setDt ( Date dt ) {
-      this.dt = dt;
+      this.dt = (Date) dt.clone ();
       return this;
     }
 
@@ -167,11 +169,11 @@ public class Forecast extends BaseResponse {
     }
 
     public List<WeatherConditions> getWeather () {
-      return weather;
+      return Collections.unmodifiableList ( weather );
     }
 
     public Details setWeather ( List<WeatherConditions> weather ) {
-      this.weather = weather;
+      this.weather = new ArrayList<> ( weather );
       return this;
     }
 

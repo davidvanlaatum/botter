@@ -312,7 +312,7 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ManagedService
   }
 
   public WeatherKeywordProcessor setConnectors ( List<WeatherConnector> connectors ) {
-    this.connectors = connectors;
+    this.connectors = new ArrayList<> ( connectors );
     return this;
   }
 

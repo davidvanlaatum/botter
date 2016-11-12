@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,11 +37,11 @@ public class CurrentWeather extends BaseResponse {
   }
 
   public List<WeatherConditions> getWeather () {
-    return weather;
+    return Collections.unmodifiableList ( weather );
   }
 
   public CurrentWeather setWeather ( List<WeatherConditions> weather ) {
-    this.weather = weather;
+    this.weather = new ArrayList<> ( weather );
     return this;
   }
 
@@ -107,11 +109,11 @@ public class CurrentWeather extends BaseResponse {
   }
 
   public Date getDt () {
-    return dt;
+    return (Date) dt.clone ();
   }
 
   public CurrentWeather setDt ( Date dt ) {
-    this.dt = dt;
+    this.dt = (Date) dt.clone ();
     return this;
   }
 
@@ -288,20 +290,20 @@ public class CurrentWeather extends BaseResponse {
     }
 
     public Date getSunrise () {
-      return sunrise;
+      return (Date) sunrise.clone ();
     }
 
     public Sys setSunrise ( Date sunrise ) {
-      this.sunrise = sunrise;
+      this.sunrise = (Date) sunrise.clone ();
       return this;
     }
 
     public Date getSunset () {
-      return sunset;
+      return (Date) sunset.clone ();
     }
 
     public Sys setSunset ( Date sunset ) {
-      this.sunset = sunset;
+      this.sunset = (Date) sunset.clone ();
       return this;
     }
   }

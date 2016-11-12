@@ -56,9 +56,9 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-core/target/
-slack/target/
+*/target/
 .idea/sonarIssues.xml
 .idea/dataSources/
 .idea/inspectionProfiles/Sonar.xml
 .idea/sonarSettings.xml
+.idea/sonarRules.xml

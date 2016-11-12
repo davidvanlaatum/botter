@@ -15,6 +15,7 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class FisheyeKeywordProcessor implements KeyWordProcessor {
   private LogService log;
 
   public FisheyeKeywordProcessor setConnectors ( List<FisheyeConnector> connectors ) {
-    this.connectors = connectors;
+    this.connectors = new ArrayList<> ( connectors );
     return this;
   }
 

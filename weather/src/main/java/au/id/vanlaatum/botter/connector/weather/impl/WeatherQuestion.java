@@ -13,7 +13,7 @@ public class WeatherQuestion implements Question {
   public WeatherQuestion ( TimeConstant time, int dow, Date date, Subject subject, String city, String country ) {
     this.timeType = time == null ? TimeConstant.TODAY : time;
     this.dow = dow;
-    this.date = date;
+    this.date = (Date) date.clone ();
     this.subject = subject;
     this.city = city;
     this.country = country;
@@ -33,7 +33,7 @@ public class WeatherQuestion implements Question {
   }
 
   public Date getDate () {
-    return date;
+    return (Date) date.clone ();
   }
 
   public Subject getSubject () {
