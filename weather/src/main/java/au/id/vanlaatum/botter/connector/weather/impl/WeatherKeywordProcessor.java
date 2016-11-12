@@ -301,8 +301,11 @@ public class WeatherKeywordProcessor implements KeyWordProcessor, ManagedService
               wetherquestion.valueSubject, wetherquestion.city, wetherquestion.country );
           break;
         case SETLOCATION:
-          rt = new SetLocation ( question.setlocation ().city, question.setlocation ().country );
+          final QuestionParser.SetlocationContext setlocation = question.setlocation ();
+          rt = new SetLocation ( setlocation.city, setlocation.country );
           break;
+        default:
+          throw new UnsupportedOperationException ( "Unsupported question type " + question.type );
       }
     }
     return rt;
