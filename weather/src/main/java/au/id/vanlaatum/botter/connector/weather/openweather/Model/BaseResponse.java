@@ -2,6 +2,8 @@ package au.id.vanlaatum.botter.connector.weather.openweather.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.net.HttpURLConnection;
+
 public class BaseResponse {
   private Integer cod;
   private String message;
@@ -26,6 +28,6 @@ public class BaseResponse {
 
   @JsonIgnore
   public boolean isSuccess () {
-    return cod == 200;
+    return cod == HttpURLConnection.HTTP_OK;
   }
 }

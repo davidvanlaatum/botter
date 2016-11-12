@@ -37,6 +37,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -116,15 +117,16 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
         public WeatherDetailsCurrentImpl call () throws Exception {
           log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
           final HttpGet get = new HttpGet ( uri );
-          final CloseableHttpResponse response = httpClient.execute ( get );
-          if ( response.getStatusLine ().getStatusCode () == 200 ) {
-            final CurrentWeather weather = mapper.readValue ( response.getEntity ().getContent (), CurrentWeather.class );
-            if ( !weather.isSuccess () ) {
-              throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
+          try ( final CloseableHttpResponse response = httpClient.execute ( get ) ) {
+            if ( response.getStatusLine ().getStatusCode () == HttpURLConnection.HTTP_OK ) {
+              final CurrentWeather weather = mapper.readValue ( response.getEntity ().getContent (), CurrentWeather.class );
+              if ( !weather.isSuccess () ) {
+                throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
+              }
+              return new WeatherDetailsCurrentImpl ( weather );
+            } else {
+              throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
             }
-            return new WeatherDetailsCurrentImpl ( weather );
-          } else {
-            throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
           }
         }
       } );
@@ -155,15 +157,16 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
             public Forecast call () throws Exception {
               log.log ( LogService.LOG_INFO, "Fetching weather details with " + uri.toString () );
               final HttpGet get = new HttpGet ( uri );
-              final CloseableHttpResponse response = httpClient.execute ( get );
-              if ( response.getStatusLine ().getStatusCode () == 200 ) {
-                final Forecast weather = mapper.readValue ( response.getEntity ().getContent (), Forecast.class );
-                if ( !weather.isSuccess () ) {
-                  throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
+              try ( final CloseableHttpResponse response = httpClient.execute ( get ) ) {
+                if ( response.getStatusLine ().getStatusCode () == HttpURLConnection.HTTP_OK ) {
+                  final Forecast weather = mapper.readValue ( response.getEntity ().getContent (), Forecast.class );
+                  if ( !weather.isSuccess () ) {
+                    throw new WeatherFetchFailedException ( format ( "{0}: {1}", weather.getCod (), weather.getMessage () ) );
+                  }
+                  return weather;
+                } else {
+                  throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
                 }
-                return weather;
-              } else {
-                throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
               }
             }
           } ), date );

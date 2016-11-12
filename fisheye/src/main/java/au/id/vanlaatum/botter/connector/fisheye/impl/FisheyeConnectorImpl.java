@@ -17,6 +17,7 @@ import org.osgi.service.log.LogService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Dictionary;
@@ -61,20 +62,19 @@ public class FisheyeConnectorImpl implements FisheyeConnector {
   @Override
   public ChangeSet getChangeSet ( String repo, String id ) throws IOException, RemoteCallFailedException {
     log.log ( LogService.LOG_INFO, format ( "Fetching info for changeset {0} from repo {1}", id, repo ) );
-    final HttpGet get =
-        new HttpGet (
-            uri.resolve ( "/rest-service-fe/revisionData-v1/changeset/" ).resolve ( repo + "/" ).resolve ( id ) );
+    final HttpGet get = new HttpGet ( uri.resolve ( "/rest-service-fe/revisionData-v1/changeset/" ).resolve ( repo + "/" ).resolve ( id ) );
     get.addHeader ( "Accept", "application/json" );
-    final CloseableHttpResponse response = client.execute ( get );
-    ChangeSetImpl changeSet = null;
-    if ( response.getStatusLine ().getStatusCode () == 200 ) {
-      try ( final InputStream content = response.getEntity ().getContent () ) {
-        changeSet = mapper.readValue ( content, ChangeSetImpl.class );
+    try ( final CloseableHttpResponse response = client.execute ( get ) ) {
+      ChangeSetImpl changeSet = null;
+      if ( response.getStatusLine ().getStatusCode () == HttpURLConnection.HTTP_OK ) {
+        try ( final InputStream content = response.getEntity ().getContent () ) {
+          changeSet = mapper.readValue ( content, ChangeSetImpl.class );
+        }
+      } else {
+        throw new RemoteCallFailedException ();
       }
-    } else {
-      throw new RemoteCallFailedException ();
+      return changeSet;
     }
-    return changeSet;
   }
 
   @Override

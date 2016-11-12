@@ -19,6 +19,7 @@ import org.osgi.service.log.LogService;
 
 import java.io.ByteArrayInputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
@@ -44,7 +45,7 @@ public class WeatherConnectorImplTest {
     when ( builder.build () ).thenReturn ( client );
     when ( client.execute ( org.mockito.Matchers.any ( HttpGet.class ) ) ).thenReturn ( response );
     when ( response.getStatusLine () ).thenReturn ( statusLine );
-    when ( statusLine.getStatusCode () ).thenReturn ( 200 );
+    when ( statusLine.getStatusCode () ).thenReturn ( HttpURLConnection.HTTP_OK );
     when ( response.getEntity () ).thenReturn ( entity );
     when ( entity.getContent () ).thenReturn ( new ByteArrayInputStream ( CurrentWeatherTest.JSON.getBytes () ) );
     a.setApiKey ( "1234567890" );
@@ -80,7 +81,7 @@ public class WeatherConnectorImplTest {
     when ( builder.build () ).thenReturn ( client );
     when ( client.execute ( org.mockito.Matchers.any ( HttpGet.class ) ) ).thenReturn ( response );
     when ( response.getStatusLine () ).thenReturn ( statusLine );
-    when ( statusLine.getStatusCode () ).thenReturn ( 200 );
+    when ( statusLine.getStatusCode () ).thenReturn ( HttpURLConnection.HTTP_OK );
     when ( response.getEntity () ).thenReturn ( entity );
     when ( entity.getContent () ).thenReturn ( new ByteArrayInputStream ( ForecastTest.JSON.getBytes () ) );
     a.setApiKey ( "1234567890" );
@@ -88,7 +89,7 @@ public class WeatherConnectorImplTest {
     a.setForecastWeatherCache ( new ForecastWeatherCache () );
     a.init ();
     final Calendar date = Calendar.getInstance ();
-    date.setTimeInMillis ( 1473732000000l );
+    date.setTimeInMillis ( 1473732000000L );
     final WeatherDetails currentWeather = a.getDailyForecast ( new CityLocation ( "AU", "Adelaide" ), new WeatherSettings () {
       @Override
       public Units getUnits () {
