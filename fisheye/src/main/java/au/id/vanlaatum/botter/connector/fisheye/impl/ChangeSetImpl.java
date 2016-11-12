@@ -3,6 +3,8 @@ package au.id.vanlaatum.botter.connector.fisheye.impl;
 import au.id.vanlaatum.botter.connector.fisheye.api.ChangeSet;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +25,12 @@ public class ChangeSetImpl implements ChangeSet {
   private List<File> fileRevisionKey;
 
   public List<File> getFileRevisionKey () {
-    return fileRevisionKey;
+    return Collections.unmodifiableList ( fileRevisionKey );
   }
 
   @JsonDeserialize ( contentAs = FileImpl.class )
   public ChangeSetImpl setFileRevisionKey ( List<File> fileRevisionKey ) {
-    this.fileRevisionKey = fileRevisionKey;
+    this.fileRevisionKey = new ArrayList<> ( fileRevisionKey );
     return this;
   }
 
@@ -42,11 +44,11 @@ public class ChangeSetImpl implements ChangeSet {
   }
 
   public List<String> getP4JobIds () {
-    return p4JobIds;
+    return Collections.unmodifiableList ( p4JobIds );
   }
 
   public ChangeSetImpl setP4JobIds ( List<String> p4JobIds ) {
-    this.p4JobIds = p4JobIds;
+    this.p4JobIds = new ArrayList<> ( p4JobIds );
     return this;
   }
 
@@ -79,11 +81,11 @@ public class ChangeSetImpl implements ChangeSet {
   }
 
   public List<String> getParents () {
-    return parents;
+    return Collections.unmodifiableList ( parents );
   }
 
   public ChangeSetImpl setParents ( List<String> parents ) {
-    this.parents = parents;
+    this.parents = new ArrayList<> ( parents );
     return this;
   }
 
@@ -152,17 +154,17 @@ public class ChangeSetImpl implements ChangeSet {
 
   @Override
   public Date getDate () {
-    return date;
+    return (Date) date.clone ();
   }
 
   public ChangeSetImpl setDate ( Date date ) {
-    this.date = date;
+    this.date = (Date) date.clone ();
     return this;
   }
 
   @Override
   public List<File> getFiles () {
-    return fileRevisionKey;
+    return Collections.unmodifiableList ( fileRevisionKey );
   }
 
   private static class FileImpl implements File {

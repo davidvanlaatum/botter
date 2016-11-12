@@ -72,7 +72,7 @@ public class Attribute implements AttributeDefinition {
 
   @Override
   public String[] getDefaultValue () {
-    return defaultValue;
+    return defaultValue.clone ();
   }
 
   public Attribute setDefaultValue ( String defaultValue ) {
