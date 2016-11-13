@@ -4,6 +4,8 @@ import au.id.vanlaatum.botter.transport.slack.modal.SlackTimeStamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -127,11 +129,11 @@ public class Message extends BaseEvent {
   }
 
   public List<Attachment> getAttachments () {
-    return attachments;
+    return Collections.unmodifiableList ( attachments );
   }
 
   public Message setAttachments ( List<Attachment> attachments ) {
-    this.attachments = attachments;
+    this.attachments = new ArrayList<> ( attachments );
     return this;
   }
 

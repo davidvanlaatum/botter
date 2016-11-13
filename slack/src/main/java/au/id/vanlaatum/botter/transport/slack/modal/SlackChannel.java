@@ -3,7 +3,10 @@ package au.id.vanlaatum.botter.transport.slack.modal;
 
 import au.id.vanlaatum.botter.transport.slack.modal.rtm.Message;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,11 +29,11 @@ public class SlackChannel {
   private Description purpose;
 
   public List<String> getMembers () {
-    return members;
+    return Collections.unmodifiableList ( members );
   }
 
   public void setMembers ( List<String> members ) {
-    this.members = members;
+    this.members = new ArrayList<> ( members );
   }
 
   public Description getTopic () {
@@ -110,11 +113,11 @@ public class SlackChannel {
   }
 
   public Date getCreated () {
-    return created;
+    return ObjectUtils.clone ( created );
   }
 
   public void setCreated ( Date created ) {
-    this.created = created;
+    this.created = ObjectUtils.clone ( created );
   }
 
   public String getCreator () {

@@ -1,9 +1,12 @@
 package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Self {
   private String id;
@@ -29,19 +32,19 @@ public class Self {
   }
 
   public Map<String, Object> getPrefs () {
-    return prefs;
+    return Collections.unmodifiableMap ( prefs );
   }
 
   public void setPrefs ( Map<String, Object> prefs ) {
-    this.prefs = prefs;
+    this.prefs = new TreeMap<> ( prefs );
   }
 
   public Date getCreated () {
-    return created;
+    return ObjectUtils.clone ( created );
   }
 
   public void setCreated ( Date created ) {
-    this.created = created;
+    this.created = ObjectUtils.clone ( created );
   }
 
   @JsonProperty ( "manual_presence" )

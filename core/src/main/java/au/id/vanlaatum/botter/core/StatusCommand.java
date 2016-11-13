@@ -8,6 +8,7 @@ import org.ops4j.pax.cdi.api.OsgiServiceProvider;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 @OsgiServiceProvider ( classes = CommandProcessor.class )
@@ -20,7 +21,7 @@ public class StatusCommand implements CommandProcessor {
   private List<StatusInfoProvider> statusProviders;
 
   public void setStatusProviders ( List<StatusInfoProvider> statusProviders ) {
-    this.statusProviders = statusProviders;
+    this.statusProviders = new ArrayList<> ( statusProviders );
   }
 
   public void setBotFactory ( BotFactory botFactory ) {

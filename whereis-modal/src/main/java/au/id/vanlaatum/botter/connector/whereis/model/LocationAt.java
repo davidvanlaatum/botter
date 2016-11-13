@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.connector.whereis.model;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,20 +59,20 @@ public class LocationAt {
   }
 
   public Date getStartDate () {
-    return startDate;
+    return ObjectUtils.clone ( startDate );
   }
 
   public LocationAt setStartDate ( Date start ) {
-    this.startDate = start;
+    this.startDate = ObjectUtils.clone ( start );
     return this;
   }
 
   public Date getEndDate () {
-    return endDate;
+    return ObjectUtils.clone ( endDate );
   }
 
   public LocationAt setEndDate ( Date end ) {
-    this.endDate = end;
+    this.endDate = ObjectUtils.clone ( end );
     return this;
   }
 

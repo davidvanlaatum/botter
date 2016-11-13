@@ -68,19 +68,19 @@ public class BotFactoryImpl implements BotFactory, MetaTypeProvider {
   }
 
   public void setTransports ( List<Transport> transports ) {
-    this.transports = transports;
+    this.transports = new ArrayList<> ( transports );
   }
 
   public void setCommands ( List<CommandProcessor> commands ) {
-    this.commands = commands;
+    this.commands = new ArrayList<> ( commands );
   }
 
   public void setKeyWordProcessors ( List<KeyWordProcessor> keyWordProcessors ) {
-    this.keyWordProcessors = keyWordProcessors;
+    this.keyWordProcessors = new ArrayList<> ( keyWordProcessors );
   }
 
   public BotFactoryImpl setCacheList ( List<GenericCache<?, ?>> cacheList ) {
-    this.cacheList = cacheList;
+    this.cacheList = new ArrayList<> ( cacheList );
     return this;
   }
 

@@ -1,5 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack.modal.rtm;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.Date;
 
 public class Ping extends BaseEvent {
@@ -10,6 +12,6 @@ public class Ping extends BaseEvent {
   }
 
   public Date getTime () {
-    return time;
+    return ObjectUtils.clone ( time );
   }
 }

@@ -1,8 +1,11 @@
 package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -24,11 +27,11 @@ public class RTMStart extends BasePacket {
   private List<Bot> bots;
 
   public List<Bot> getBots () {
-    return bots;
+    return Collections.unmodifiableList ( bots );
   }
 
   public void setBots ( List<Bot> bots ) {
-    this.bots = bots;
+    this.bots = new ArrayList<> ( bots );
   }
 
   @JsonProperty ( "cache_version" )
@@ -50,28 +53,28 @@ public class RTMStart extends BasePacket {
   }
 
   public List<Group> getGroups () {
-    return groups;
+    return Collections.unmodifiableList ( groups );
   }
 
   public void setGroups ( List<Group> groups ) {
-    this.groups = groups;
+    this.groups = new ArrayList<> ( groups );
   }
 
   public List<SlackIM> getIms () {
-    return ims;
+    return Collections.unmodifiableList ( ims );
   }
 
   public void setIms ( List<SlackIM> ims ) {
-    this.ims = ims;
+    this.ims = new ArrayList<> ( ims );
   }
 
   @JsonProperty ( "cache_ts" )
   public Date getCacheTS () {
-    return cacheTS;
+    return ObjectUtils.clone ( cacheTS );
   }
 
   public void setCacheTS ( Date cacheTS ) {
-    this.cacheTS = cacheTS;
+    this.cacheTS = ObjectUtils.clone ( cacheTS );
   }
 
   @JsonProperty ( "subteams" )
@@ -92,11 +95,11 @@ public class RTMStart extends BasePacket {
   }
 
   public List<SlackChannel> getChannels () {
-    return channels;
+    return Collections.unmodifiableList ( channels );
   }
 
   public void setChannels ( List<SlackChannel> channels ) {
-    this.channels = channels;
+    this.channels = new ArrayList<> ( channels );
   }
 
   @JsonProperty ( "latest_event_ts" )
@@ -133,11 +136,11 @@ public class RTMStart extends BasePacket {
   }
 
   public List<SlackUser> getUsers () {
-    return users;
+    return Collections.unmodifiableList ( users );
   }
 
   public void setUsers ( List<SlackUser> users ) {
-    this.users = users;
+    this.users = new ArrayList<> ( users );
   }
 
 }

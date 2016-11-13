@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Date;
 
@@ -34,11 +35,11 @@ public class SlackIM {
   }
 
   public Date getCreated () {
-    return created;
+    return ObjectUtils.clone ( created );
   }
 
   public void setCreated ( Date created ) {
-    this.created = created;
+    this.created = ObjectUtils.clone ( created );
   }
 
   @JsonProperty ( "is_im" )

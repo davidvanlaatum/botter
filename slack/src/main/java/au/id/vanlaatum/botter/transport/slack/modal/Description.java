@@ -1,6 +1,7 @@
 package au.id.vanlaatum.botter.transport.slack.modal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Date;
 
@@ -27,10 +28,10 @@ public class Description {
 
   @JsonProperty ( "last_set" )
   public Date getLastSet () {
-    return lastSet;
+    return ObjectUtils.clone ( lastSet );
   }
 
   public void setLastSet ( Date lastSet ) {
-    this.lastSet = lastSet;
+    this.lastSet = ObjectUtils.clone ( lastSet );
   }
 }

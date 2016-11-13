@@ -22,6 +22,7 @@ import au.id.vanlaatum.botter.transport.slack.modal.rtm.ReconnectURL;
 import au.id.vanlaatum.botter.transport.slack.modal.rtm.TeamJoin;
 import au.id.vanlaatum.botter.transport.slack.modal.rtm.UserChange;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.client.ClientProperties;
 import org.osgi.framework.BundleContext;
@@ -416,7 +417,7 @@ public class SlackTransport implements Transport, ManagedService {
     private Integer id;
 
     RetryTimer ( Date expires, Integer id ) {
-      this.expires = expires;
+      this.expires = ObjectUtils.clone ( expires );
       this.id = id;
     }
 
