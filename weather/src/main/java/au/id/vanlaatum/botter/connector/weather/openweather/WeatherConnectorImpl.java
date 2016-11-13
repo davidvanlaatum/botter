@@ -128,6 +128,8 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
             } else {
               throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
             }
+          } finally {
+            get.releaseConnection ();
           }
         }
       } );
@@ -166,6 +168,8 @@ public class WeatherConnectorImpl implements WeatherConnector, MetaTypeProvider,
                 } else {
                   throw new WeatherFetchFailedException ( format ( "Got {0} from weather service", response.getStatusLine () ) );
                 }
+              } finally {
+                get.releaseConnection ();
               }
             }
           } ), date );

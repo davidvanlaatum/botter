@@ -72,7 +72,7 @@ public class UserLocationImpl implements UserLocation {
       final TypedQuery<User> findByID = em.createNamedQuery ( "User.findByID", User.class );
       findByID.setParameter ( "userId", id );
       rt = findByID.getSingleResult ();
-    } catch ( NoResultException ex ) {
+    } catch ( NoResultException ignore ) {
       rt = new User ();
       rt.setUserId ( id );
       em.persist ( rt );
@@ -88,7 +88,7 @@ public class UserLocationImpl implements UserLocation {
     requireNonNull ( id, "id null" );
     requireNonNull ( description, "description null" );
     if ( to.isBefore ( from ) ) {
-      throw new RuntimeException ( "to mast be after from " + from + " >= " + to );
+      throw new IllegalArgumentException ( "to mast be after from " + from + " >= " + to );
     }
     User user = getOrCreateUser ( id );
     final TypedQuery<LocationAt> query = em.createNamedQuery ( "LocationAt.findOverlappingByUser", LocationAt.class );
